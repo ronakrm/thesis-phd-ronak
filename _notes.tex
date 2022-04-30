@@ -1,0 +1,39 @@
+
+\begin{itemize}
+    \item identifying feature subsets (covtraj, ipmi, future pac)
+    \item modeling temporal trajectories (covtraj, ott)
+    \item identifying model subsets (ott, lcodec, submod)
+    \item using model subsets (lcodec, submod)
+    \item reducing computation to enable XYZ (ott, lcodec, demd)
+    \item hypothesis testing (covtraj, future pac)
+    \item differential/riemannian geometry (covtraj, ott)
+    \item AD (covtraj, ott, ipmi, graphMC) 
+    \item ethical/fair/privacy AI (lcodec, demd, graphMC)
+\end{itemize}
+
+identifying feature subsets, classically, by weights, regression methods with statistical guarantees based on distributional assumptions.
+with deep networks, weights also used, but compounding effect of nonlinear activations make it hard
+methods developed XYZ
+attention
+removed from the classical methods, and not respecting the distributional assumption or statistical structure of the data, particularly if it is changing over time or some other factor.
+part of this thesis is bridging this gap.
+
+an orthogonal but closely related problem involves identification of \textit{model subsets.}
+traditional statistical models, equal to features (linear regressions). 
+in deep NNs, specific nonzero weights/activations are associated with model parameters important to the learning task or a specific input sample.
+evolution of neural networks from simple fully connected include some ideas,
+related to structure/constraints, convolutions, residual, transformer, etc.
+huge models, hard to identify, large amounts of overlap and dependence.
+compression of models has been studied, but compression informed by the true model subspace is not quite clear,
+compounded by the complexity and computation associated with modeling across time.
+
+
+the space of the data $X \in \cX$
+
+subset of input space $\cS \subseteq \cX$, $S \subseteq X$
+
+model space $\theta \in \Theta$
+
+subset of the model space $\cP \subseteq \Theta$, $P \subseteq \theta$
+
+-------------------------

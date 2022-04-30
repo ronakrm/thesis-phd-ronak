@@ -1,0 +1,176 @@
+
+%\usepackage{amsmath}
+%\usepackage{amsthm}
+%\usepackage{amssymb}
+%\usepackage{stmaryrd}
+
+\newcommand {\br}[1]{\left(#1\right)}
+\newcommand {\brN}[1]{(#1)}
+\newcommand {\brbig}[1]{\bigl( #1 \bigr)}
+\newcommand {\brBig}[1]{\Bigl( #1 \Bigr)}
+\newcommand {\brbigg}[1]{\biggl( #1 \biggr)}
+\newcommand {\brBigg}[1]{\Bigg( #1 \Biggr)}
+\newcommand {\tbr}[1]{\left(\!#1 \!\right)}
+\newcommand {\ttbr}[1]{\left(\!\!#1 \!\!\right)}
+\newcommand {\tttbr}[1]{\left(\!\!\! #1 \!\!\!\right)}
+\newcommand {\sqb}[1]{\left[#1\right]}
+\newcommand {\sqbP}[1]{\left[\: #1 \:\right]}
+\newcommand {\sqbN}[1]{[ #1 ]}
+\newcommand {\sqbbig}[1]{\bigl[ #1 \bigr]}
+\newcommand {\sqbBig}[1]{\Bigl[ #1 \Bigr]}
+\newcommand {\sqbbigg}[1]{\biggl[ #1 \biggr]}
+\newcommand {\sqbBigg}[1]{\Bigg[ #1 \Biggr]}
+\newcommand {\cbr}[1]{\ensuremath{\left\{#1 \right\}}}
+\newcommand {\cbrN}[1]{\{#1\}}
+\newcommand {\cbrP}[1]{\left\{\: #1\: \right\}}
+\newcommand {\cbrbig}[1]{\bigl\{ #1 \bigr\}}
+\newcommand {\cbrBig}[1]{\Bigl\{ #1 \Bigr\}}
+\newcommand {\cbrbigg}[1]{\biggl\{ #1 \biggr\}}
+\newcommand {\cbrBigg}[1]{\Bigg\{ #1 \Biggr\}}
+\newcommand {\nm}[1]{\left\Arrowvert\, #1 \,\right\Arrowvert}
+\newcommand {\nmbig}[1]{\bigl\Arrowvert\, #1 \,\bigr\Arrowvert}
+\newcommand {\nmBig}[1]{\Bigl\Arrowvert\, #1 \,\Bigr\Arrowvert}
+\newcommand {\nmbigg}[1]{\biggl\Arrowvert\, #1 \,\biggr\Arrowvert}
+\newcommand {\nmN}[1]{\Arrowvert\, #1 \,\Arrowvert}
+\newcommand {\nmi}[1]{\left\Arrowvert\, #1 \,\right\Arrowvert_\infty}
+\newcommand {\inp}[1]{\left\langle #1 \right\rangle}
+\newcommand {\inpbig}[1]{\bigl\langle #1 \bigr\rangle}
+\newcommand {\inpBig}[1]{\Bigl\langle #1 \Bigr\rangle}
+\newcommand {\inpbigg}[1]{\Biggl\langle #1 \Biggr\rangle}
+\newcommand {\inpN}[1]{\langle #1 \rangle}
+%\newcommand {\bs}[1]{\vert #1 \vert}
+\newcommand {\abs}[1]{\left\vert\, #1 \,\right\vert}
+\newcommand {\absN}[1]{\vert\, #1 \,\vert}
+\newcommand {\absbig}[1]{\bigl\vert\, #1 \,\bigr\vert}
+\newcommand {\absBig}[1]{\Bigl\vert\, #1 \,\Bigr\vert}
+\newcommand {\absbigg}[1]{\biggl\vert\, #1 \,\biggr\vert}
+\newcommand {\absBigg}[1]{\Biggl\vert\, #1 \,\Biggr\vert}
+\newcommand {\series}[1]{\!\!\ll\!\!{#1}\!\!\gg\!\!}
+\newcommand {\bbracket}[1]{\llbracket{#1}\rrbracket}
+\newcommand {\setof}[2]{\cbr{\:{#1}\;\vert\;{#2\:}}}
+\newcommand {\setofN}[2]{\{\:{#1}\;\vert\;{#2\:}\}}
+
+\newcommand {\short}[2]{{\delimitershortfall100pt \delimiterfactor600 {#1{#2}}} 
+\delimiterfactor1000}
+
+\newcommand {\m}[1]{$ #1 $}
+\newcommand {\V}[1]{\mbox{\boldmath$#1$}}
+\newcommand {\h}[1]{\widehat{#1}}
+\newcommand {\te}[1]{\widetilde{#1}}
+%\newcommand {\ob}[1]{\overline{#1}}
+\newcommand {\ul}[1]{\underline{#1}}
+\newcommand {\wbar}[1]{\overline{#1}}
+
+\newcommand {\fr}[2]{\frac{#1}{#2}}
+\newcommand {\ovr}[1]{\frac{1}{#1}}
+\newcommand {\tovr}[1]{{\textstyle \frac{1}{#1}}}
+
+\newcommand {\dd}{\partial}
+\newcommand {\pD}[2]{\frac{d #1}{d #2}}
+\newcommand {\pd}[2]{\frac{\dd #1}{\dd #2}}
+\newcommand {\pfd}[2]{\frac{\delta #1}{\delta #2}}
+
+\newcommand {\ms}{\! - \!}
+\newcommand {\ps}{\! +\!}
+\newcommand {\es}{\! =\!}
+\newcommand {\tes}{\!\! = \!\!}
+\newcommand {\tsetminus}{\! \setminus \!}
+\newcommand {\Tin}{\! \in \!}
+\newcommand {\tcdot}{\!\cdot\!}
+\newcommand {\tsubset}{\!\subset\!}
+\newcommand {\tto}{\!\to\!}
+\newcommand {\tmapsto}{\!\mapsto\!} 
+\newcommand {\quadd}{\quad\enspace}
+\newcommand {\qqquad}{\qquad\quad}
+\newcommand {\pull}{\!\!\!\!}
+\newcommand {\pad}[1]{\, #1 \,}
+\newcommand {\padd}[1]{\ #1 \ }
+%\newcommand {\ggf}{\hspace{12pt}}
+\newcommand {\<}[1]{\hspace{-0.1 em}#1\hspace{-0.1 em}}
+\newcommand {\tin}{\< \in}
+%\newcommand {\Ts}{\hspace{.11111em}}
+%\newcommand {\ts}{\hspace{.11111em}}
+\newcommand {\nts}{\hspace{-.11111em}}
+\newcommand {\tts}{\hspace{.055555em}}
+
+\newcommand {\bi}[1]{#1#1}
+\newcommand {\tri}[1]{#1#1#1}
+\newcommand {\qd}[1]{#1#1#1#1}
+\newcommand {\oct}[1]{#1#1#1#1#1#1#1#1}
+
+\newcommand {\sgn}{\mathrm{sgn}}
+\newcommand {\vol}{\,\mathrm{vol}\,}
+\newcommand {\tr}{\mathrm{tr}}
+\newcommand {\Aut}{\mathrm{Aut}}
+
+\newcommand {\ignore}[1]{}
+\newcommand {\mc}[1]{\mathcal{#1}}
+
+\newcommand {\bra}[1]{\left\langle  #1 \right \vert}
+\newcommand {\ket}[1]{\left \vert #1 \right \rangle}
+\newcommand {\braket}[2]{\left\langle #1 \vert #2 \right \rangle}
+\newcommand {\braN}[1]{\langle  #1 \vert}
+\newcommand {\ketN}[1]{\vert #1 \rangle}
+\newcommand {\braketN}[2]{\langle #1 \vert #2 \right }
+
+\newcommand {\etext}[1]{\ \text{#1}\ }
+\newcommand {\dtext}[1]{\ \ \text{#1}\ \ }
+\newcommand {\qtext}[1]{\quad\text{#1}\quad}
+
+\newcommand {\Real}{\mathbb{R}}
+\newcommand {\Natural}{\mathbb{N}}
+\newcommand {\Input}{\mathcal{X}}
+\newcommand {\Output}{\mathcal{Y}}
+\newcommand {\Hilbert}{\mathcal{H}}
+
+\newcommand {\Xcal}{\ensuremath{\mathcal{X}}}
+\newcommand {\Ycal}{\ensuremath{\mathcal{Y}}}
+\newcommand {\Zcal}{\ensuremath{\mathcal{Z}}}
+\newcommand {\Hcal}{\ensuremath{\mathcal{H}}}
+\newcommand {\Fcal}{\ensuremath{\mathcal{F}}}
+\newcommand {\Ccal}{\ensuremath{\mathcal{C}}}
+\newcommand {\Lcal}{\ensuremath{\mathcal{L}}}
+\newcommand {\Mcal}{\ensuremath{\mathcal{M}}}
+\newcommand {\Kcal}{\ensuremath{\mathcal{K}}}
+\newcommand {\Gcal}{\ensuremath{\mathcal{G}}}
+\newcommand {\Rcal}{\ensuremath{\mathcal{R}}}
+\newcommand {\Tcal}{\ensuremath{\mathcal{T}}}
+\newcommand {\Pcal}{\ensuremath{\mathcal{P}}}
+\newcommand {\Scal}{\ensuremath{\mathcal{S}}}
+\newcommand {\Bcal}{\ensuremath{\mathcal{B}}}
+\newcommand {\Vcal}{\ensuremath{\mathcal{V}}}
+\newcommand {\Acal}{\ensuremath{\mathcal{A}}}
+\newcommand {\sG}{\ensuremath{\mathcal{G}}}
+\newcommand {\sV}{\ensuremath{\mathcal{V}}}
+\newcommand {\sE}{\ensuremath{\mathcal{E}}}
+\newcommand {\FF}{\ensuremath{\mathbb{F}}}
+\newcommand {\RR}{\ensuremath{\mathbb{R}}}
+\newcommand {\NN}{\ensuremath{\mathbb{N}}}
+\newcommand {\ZZ}{\ensuremath{\mathbb{Z}}}
+\newcommand {\CC}{\ensuremath{\mathbb{C}}}
+\newcommand {\QQ}{\ensuremath{\mathbb{Q}}}
+\newcommand {\TT}{\ensuremath{\mathbb{T}}}
+
+
+
+\newcommand {\EE}{\ensuremath{\mathbb{E}}}
+\newcommand {\PP}{\ensuremath{\mathbb{P}}}
+
+\newcommand {\eps}{\ensuremath{\epsilon}}
+\newcommand {\Rn}{\ensuremath{\RR^n}}
+
+\newcommand{\rf}[1]{(\ref{#1})}
+%\newcommand{\comment}[1]{}
+\newcommand{\va}[2]{#1}
+\newcommand{\vb}[2]{#2}
+
+\newcommand{\RE}{\mathfrak{Re}}
+\newcommand{\IM}{\mathfrak{Im}}
+
+\newcommand{\Tspan}{\mathrm{span}}
+\newcommand{\otherwise}{\text{otherwise}}
+\newcommand{\If}{\text{if}}
+\newcommand{\Tif}{\text{if}}
+\newcommand{\Totherwise}{\text{otherwise}}
+\newcommand{\Twhere}{\text{where}}
+\newcommand{\Tand}{\text{and}}
