@@ -7,40 +7,40 @@ technologies involve some
 call and response with some form of
 learned predictor.
 The large scale of these models,
-up to billions of parameters in neural networks
-allows for what would otherwise
+up to billions of parameters in neural networks,
+makes possible what would otherwise
 be an unconstrained, infeasible learning task
-to be possible via a highly parameterized model.
+via a highly parameterized model.
 These parameterizations have enabled 
 human-level performance on learning tasks
 previously thought to have been insurmountable
 for any potential artificial intelligence system.
 The high accuracy and generalization of these large scale models notwithstanding,
-a number of parallel questions have arisen with respect to 
+a number of parallel questions have arisen and are gaining prominence with respect to 
 the performance of these models.
 What features are most important for prediction?
 Which samples were most important for my training?
 Can we understand when a model is certain or uncertain about its output?
 Are there layers in my network that have learned a particular subtask?
-Questions of robustness, bias, influence, fairness, and importance have become central questions to contemporary machine learning research.
+Questions of robustness, bias, influence, fairness, and importance have become central questions to contemporary machine learning research \citep{doshi2017towards,mehrabi2021survey,amodei2016concrete}.
 
-Classical machine learning and statistics have found new life in these subfields: traditional learning methods 
-have been studied with these questions in mind for many decades.
+Traditional statistical learning methods 
+have been studied with these questions in mind for many decades, and have found new life in these subfields.
 Linear regressors, decision trees, and support vector machines
 have all been analyzed under these lenses,
 and as the modern machine learning community
 has returned to these questions
 so has a renewed interest in their methods of analysis.
-Research interest focuses
+New research focuses
 particularly on the differences
 associated with moving from classical under-parametrized models to
 modern \textbf{over-parameterized} models: where
 the model dimension vastly outnumbers the number
 of input samples, and may even be comparable to 
 the \textit{entire sample space.}
-While nascent, these approaches 
+While nascent, these new methods and analyses
 attempt to fill the gap between
-statistical and deep models to enable similar measures of sample influence, feature importance, and model analysis. 
+statistical and deep models to enable similar measures of sample influence, feature importance, and model understanding. 
 
 % Significant progress in the modern development of machine learning has
 % been built upon connections and patterns identified across myriad
@@ -79,11 +79,11 @@ statistical and deep models to enable similar measures of sample influence, feat
 %This lag directly explains the more recent interest in developing methods for understanding and interpreting large scale machine learning models.
 
 
-\paragraph{A full picture.} Consider a dataset $\{X\}_{i=1}^n$ of size $n$ where each data point in the set $X$ is considered drawn from some underlying distribution over the domain $X \sim \cX^d$, with domain dimensionality $d$. A model $f$ is fit using a parametrizations $\theta \in \Theta$, with $\Theta$ the space of possible parametrization with some intrinsic dimension $p$. From an analysis perspective, we might be interested in any one of (a) subsets of input features $\cC \subseteq \cX$ that are important for the downstream task, (b) associating model subsets $\cP \subseteq \Theta$ with specific inputs or groups of inputs, or (c) subsets of samples $S \subseteq \{X\}^n$ equally of interest. While all three of these problems are closely related, they require different approaches. 
+\paragraph{A full picture.} Consider a dataset $\{X\}_{i=1}^n$ of size $n$ where each data point in the set $X$ is considered drawn from some underlying distribution over the domain $X \sim \cX^d$, with domain dimensionality $d$. A model $f$ is fit using a parametrizations $\theta \in \Theta$, with $\Theta$ the space of possible parametrization with some intrinsic dimension $p$. From an analysis perspective, we might be interested in any one of (a) subsets of input features $\cC \subseteq \cX$ that are important for the downstream task, (b) associating model subsets $\cP \subseteq \Theta$ with specific inputs or groups of inputs, or (c) subsets or subgroups of samples $S \subseteq \{X\}^n$ equally of interest. While all three of these problems are closely related, they require different approaches. 
 
 \begin{mdframed}[style=MyFrame]
 \em 
-\textbf{This thesis} focuses its main efforts on identifying these important subsets of sample, feature, and model space for feature association, model size reduction, model unlearning, and, fairness. Specifically, taking advantage of both existing statistical and geometric methods, we develop new methods for localizing subsets in both hypothesis testing and in deep learning frameworks.
+\textbf{This thesis} will focus its main efforts on identifying these important subsets of sample, feature, and model space for feature association, model size reduction, model unlearning, and, fairness. Specifically, taking advantage of both existing statistical and geometric methods, we will develop new methods for localizing subsets, in a range of settings from hypothesis testing on the one hand to deep learning frameworks on the other.
 \end{mdframed}
 
 % Features
@@ -91,32 +91,40 @@ Feature selection in the case of typical regression or classification
 % Typical regression or classification 
 takes some form of learning parameters $\theta$ that allow for $\hat{y} = f_\theta(x)$ to be close to the true outcome of interest $y$.
 While forms of data $X := (x,y)$ may simply be continuous and real-valued, modern machine learning has greatly expanded formulations of the classical learning problem to include a wide variety of structured learning problems \citep{nowozin2011structured}. 
-Structure learning and identification has taken a few different forms (object detection, segmentation, etc.),
-but has remained somewhat removed from traditional
-statistical settings.
+% Structure learning and identification has taken a few different forms (object detection, segmentation, etc.),
+% but has remained somewhat removed from traditional
+% statistical settings.
 Consider the case when a high-dimensional input is used to predict an output with a highly-parametrized model. 
-Once learned, obvious questions arise: are there specific low-dimensional spaces in either the input or the model space that are most important or necessary for the global learning problem of interest? Are there specific subspaces associated with particular subproblems of the global problem?
-The machine learning literature has come up with a number of ways to identify analogs of these spaces, including extensions of sensitivity analysis to deep learning \citep{yeung2010sensitivity,zhang2015sensitivity}, and constructing and identifying nonzero model subsets via particular model choices such as activations \citep{selvaraju2017grad} and regularizers.
-Attention has stood out as a popular method,
-given its ease of implementation and interpretation \citep{sutskever2014sequence,vaswani2017attention}.
+Once learned, obvious questions arise as discussed above: are there specific low-dimensional spaces in either the input or the model space that are most important or necessary for the global learning problem of interest? Are there specific subspaces associated with particular subproblems of the global problem?
+The machine learning literature has come up with a number of ways to identify analogs of these spaces, 
+including extensions of sensitivity analysis to deep learning \citep{yeung2010sensitivity,zhang2015sensitivity}, and constructing and identifying nonzero model subsets via particular model choices such as activations \citep{selvaraju2017grad} and regularizers.
+In classical settings these are well understood: decision trees naturally provide ease of interpretibility via the information used to choose splits, and both linear and kernel support vector machines have been analyzed to provide for measures of sample importance via distances to the margin as well as feature importance via weights defining the learned hyperplane \citep{Mitchell97}.
+Attention and saliency maps have emerged as popular new methods,
+given their ease of implementation and interpretation \citep{sutskever2014sequence,vaswani2017attention,selvaraju2017grad}.
 By learning dimensions of a given input that are particularly important, either in a hard (binary) or soft (continuous weighting) manner, model builders are better able to understand and interpret what a model has learnt.
 
-The specific ideas of attention notwithstanding, many of these existing methods are far removed from traditional hypothesis testing frameworks, and
+The specific ideas of attention notwithstanding, many of these existing methods are far removed from traditional hypothesis testing frameworks.,
+While some work has begun in this direction \citep{tansey2018black},
 there remains a gap in direct identification of subsets and structures in these spaces that can be defined in statistically rigorous manners.
 
 \paragraph{A specific example.} Consider a traditional machine learning classification task in which we would like to predict whether an individual has a specific disease condition based on a medical resonance image (MRI) scan of their brain. Our input feature $x$ may consist of a 3D-array of values lying in $\RR^{x\times y\times z}$ measuring some intensity of the imaging modality at each voxel, indexed by a tuple $(i,j,k)$.
 Our outcome variable $y$ may simply be a binary label of whether the input scan has been labeled by a radiologist as one demonstrating typical disease characteristics.
 Using an off the shelf 3D convolutional neural network with adjustments to match our input size, we can very quickly set up and train a system to predict disease presence with a high degree of accuracy.
 
-While attention can be directly applied to the network in order to identify ``hotspots" in the input space relating to the learned classification task, there is no guarantee that the regions identified are truly related to disease.
-Given the high-dimensional nature of the input and the relatively small sample size associated with medical imaging data, it is very likely that an area of interest identified may be an intricacy of the training samples used rather than truly a region of disease signal.
-Methods of generalization may help to increase confidence in identified regions, but statistical guarantees remain out of reach.
+While attention can be directly applied to the network in order to identify ``hotspots" in the input space relating to the learned classification task, 
+given the high-dimensional nature of the input
+and the relatively small sample size 
+associated with medical imaging data, 
+it is very likely that an area of interest identified
+may be an intricacy of the training samples used rather than truly a region of disease signal.
+Class activation maps (CAMs) may be unclear, and can often associate with image artifacts unrelated to the scientific task \citep{adebayo2018sanity}.
+Methods of generalization may help to increase confidence in identified regions, but statistical guarantees often remain out of reach.
 
-Furthermore, most recent problems associated with medical data have moved past simple difference detection: trends over time, and the ability to predict {\em future} development has by far become the setting of most interest.
+Furthermore, most recent problems associated with medical data have moved past simple difference detection: trends over time, and the ability to predict {\em future} disease development has by far become the setting of most interest.
 Given an image of a healthy individual, is it possible to predict what their scan, or their future disease diagnosis, may be up to 10, 20, or more years in the future?
 If a number of scans have been collected over some timeframe, can the \textit{trajectory} of the individuals' development be extrapolated to estimate progression?
 As traditional models extended for temporal analysis grow in both size and complexity,
-a number of subproblems explicitly related to model and input subspaces arise. Here we address two such problems: \textbf{statistically rigorous identification of temporally evolving subsets}, and \textbf{characterizations of deep models that enable efficient training of recurrent models with large scale time-varying data}.
+a number of subproblems explicitly related to model and input subspaces arise. Here we aim to address two such problems: \textbf{statistically rigorous identification of temporally evolving subsets}, and \textbf{characterizations of deep models that enable efficient training of recurrent models with large scale time-varying data}.
 
 With the rapid growth of AI and machine learning applications has come valid concerns regarding both guarantees of privacy.
 Recent technology legislation has made the importance clear in all aspects of data use,
@@ -150,11 +158,10 @@ in a \textit{subgroup-independent} manner.
 Optimization and regularization methods with this focus come under the umbrella of model fairness, and instead of identifying and boosting independences within the model or data, we aim to minimize them.
 However, many existing methods do not scale well as the number of subgroups grows, as is often the case when intersections of protected classes must be considered. In the sequel we identify and construct a particular solution for \textbf{groupwise fairness that enables efficient in the loop fairness regularization}.
 
-\clearpage
 \begin{mdframed}[style=MyFrame]
-{\bf Thesis Goal: }
+\textbf{ Thesis Goal: }
 \em Identify, construct, and evaluate methods for subset identification in machine learning input, feature, and model spaces, taking advantage of inherent geometric and statistical structures that naturally arise in application domains. 
-Application focus is put on the temporal evolution of medical imaging data, as observed through traditional biomarkers and longitudinal imaging modalities.
+Application focus is put on scientific domains in healthcare and social equity.
 \end{mdframed}
 
 \section{Thesis Scope and Contributions}
@@ -191,6 +198,7 @@ find scientifically interesting
 group differences where the default analysis, 
 i.e., models estimated on the {\em full graph}, do not survive reasonable 
 significance thresholds. 
+Preliminary work on this was published in \citep{covtraj}.
 
 
 \subsection{Efficient Tensor Representations for Feasible Temporal Deep Learning}
@@ -217,7 +225,7 @@ with faster convergence and stronger confidence intervals
 compared to the standard tensor train decomposition. 
 We provide code and show experiments on the ADNI dataset
 using image sequences to regress on a cognition related outcome.
-
+Preliminary work on this was published in \citep{ott}.
 
 \subsection{Practical Unlearning via Large-Scale Conditional Independence Testing}
 
@@ -251,6 +259,7 @@ in settings that would otherwise be infeasible,
 including vision models used for face recognition, 
 person re-identification 
 and NLP models that may require unlearning samples identified for exclusion.
+Preliminary work on this will appear in \citep{lcodec}.
 
 
 \subsection{Reducing Subgroup Fairness via High Dimensional Earth Mover's Distances}
@@ -263,7 +272,7 @@ We will provide technical details about this new regularization term and its pro
 and 
 experimental demonstrations of improved training speed over existing Wasserstein-style methods.
 
-\subsection{Understanding Preclinical Alzheimer's Disease via Modern Technical Tools}
+\subsection{Applying Conditional Independence Testing for better Understanding of Preclinical Alzheimer's Disease}
 
 The final chapter of this thesis applies some of the tools developed above in analyzing preclinical Alzheimer's disease patients. 
 In these studies, 
@@ -277,6 +286,12 @@ part of an ongoing consortium
 to understand the progression
 of Alzheimer's disease in younger, 
 asymptomatic populations.
+In what follows we present
+exploratory analysis
+on a small, easily 
+digestible subset of the available data,
+that lays the foundation for
+further analysis.
 
 % This work is the most forward looking, and aims to be a stepping stone toward a rigorous 
 

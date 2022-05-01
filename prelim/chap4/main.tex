@@ -17,11 +17,11 @@ training and review, with extensive computational/human resource cost. With addi
 % Existing works have answered this question in the affirmative, but the computational burden has limited their broad use.
 So, how to update a model ensuring the data is deleted without retraining?
 
-{\bf Task.} Given a set of input data $\cS: \{z_i\}_{i=1}^n \sim \mathcal{D}$ of size $n$, training simply identifies a hypothesis $\hat{w} \in \cW$  via an iterative scheme $w_{t+1} = w_t - g(\hat{w},z')$ until convergence, where $g(\cdot,z')$ is  a stochastic gradient of a fixed loss function. Once a model at convergence is found, \textit{machine unlearning} aims to identify an update to $\hat{w}$ through an analogous {\em one-shot unlearning update}:
+\textbf{Task.} Given a set of input data $\cS: \{z_i\}_{i=1}^n \sim \mathcal{D}$ of size $n$, training simply identifies a hypothesis $\hat{w} \in \cW$  via an iterative scheme $w_{t+1} = w_t - g(\hat{w},z')$ until convergence, where $g(\cdot,z')$ is  a stochastic gradient of a fixed loss function. Once a model at convergence is found, \textit{machine unlearning} aims to identify an update to $\hat{w}$ through an analogous \textit{one-shot unlearning update}:
 \begin{align}\label{eq:unlearn}
     w' = \hat{w} + g_{\hat{w}}\left(z'\right),
 \end{align}
-for a {\em given} sample $z' \in \cS$ that is to be {\bf unlearned}.
+for a \textit{given} sample $z' \in \cS$ that is to be \textbf{unlearned}.
 %While forms of $g(z')$ have {\color{red}been recently been identified \cite{abc}}, practically they remain infeasible because a complete Hessian computation and inversion is needed. 
 
 \noindent\textbf{Contributions.} We address several computational issues with existing approximate formulations for unlearning by taking advantage of a new statistical scheme for sufficient parameter selection. 
