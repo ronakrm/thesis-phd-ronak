@@ -4,9 +4,9 @@ but the majority of learning problems are more concerned with generalization: if
 Here, we aim to account for groups of samples that behave differently compared to others, and efficiently regularize models toward fairer solutions.
 
 
-Optimal transport (OT) has emerged as useful tool for a wide range of applications including information retrieval \cite{balikas2018cross,yurochkin2019hierarchical}, image processing \cite{otip}, statistical machine learning, as well as more recently, for applications in ethics and fairness \cite{kwegyiraggrey2021relative}. 
+Optimal transport (OT) has emerged as useful tool for a wide range of applications including information retrieval \citep{balikas2018cross,yurochkin2019hierarchical}, image processing \citep{otip}, statistical machine learning, as well as more recently, for applications in ethics and fairness \citep{kwegyiraggrey2021relative}. 
 OT is especially well-suited for tasks where dissimilarity between two or more probability distributions must be quantified,
-and its success has been made possible through dramatic improvements in numerical algorithms \cite{cuturi2013sinkhorn,solomon2015convolutional} that allow one to efficiently optimize commonly used functionals.
+and its success has been made possible through dramatic improvements in numerical algorithms \citep{cuturi2013sinkhorn,solomon2015convolutional} that allow one to efficiently optimize commonly used functionals.
 In practice, OT is often used to estimate and minimize the 
 the distance between distributions of interest, 
 and this is done using an appropriately defined loss functional. %Recent advances provide us the capability to drop-in and seamlessly integrate many types of losses into existing methods, for novel applications.
@@ -39,7 +39,7 @@ a spectrum of applications.
 %{\bf Barycenter calculation.} 
 Assuming that a suitably regularized form of the optimal transport loss is utilized, the pairwise distance 
 calculation is efficient -- in fact, 
-in some cases, Sinkhorn iterations can be used \cite{cuturi2013sinkhorn}. 
+in some cases, Sinkhorn iterations can be used \citep{cuturi2013sinkhorn}. 
 On the other hand, to minimize distances to the mean, 
 most algorithms typically operate 
 by repeatedly estimating the barycenter and those pairwise distances, and using a ``coupling'' strategy 
@@ -55,7 +55,7 @@ simply computing the barycenter over
 proves to be a time-intensive process.
 However, very recent research has shown that there exist polynomial time algorithms for this problem 
 %have been shown to exist within the last year
-\cite{altschuler2021wasserstein}. 
+\citep{altschuler2021wasserstein}. 
 % \vikas{can we concretize it 
 % a little more? cite some numbers on a standard workstation? memory requirements? other resource needs?}
  %{\color{red} Glenn: fairness lead}
@@ -72,9 +72,9 @@ However, very recent research has shown that there exist polynomial time algorit
 % {\color{red} START} Putting aside the cost to compute the barycenter for the moment, 
 % instantiations of such applications often desire to enforce distribution similarity
 % only on model outputs.
-% For example, in \cite{jiang2020wasserstein}, the authors define fairness measures over the probability of the prediction given ground truth labels.  
+% For example, in \citep{jiang2020wasserstein}, the authors define fairness measures over the probability of the prediction given ground truth labels.  
 % This choice is not without good reasons: discrete outputs lead to extremely nice distributions over the probability simplex, where optimization is easy and assumptions need not be strong.{\color{red} END; could START--END be replaced with the gray text?}
-In applications, it is often a goal to enforce distribution similarity on model outputs. For example, in \cite{jiang2020wasserstein}, the authors define fairness measures over the probability of the prediction given ground truth labels.   
+In applications, it is often a goal to enforce distribution similarity on model outputs. For example, in \citep{jiang2020wasserstein}, the authors define fairness measures over the probability of the prediction given ground truth labels.   
 %FIXME: if you read this and know what X Y and Z are, then fill in and uncomment. This leads to distributions over the probability simplex with the desirable qualities X, Y and Z.
 % 
 However, these methods are rarely extended to continuous measures within the neural network, 
@@ -82,15 +82,51 @@ mainly due to the strong distributional assumptions needed and the added algorit
 One drawback of this choice means that the distributional closeness is only guaranteed over the global model output, and little can be said about layer outputs prior to the thresholding for prediction.
 Additionally, full retraining would be necessary if thresholds must be adjusted due to changing business or regulatory requirements.
 
+We will use the following measure as our ``dissimilarity." The generalized Earth Mover's Distance is 
+\begin{alignat}{2}\label{eqn:gemd}\begin{aligned}
+&  \underset{x\in\RR^{n^{d}}} {\textrm{minimize}}
+\sum_{i_1,\ldots,i_d} c(i_1,\ldots, i_d)x(i_1,\ldots,i_d)\\
+&\textrm{subject to}\\
+&\sum_{i_2,\ldots,i_d} c(i_1,\ldots, i_d)x(i_1,\ldots,i_d) = p_1(i_i),\ (\forall i_1\in[n])\\
+&\sum_{i_1,i_3\ldots,i_d} c(i_1,\ldots, i_d)x(i_1,\ldots,i_d) = p_2(i_2),\ (\forall i_2\in[n])\\
+&\qquad\vdots\\
+&\sum_{i_1,\ldots,i_{d-1}} c(i_1,\ldots, i_d)x(i_1,\ldots,i_d) = p_{d}(i_{d}),\ (\forall i_d\in[n])
+\end{aligned}
+\end{alignat}
+The solution to this program effectively identifies a joint distribution $x$ such that the marginals satisfy all $p_j$, and which minimizes the cost. Although the optimal value of the objective function of this program no longer defines a metric when $d>2$, it still possesses several desirable properties, which we use. 
+
+We can also write the dual linear program.
+\begin{alignat}{2}\label{eq:dualgeneralemd}\begin{split}
+&\underset{z_j\in\RR^n, j\in[d]}{\textrm{maximize}}\qquad\sum_{j} x_j'z_j\\
+&\textrm{subject to}\qquad z_{1}(i_1)+\cdots+z_{d}(i_{d})\leq c(i_1,\ldots,i_{d}),\end{split}
+\end{alignat}
+where the indices in the constraints include all $i_j\in[n]$, $j\in[d]$.
+
+Our core observation revolves around the identification of the gradient that falls naturally from the construction in \citep{kline2019properties}.
+\begin{theorem}
+	The following two claims hold. First,
+	\begin{align*}
+	\nabla \phi(p_1,\ldots,p_{d}) = z^*
+	\end{align*}
+	and second, for any $t\in \RR$,
+	\begin{align*}
+	\phi(p_1,p_2,\ldots,p_{d}) = \sum_{j}p_j'
+	(z_j^* + t\, \eta),
+	\end{align*}
+	where $\eta\coloneqq (z_1^{*}(n)\,e, z^*_1(n)\,e, \cdots, z^*_{d}(n)\,e)$.
+	\label{thm:dualgrad}
+\end{theorem}
+
+
 \noindent\textbf{Contributions.} We exploit a recent extension of the classical Earth Movers Distance (EMD) to a higher-dimensional Earth Mover's objective.
-We show that minimization of this \textit{global} distributional measure leads to the 
+We will show that minimization of this \textit{global} distributional measure leads to the 
 harmonization of input distributions similar in spirit to the minimization of distributions to barycenters.
 We prove theoretical properties of the objective and our procedure, and show that 
 the gradient can be read directly off from a primal/dual algorithm,
 alleviating the need for computationally intense pairwise couplings.
 With a particular scaffolding provided by differentiable histograms, we can apply and smoothly operate directly on network activations to compute the EMD measure. 
-We establish through experiment that computing gradients used in backpropogation is possible in substantially shorter times than one can achieve using standard tools, due to rapid access to solutions of the the dual linear program formulation.
-We compare and contrast the performance and speed of our construction against Barycenter-like measures in a number of settings and demonstrate applications in a common fairness application.
+We will establish through experiment that computing gradients used in backpropogation is possible in substantially shorter times than one can achieve using standard tools, due to rapid access to solutions of the the dual linear program formulation.
+We will compare and contrast the performance and speed of our construction against Barycenter-like measures in a number of settings and demonstrate applications in a common fairness application.
 Our final construction integrates seamlessly with existing neural network pipelines, 
 which will be publicly available for use.
 
@@ -98,6 +134,6 @@ which will be publicly available for use.
     \centering
     %\includegraphics[trim={0 14.5cm 2cm 5cm},clip,width=\textwidth]{figs/demd_abstract.png}
     \includegraphics[width=0.95\textwidth]{chap5/bary-gem-step.pdf}
-    \caption{({\em Left}) Barycenter approaches identify a center (green) and move samples of interest (blue) toward it along the coupling path (grey). ({\em Right}) Our approach identifies ``support" points that lie within the convex hull,  and only those points are moved in a descent direction. The support points are those that contribute to the objective functional, and it is known (see Theorem 2.2 of~\cite{kline2019properties}) that they are not interior points of the convex hull.}
+    \caption{({\em Left}) Barycenter approaches identify a center (green) and move samples of interest (blue) toward it along the coupling path (grey). ({\em Right}) Our approach identifies ``support" points that lie within the convex hull,  and only those points are moved in a descent direction. The support points are those that contribute to the objective functional, and it is known (see Theorem 2.2 of~\citep{kline2019properties}) that they are not interior points of the convex hull.}
     \label{fig:min_demd}
 \end{figure*}

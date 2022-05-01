@@ -1,4 +1,4 @@
-\chapter{Future Work: Large Scale Analysis of Multi-Site Preclinical Alzheimer's Disease} \label{chap:pac} 
+\chapter{Ongoing Work: Large Scale Analysis of Multi-Site Preclinical Alzheimer's Disease} \label{chap:pac} 
 
 With the above tools in hand, we aim to move towards applying and deploying both conditional independence schemes and efficient EMD-fairness methods to 
 the analysis of a new preclinical cohort of individuals at risk for developing Alzheimer's disease.
@@ -24,7 +24,7 @@ the analysis of a new preclinical cohort of individuals at risk for developing A
 
 Imaging data is also available for a subset of the individuals included in the above set, and future work includes incorporation of these imaging modalities (MRI, DTI, and PET region of interest measures).
 
-\textbf{Methods.} The results shown here demonstrate the potential value of applying conditional independence methods over standard correlation methods. 
+\textbf{Preliminary Methods and Results.} The results shown here demonstrate the potential value of applying conditional independence methods over standard correlation methods. The value of sparsity patterns derived from conditional independence testing appears to be clear, in that hyper-parameters need not be chosen in any way, compared to an $\alpha$-level for hypothesis testing via correlation coefficients, or a regularization level $\lambda$ for a typical graphical LASSO setting. Running the same analysis separately for each site, first observations indicate that there may exist dependencies and independencies unique to each study.
 
 \begin{figure}
     \centering
@@ -85,3 +85,5 @@ Imaging data is also available for a subset of the individuals included in the a
     \caption{Site 2: BIOCARD.}
     \label{fig:site2}
 \end{figure}
+
+\paragraph{Upcoming Analysis.} Future analysis will be focused on exploring the differences observed in the sparsity and conditional independences across different studies within the consortium data, as well as applying the construction longitudinally. Particular care will be taken in defining discrete timepoints, as disease progression has no predefined domain measure, and individuals within the study may be different ages at study times, as well as visiting at irregular intervals.
