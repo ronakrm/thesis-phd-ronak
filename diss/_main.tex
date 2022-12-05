@@ -20,37 +20,29 @@
 \documentclass[12pt,oneside,letterpaper,oldfontcommands]{memoir}
 \usepackage[margin=1.2in]{geometry}
 
+%\usepackage{my_base}
 
-\usepackage{amssymb}
-\usepackage{wrapfig}
-\usepackage{amsmath}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{xcolor}
-\usepackage{multirow}
-\usepackage{paralist}
-\usepackage{url}
-\usepackage{hyperref}
+% \usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools}
+% \usepackage{caption,subcaption,wrapfig,multirow}
+% \usepackage{color,xcolor,hyperref}
+% %,amscd}
+% \usepackage{times,url,paralist}
+
+\newcommand{\omitme}[1]{}
+
+% \graphicspath{{diss/0_intro/figs/}{diss/1_bknd/figs/}{diss/2_chap2/figs/}{diss/3_chap3/figs/}{diss/4_chap4/figs/}{diss/5_chap5/figs/}{diss/6_chap6/figs/}{diss/7_conclude/figs/}}
+\input{includes/preamble}
+\input{includes/defs} %all packages and definitions can go here
+\input{includes/ronak_defs}
+\input{includes/thesisdefs}
+
 \hypersetup{
 	colorlinks = true,
 	urlcolor = {green}, urlbordercolor = {green},
 	citecolor = {blue},
 	linkbordercolor = {green}
 }
-%\usepackage{my_base}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{mathtools}
-\usepackage{amsmath,amsfonts,amssymb,amsthm,color,hyperref,amscd}
-\usepackage{times,paralist}
 
-\newcommand{\omitme}[1]{}
-
-\input{includes/preamble}
-\input{includes/defs} %all packages and definitions can go here
-\input{includes/ronak_defs}
-\input{includes/thesisdefs}
 
 %\svnidlong{$LastChangedBy$}{$LastChangedRevision$}{$LastChangedDate$}{$HeadURL: http://freevariable.com/dissertation/branches/diss-template/dissertation.tex $} 
 
@@ -71,25 +63,38 @@
 % \nocite{*}
 
 \maketitle
+
+\copyrightpage
+
+\pagenumbering{roman}
+\include{0_frontmatter/acks}
+
 \tableofcontents
 \newpage
+\listoffigures
+\newpage
+\listoftables
+\newpage
 
-% \include{_notes}
-% Include each chapter.tex file
-\include{_introduction/main}
-\include{chap2/main} % COVTRAJ
-\include{chap3/main} % OTT
-\include{chap4/main} % LCODEC
-\include{chap5/main} % DEMD
-\include{chap6/main} % future-ish
-% \include{_conclusion/main}
+\include{_notes}
+\include{0_frontmatter/abs}
+
+\pagenumbering{arabic}
+\include{1_intro/main}
+\include{2_bknd/main}
+% \include{3_covtraj/main} % COVTRAJ
+% \include{4_ott/main} % OTT
+% \include{5_unlearn/main} % LCODEC
+% \include{6_demd/main} % DEMD
+% \include{7_cond/main} % future-ish
+% \include{8_conclude/main}
 
 
 
 %% Do you have appendices?  If so, add them here, just like chapters.
-% \begin{appendices}
-% \include{backmatter/appendix1}
-% \end{appendices}
+\begin{appendices}
+\include{9_backmatter/appendix1}
+\end{appendices}
 
 
 %% McBride is a very nice style (some version is included in this distribution)

@@ -49,10 +49,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Comment out any of these that you don't want
+\usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{amsthm}
-%\usepackage{theorem}
+\usepackage{mathtools}
 \usepackage{hyperref}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -111,15 +112,19 @@
 \usepackage{makeidx}
 \makeindex
 
-{\theoremstyle{plain}
-\newtheorem{thm}{Theorem}[chapter]
-\newtheorem{cor}[thm]{Corollary}
-\newtheorem{define}[thm]{Definition}
-\newtheorem{exmpl}[thm]{Example}
-}
-{\theoremstyle{remark}
-\newtheorem{rmk}[thm]{Remark}
-}
+% {\theoremstyle{plain}
+% \newtheorem{theorem}{Theorem}
+% \newtheorem{lemma}{Lemma}
+% \newtheorem{proposition}{Proposition}
+% \newtheorem{definition}{Definition}
+% \newtheorem{corollary}{Corollary}
+% \newtheorem{assumption}{Assumption}
+% \newtheorem{example}{Example}
+% }
+
+% {\theoremstyle{remark}
+% \newtheorem{remark}{Remark}
+% }
 
 \newtheoremstyle{customsty1}
 {3pt}%

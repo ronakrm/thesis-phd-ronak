@@ -52,10 +52,10 @@ particularly for hypothesis testing \citep{hardle1993comparing,geer2000empirical
 % temporal or coupled Gaussian graphical models have not yet been heavily studied. 
 \begin{figure*}[t]
   \centering
-  \includegraphics[width=0.49\textwidth,trim={10 40 10 220},clip]{chap2/MGLM1.png}
+  \includegraphics[width=0.49\textwidth,trim={10 40 10 220},clip]{diss/3_covtraj/figs/MGLM1.png}
   %
-    \includegraphics[width=0.49\textwidth,trim={10 40 10 220},clip]{chap2/MGLM2.png}
-  \caption{\small\label{fig:manifold}Group-wise MMGLM: The left and right figures represent two linear models on the $\SPD(p)$ manifold. Points $x_i$ in the tangent space are our covariate or predictor, and points $y_i$ in the manifold space represent $\SPD(p)$ matrices. In our regression setting, we wish to minimize the error (brown curves) between the estimation and the sample points. Because each linear model has a different base point, the trajectories cannot be directly compared as in the Euclidean setting.}
+    \includegraphics[width=0.49\textwidth,trim={10 40 10 220},clip]{diss/3_covtraj/figs/MGLM2.png}
+  \caption[Group-wise Manifold Fitting and Testing]{\small\label{fig:manifold}Group-wise MMGLM: The left and right figures represent two linear models on the $\SPD(p)$ manifold. Points $x_i$ in the tangent space are our covariate or predictor, and points $y_i$ in the manifold space represent $\SPD(p)$ matrices. In our regression setting, we wish to minimize the error (brown curves) between the estimation and the sample points. Because each linear model has a different base point, the trajectories cannot be directly compared as in the Euclidean setting.}
 \end{figure*}
 
 %Part of the reason is the difficulty of 
@@ -88,8 +88,8 @@ cross-section of science. We will seek to address this gap.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\columnwidth,trim={6.5cm 7.5cm 6.5cm 7.5cm},clip]{chap2/method.jpg}
-    \caption{\small\label{fig:model} Our proposed method involves (1) electing a subset of features, (2) fitting manifold regressions on empirical covariances for both groups (green and purple) and (3) constructing the likelihood ratio statistic and comparing it against the null distribution via permutation testing.}
+    \includegraphics[width=\columnwidth,trim={6.5cm 7.5cm 6.5cm 7.5cm},clip]{diss/3_covtraj/figs/method.jpg}
+    \caption[Covariance Trajectory Pipeline]{\small\label{fig:model} Our proposed method involves (1) electing a subset of features, (2) fitting manifold regressions on empirical covariances for both groups (green and purple) and (3) constructing the likelihood ratio statistic and comparing it against the null distribution via permutation testing.}
 \end{figure}
 
 {\em Needles in Temporal Haystacks.} If we temporarily set aside the potential value of a hypothesis test framework for temporal 
@@ -127,8 +127,8 @@ and must correct for multiple testing when testing different models, at least pa
 %
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=\textwidth]{chap2/sim_results.png}
-		\caption{\label{fg:sim_graphs}{\footnotesize Correct null hypothesis rejections over 100 runs for three models. For $p = 50$ features, each plot shows the rejection rate
+		\includegraphics[width=\textwidth]{diss/3_covtraj/figs/sim_results.png}
+		\caption[Synthetic Hypothesis Testing Results.]{\label{fg:sim_graphs}{\footnotesize Correct null hypothesis rejections over 100 runs for three models. For $p = 50$ features, each plot shows the rejection rate
 				for $p_t \in \{4, 8, 20\}$ (from left to right) respectively as a function of the number of sample points.} }
 	\end{center}
 \end{figure}

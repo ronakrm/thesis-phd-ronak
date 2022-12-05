@@ -1,0 +1,73 @@
+\chapter{Background}\label{sec:bknd}
+
+\section{General Notations}
+
+
+
+\section{Differential Geometry}
+
+\subsection{The Geometry of Tensors}
+
+
+\section{Graphs and Conditional Independence}
+
+A graph G, edges E, vertices V
+
+undirected graphs
+random variables X
+markov property/blanket
+
+conditional independence generally
+
+for samples from distributions, can we estimate conditional indep?
+
+If there are some assumptions on XYZ, yes...
+conditional gaussian
+
+extending this to an arbitrary query and conditioning sets...multidim
+
+with some assumptions, methods exist
+glasso, others
+precision matrix, l1 reg
+
+what if we have no distributional asssumptions?
+other methods exist for other distributions, and sbms...
+
+recent work...CODEC, 
+indep, pairwise, extends/compares to measures of correlation
+
+cond ind, measure similarly:
+cont.
+sample.
+
+Identifying the full cond indep set: FOCI, 
+can be used for building full ``coherent" graphs, see last chapter for more.
+
+\subsection{Hypothesis Testing}
+\begin{verbatim}
+basics
+    form
+    measures
+    continuous, traditionally want "gap" to be at least "alpha" large
+    example: means
+
+some of the measures described above have specific guarantees when evaluated under standard hypothesis testing frameworks...
+
+a common test: likelihood ratio...
+\end{verbatim}
+
+\section{Deep Networks, Optimization, and Objectives}
+\begin{verbatim}
+networks
+    objective
+how to minimize?
+    general optimization?
+    gradients
+    stochastic grad
+
+NNs aside, lets go back to simple formulations where things are nicer...
+linear programming
+\end{verbatim}
+
+\subsection{Optimal Transport}
+    OT can be framed as a linear program....
