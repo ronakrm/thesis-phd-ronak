@@ -27,10 +27,10 @@ for a \textit{given} sample $z' \in \cS$ that is to be \textbf{unlearned}.
 \begin{figure*}
 	\centering
 	% \includegraphics[height=1.5in,trim={1.5cm 5cm 3cm 3.5cm},clip]{figs/layercnn.pdf}
-	\includegraphics[width=0.48\columnwidth,trim={0cm 12cm 5cm 2.5cm},clip]{chap4/layercnn.png}
+	\includegraphics[width=0.48\columnwidth,trim={0cm 12cm 5cm 2.5cm},clip]{diss/5_unlearn/figs/layercnn.png}
 	%\includegraphics[height=2in,trim={7cm 8cm 9cm 7.7cm},clip]{figs/new.pdf}
-	\includegraphics[width=0.48\columnwidth,trim={0cm 1cm 0cm 0cm},clip]{chap4/unlearning_fig.pdf}
-	\caption{\label{fig:main}Large deep learning networks typically associate specific subsets of network parameters, blocks (blue), to specific samples in the input space.
+	\includegraphics[width=0.48\columnwidth,trim={0cm 1cm 0cm 0cm},clip]{diss/5_unlearn/figs/unlearning_fig.pdf}
+	\caption[Efficient Unlearning in Deep Networks]{\label{fig:main}Large deep learning networks typically associate specific subsets of network parameters, blocks (blue), to specific samples in the input space.
 		Traditional forward or backward passes may not reveal these blocks: high correlations among features may not distinguish important ones. Input perturbations can be used to identify them in a probabilistic, distribution-free manner. These blocks can then be unlearned together in an efficient block-coordinate style update (right, blue lines), approximating an update to the full network which requires a costly/infeasible full Hessian inverse (red line).}
 \end{figure*}
 

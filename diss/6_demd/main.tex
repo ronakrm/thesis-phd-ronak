@@ -27,12 +27,12 @@ a spectrum of applications.
 
 \begin{figure*}[ht]
     \centering
-    \includegraphics[width=0.19\textwidth]{chap5/hists/hists_iter_0.pdf}
-    \includegraphics[width=0.19\textwidth]{chap5/hists/hists_iter_100.pdf}
-    \includegraphics[width=0.19\textwidth]{chap5/hists/hists_iter_200.pdf}
-    \includegraphics[width=0.19\textwidth]{chap5/hists/hists_iter_500.pdf}
-    \includegraphics[width=0.19\textwidth]{chap5/hists/hists_iter_1000.pdf}
-    \caption{This figure shows the starting and ending state of an iterative process applied to 4 histograms. Each iteration minimizes the generalized Earth Mover's objective, and then updates each histogram in the direction provided by the gradient. Upon each iteration shifts a portion of ``mass'' of every histogram closer to a common distribution. ({\em Left}) The process initially starts with $d=4$ histograms with 50 bins each. ({\em Right}) The update process eventually converges. An intuitive description is that the mass of the original 4 histograms is incrementally shifted around at each step, and all four distributions eventually are reshaped into the limiting distribution, which appears at right. }
+    \includegraphics[width=0.19\textwidth]{diss/6_demd/figs/hists/hists_iter_0.pdf}
+    \includegraphics[width=0.19\textwidth]{diss/6_demd/figs/hists/hists_iter_100.pdf}
+    \includegraphics[width=0.19\textwidth]{diss/6_demd/figs/hists/hists_iter_200.pdf}
+    \includegraphics[width=0.19\textwidth]{diss/6_demd/figs/hists/hists_iter_500.pdf}
+    \includegraphics[width=0.19\textwidth]{diss/6_demd/figs/hists/hists_iter_1000.pdf}
+    \caption[Minimizing Generalized Earth Mover's Distance]{This figure shows the starting and ending state of an iterative process applied to 4 histograms. Each iteration minimizes the generalized Earth Mover's objective, and then updates each histogram in the direction provided by the gradient. Upon each iteration shifts a portion of ``mass'' of every histogram closer to a common distribution. ({\em Left}) The process initially starts with $d=4$ histograms with 50 bins each. ({\em Right}) The update process eventually converges. An intuitive description is that the mass of the original 4 histograms is incrementally shifted around at each step, and all four distributions eventually are reshaped into the limiting distribution, which appears at right. }
     \label{fig:hists}
 \end{figure*}
 
@@ -133,7 +133,7 @@ which will be publicly available for use.
 \begin{figure*}[t]
     \centering
     %\includegraphics[trim={0 14.5cm 2cm 5cm},clip,width=\textwidth]{figs/demd_abstract.png}
-    \includegraphics[width=0.95\textwidth]{chap5/bary-gem-step.pdf}
-    \caption{({\em Left}) Barycenter approaches identify a center (green) and move samples of interest (blue) toward it along the coupling path (grey). ({\em Right}) Our approach identifies ``support" points that lie within the convex hull,  and only those points are moved in a descent direction. The support points are those that contribute to the objective functional, and it is known (see Theorem 2.2 of~\citep{kline2019properties}) that they are not interior points of the convex hull.}
+    \includegraphics[width=0.95\textwidth]{diss/6_demd/figs/bary-gem-step.pdf}
+    \caption[Approaches to pushing distributions towards their barycenter]{({\em Left}) Barycenter approaches identify a center (green) and move samples of interest (blue) toward it along the coupling path (grey). ({\em Right}) Our approach identifies ``support" points that lie within the convex hull,  and only those points are moved in a descent direction. The support points are those that contribute to the objective functional, and it is known (see Theorem 2.2 of~\citep{kline2019properties}) that they are not interior points of the convex hull.}
     \label{fig:min_demd}
 \end{figure*}

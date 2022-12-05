@@ -45,16 +45,18 @@
 }{\if@restonecol\twocolumn \else \newpage \fi}
 
 \gdef\@degree{Doctor of Philosophy}    %Default is PhD
-%\gdef\@doctype{A dissertation}         %Default is dissertation
-\gdef\@doctype{A preliminary report}
+\gdef\@doctype{A dissertation}         %Default is dissertation
+% \gdef\@doctype{A preliminary report}
 
 
 \gdef\@department{(Computer Sciences)} % Default is Electical Engineering
-\gdef\@defensedate{2022-05-XX{\color{red}-- in includes/thesisdefs.tex}}% Default is a long time from now.
-\gdef\@committee{ \color{red}
+\gdef\@defensedate{\color{red} 2022-05-12}% Default is a long time from now.
+\gdef\@committee{
+  {\color{red} Any other to add here?}\\
   Frederic Sala, Assistant Professor, Computer Sciences Department\\ 
   Yong Jae Lee, Associate Professor, Computer Sciences Department \\  
-  Vikas Singh (Advisor), Professor, Biostatistics and Medical Informatics
+  Michael Newton, Professor, Statistics Deparment \\
+  Vikas Singh (Advisor), Professor, Biostatistics and Medical Informatics Department
   }
 
 \renewcommand{\maketitle}{%
@@ -79,10 +81,10 @@
       UNIVERSITY OF WISCONSIN--MADISON\\[\@thesistitlemedskip]
       \@date
     \end{center}
-%    \hspace*{-0.7in}Date of final oral examination: \@defensedate \\[\@thesistitlemedskip]
-    \hspace*{-0.4in}Date of preliminary examination: \@defensedate \\[\@thesistitlemedskip]
-%    \hspace*{-0.7in}The dissertation is approved by the following members of the 
-    \hspace*{-0.4in}The examination is approved by the following members of the 
+   \hspace*{-0.7in}Date of final oral examination: \@defensedate \\[\@thesistitlemedskip]
+    % \hspace*{-0.4in}Date of preliminary examination: \@defensedate \\[\@thesistitlemedskip]
+   \hspace*{-0.7in}The dissertation is approved by the following members of the 
+    % \hspace*{-0.4in}The examination is approved by the following members of the 
     Oral Committee:\\
     \@committee
   \end{titlepage}
@@ -315,7 +317,7 @@
 }
 
 
-%  Single counter for theorems and theorem-like environments:
+% Single counter for theorems and theorem-like environments:
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{assertion}[theorem]{Assertion}
 \newtheorem{claim}[theorem]{Claim}
@@ -323,7 +325,7 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
-\newtheorem{figger}[theorem]{Figure}
+% \newtheorem{figger}[theorem]{Figure}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{prop}[theorem]{Proposition}
 \newtheorem{remark}[theorem]{Remark}

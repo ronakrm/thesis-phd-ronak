@@ -83,7 +83,7 @@ statistical and deep models to enable similar measures of sample influence, feat
 
 \begin{mdframed}[style=MyFrame]
 \em 
-\textbf{This thesis} will focus its main efforts on identifying these important subsets of sample, feature, and model space for feature association, model size reduction, model unlearning, and, fairness. Specifically, taking advantage of both existing statistical and geometric methods, we will develop new methods for localizing subsets, in a range of settings from hypothesis testing on the one hand to deep learning frameworks on the other.
+\textbf{This thesis} focuses its main efforts on identifying these important subsets of model, feature, and sample space for feature association, model size reduction, model unlearning, and, fairness. Specifically, taking advantage of both existing statistical and geometric methods, we develop new methods for localizing subsets, in a range of settings from hypothesis testing on the one hand to deep learning frameworks on the other.
 \end{mdframed}
 
 % Features
@@ -107,6 +107,12 @@ The specific ideas of attention notwithstanding, many of these existing methods 
 While some work has begun in this direction \citep{tansey2018black},
 there remains a gap in direct identification of subsets and structures in these spaces that can be defined in statistically rigorous manners.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{example-image-a}
+    \caption[A simple subset selection example]{\color{red} Identifying and selecting in MRIs, subset, sample, model ID.}
+\end{figure}
+
 \paragraph{A specific example.} Consider a traditional machine learning classification task in which we would like to predict whether an individual has a specific disease condition based on a medical resonance image (MRI) scan of their brain. Our input feature $x$ may consist of a 3D-array of values lying in $\RR^{x\times y\times z}$ measuring some intensity of the imaging modality at each voxel, indexed by a tuple $(i,j,k)$.
 Our outcome variable $y$ may simply be a binary label of whether the input scan has been labeled by a radiologist as one demonstrating typical disease characteristics.
 Using an off the shelf 3D convolutional neural network with adjustments to match our input size, we can very quickly set up and train a system to predict disease presence with a high degree of accuracy.
@@ -124,7 +130,14 @@ Furthermore, most recent problems associated with medical data have moved past s
 Given an image of a healthy individual, is it possible to predict what their scan, or their future disease diagnosis, may be up to 10, 20, or more years in the future?
 If a number of scans have been collected over some timeframe, can the \textit{trajectory} of the individuals' development be extrapolated to estimate progression?
 As traditional models extended for temporal analysis grow in both size and complexity,
-a number of subproblems explicitly related to model and input subspaces arise. Here we aim to address two such problems: \textbf{statistically rigorous identification of temporally evolving subsets}, and \textbf{characterizations of deep models that enable efficient training of recurrent models with large scale time-varying data}.
+a number of subproblems explicitly related to model and input subspaces arise. Here we address two such problems: \textbf{statistically rigorous identification of temporally evolving subsets}, and \textbf{characterizations of deep models that enable efficient training of recurrent models with large scale time-varying data}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.4\textwidth]{example-image-b}
+    \includegraphics[width=0.4\textwidth]{example-image-c}
+    \caption[Selecting feature subsets]{\color{red} Blue/green figure from covtraj presentations, figure from OTT.}
+\end{figure}
 
 With the rapid growth of AI and machine learning applications has come valid concerns regarding both guarantees of privacy.
 Recent technology legislation has made the importance clear in all aspects of data use,
@@ -145,8 +158,11 @@ that are particularly important
 for a particular sample's influence
 in a model enables \textit{efficient machine unlearning}.
 
-% para - connections to geometric deep learning, graph NNs, etc.
-
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{example-image-b}
+    \caption[Selecting parameter subsets]{\color{red} different paths for different samples figure from codec.}
+\end{figure}
 
 A sample's particular influence on model parameters aside, the identification of influential samples or subsets of samples more generally is of independent interest. 
 Traditionally a rigorous area of study under classical statistics, outlier detection and accounting have become a subfocus for many within the machine learning community as well \citep{golatkar2020eternal,golatkar2020forgetting,huang2020feature,ren2019likelihood}.
@@ -157,6 +173,12 @@ most learning tasks aim to learn tasks
 in a \textit{subgroup-independent} manner.
 Optimization and regularization methods with this focus come under the umbrella of model fairness, and instead of identifying and boosting independences within the model or data, we aim to minimize them.
 However, many existing methods do not scale well as the number of subgroups grows, as is often the case when intersections of protected classes must be considered. In the sequel we identify and construct a particular solution for \textbf{groupwise fairness that enables efficient in the loop fairness regularization}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{example-image-b}
+    \caption[Equating sample subsets]{\color{red} group disparity figure from demd pres.}
+\end{figure}
 
 \begin{mdframed}[style=MyFrame]
 \textbf{ Thesis Goal: }
@@ -172,8 +194,8 @@ Below we briefly introduce the main problems studied in this thesis.
 \begin{figure}[!ht]
     \centering
     % \includegraphics[width=0.99\linewidth]{scope.pdf}
-    \includegraphics[width=0.95\linewidth]{_introduction/thesis_scope.png}
-    \caption{Thesis scope, projected over three representative axes.}
+    \includegraphics[width=0.95\linewidth]{diss/1_intro/figs/thesis_scope.png}
+    \caption[Thesis Scope]{Thesis scope, projected over three representative axes. {\color{red} update chapter numbers shift by 1}}
     \label{fig:scope}
 \end{figure}
 
@@ -193,7 +215,7 @@ to search over distinct subsets of features (graph partitions) whose temporal de
 significant group-wise differences.
 We will theoretically analyze the Family Wise Error Rate (FWER) and bounds on Type 1 and Type 2 error. 
 On a cohort of individuals with risk factors for Alzheimer's disease (but otherwise cognitively healthy), 
-we aim to 
+we 
 find scientifically interesting 
 group differences where the default analysis, 
 i.e., models estimated on the {\em full graph}, do not survive reasonable 
@@ -215,10 +237,10 @@ we will adapt
 the tensor train decomposition to construct networks
 with significantly fewer parameters,
 allowing us to train powerful recurrent networks on whole brain image volumes. 
-We propose 
+We analyze 
 the \textit{orthogonal tensor train},
 and demonstrate its ability to express a standard network layer both theoretically and empirically.
-We will 
+We 
 demonstrate its ability to 
 effectively reconstruct whole brain volumes
 with faster convergence and stronger confidence intervals
@@ -246,12 +268,12 @@ scale poorly with the model dimension $d$,
 due to 
 inverting the Hessian of the loss function. %with an overall cost of $O(d^3)$ 
 %is prohibitive.
-We propose
+We describe
 a variant of a new conditional independence coefficient, 
 L-CODEC, to identify a subset of the model parameters with the most semantic overlap on an individual sample level. 
 Our approach completely avoids the need to invert a (possibly) huge matrix. 
 By utilizing a Markov blanket selection, 
-we premise
+we find
 that L-CODEC is also suitable for deep unlearning,
 as well as other applications in vision.
 Compared to alternatives, L-CODEC makes approximate unlearning possible 
@@ -266,12 +288,13 @@ Preliminary work on this will appear in \citep{lcodec}.
 
 Optimal transport has recently emerged as a useful tool for machine learning through its connections with geometry, statistical machine learning, and through practical algorithms. Existing methods that leverage optimal transport often  regularize using  a Wasserstein metric or by computing barycenters, for example. %which are effective when distributions are continuous and known, or when measures of interest are discrete.
 % Our formulation allows for a discretization of continuous measures that drop in directly to classical  formulations of the Earth Mover's Distance. 
-We will leverage optimal transport, except that we take advantage of a recently-introduced algorithm that computes a generalized earth mover's distance.
+We leverage optimal transport, except that we take advantage of a recently-introduced algorithm that computes a generalized earth mover's distance.
 Not only is this algorithm computationally cheaper to compute compared to existing barycentric measures, but our method has the additional  advantage that gradients used for backpropagation can be directly read off of the forward pass computation, which leads to substantially faster model training.
-We will provide technical details about this new regularization term and its properties, 
+We provide technical details about this new regularization term and its properties, 
 and 
 experimental demonstrations of improved training speed over existing Wasserstein-style methods.
 
+{\color{red}
 \subsection{Applying Conditional Independence Testing for better Understanding of Preclinical Alzheimer's Disease}
 
 The final chapter of this thesis applies some of the tools developed above in analyzing preclinical Alzheimer's disease patients. 
@@ -292,19 +315,20 @@ on a small, easily
 digestible subset of the available data,
 that lays the foundation for
 further analysis.
-
+}
 % This work is the most forward looking, and aims to be a stepping stone toward a rigorous 
 
-\subsection{Outline}
-In Chapters 2 through 5, we describe four perspectives to address subset identification.
-Chapter 2 explores and focuses on the identification of feature subsets varying over time.
-In Chapter 3 we describe a method of constraining the parameter space in a particular manner
+\section{Outline}
+Chapter 2 covers the essential background necessary for the developments presented in the following chapters, including specifics of graphs and hypothesis testing, as well as relevant modern methods for learning and optimization.
+In Chapters 3 through 7, we describe four perspectives to address subset identification.
+Chapter 3 explores and focuses on the identification of feature subsets varying over time.
+In Chapter 4 we describe a method of constraining the parameter space in a particular manner
 that enables more efficient large scale neural networks.
-Next, Chapter 4 provides a solution to the machine unlearning problem,
+Next, Chapter 5 provides a solution to the machine unlearning problem,
 enabled through a particular conditional independence parameter selection scheme, vastly reducing network update costs.
-Chapter 5 ends with a unique solution to subgroup fairness, 
+Chapter 6 ends with a unique solution to subgroup fairness, 
 where we take advantage of an efficient solution to
 the $d$-dimensional earth mover's problem
 to regularize large models when the number of subgroups can be large.
-Chapter 6 describes future work, focused on applying a particular solution from Chapter 4 to understanding relationships among
-disease indicators and biomarkers associated with developing Alzheimer's Disease.
+{\color{red} Chapter 7 describes future work, focused on applying a particular solution from Chapter 5 to understanding relationships among
+disease indicators and biomarkers associated with developing Alzheimer's Disease.}
