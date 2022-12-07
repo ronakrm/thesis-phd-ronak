@@ -1,111 +1,210 @@
 \chapter{Introduction} \label{chap:intro} 
 
-Modern applications of machine learning have become ubiquitous, 
-to the point where almost all
-interactions with so-called ``smart"
-technologies involve some
-call and response with some form of
-learned predictor.
-The large scale of these models,
-up to billions of parameters in neural networks,
-makes possible what would otherwise
-be an unconstrained, infeasible learning task
-via a highly parameterized model.
-These parameterizations have enabled 
+Modern applications of machine learning have become ubiquitous.
+Most interactions with daily technologies now intrinsically involve 
+a request to some artificially intelligent system in the ``cloud``, 
+where those interactions range from
+a request for map directions 
+to simply loading a webpage.
+Neural network models, and the recent advances of deep learning,
+have enabled extremely large models that 
+make these applications possible.
+These models have achieved
 human-level performance on learning tasks
-previously thought to have been insurmountable
-for any potential artificial intelligence system.
-The high accuracy and generalization of these large scale models notwithstanding,
-a number of parallel questions have arisen and are gaining prominence with respect to 
-the performance of these models.
-What features are most important for prediction?
-Which samples were most important for my training?
-Can we understand when a model is certain or uncertain about its output?
-Are there layers in my network that have learned a particular subtask?
-Questions of robustness, bias, influence, fairness, and importance have become central questions to contemporary machine learning research \citep{doshi2017towards,mehrabi2021survey,amodei2016concrete}.
+including image classification~\citep{resnet,alexnet}, image segmentation~\citep{segmentation}, video analysis~\citep{zhang2016video}, text understanding and generation~\citep{bert,gpt}, and have slowly begun to enable more fundamental scientific problems such as protein folding~\citep{protein} drug discovery~\cite{drugdisc}, and medical diagnosis~\cite{diag}.
+While this performance is largely attributed to model size,
+the abundance of high quality training data
+has equally contributed to real world performance,
+enabling model training over millions of real world samples~\citep{imagenet,laion},
+and potentially billions of synthetic samples via environment simulation~\citep{mcts}.
 
-Traditional statistical learning methods 
-have been studied with these questions in mind for many decades, and have found new life in these subfields.
+While deployment in some domains (recommender systems, object detection) may benefit almost unconditionally from this vastly expanded capability, rightful hesitancy has limited their widespread use in particular applications where impacts on individuals, people, or environments may be at stake.
+This ``last mile`` takes a few forms.
+% Because a completely accurate model is still out of reach, an important question that needs to be answered is: which inputs or individuals are being given incorrect outcomes, and why?
+% maybe a sentence suggesting unlearning/removal
+In mission critical applications such as medical diagnosis, 
+the impact of an error can be extremely large,
+even if a misprediction happens extremely infrequently.
+Additionally, large scale model training and architecture search
+can require large amounts of energy producing high emissions,
+and their scale can limit the market
+to only large actors with huge existing resources.
+The accessibility and effectiveness of these models can also vary significantly based on the training data, and disparate outcomes can be exacerbated by existing social inequity.
+
+While existing ``dumb`` or ``natural`` systems that these models aim to assist are not perfect, 
+our real world has developed norms and regulations that 
+enable them to function.
+A medical diagnosis might require a physician to explain what symptoms led them to that particular conclusion.
+Energy metering and carbon taxes may be applied to limit
+emissions.
+Regulatory satisfaction may require 
+analysis proving equal opportunity,
+or that specific protected classes
+are not used in decision making.
+% Specifically, these can include ideas as simple as the Hippocratic Oath and medical malpractice insurance, to asking your doctor what symptoms lead them to a particular diagnosis.
+These systems are difficult to directly translate to automated machine learning systems,
+but proxies have been identified that we can build upon.
+
+\begin{figure}
+    \centering
+    \includegraphics[trim={0 3cm 0 3cm},clip,width=0.95\textwidth]{diss/1_intro/figs/dl.png}
+    \caption[Modern machine learning pipelines]{Machine learning training and inference visualization.}
+    \label{fig:dl}
+\end{figure}
+These norms and regulations answer a number of questions we may also try to pose to our machine learning models.
+What is the cost to learn this task?
+What is the cost for being wrong?
+What led to this particular outcome?
+Why is this outcome different from another?
+% We will explore how these questions can be formulated concretely. 
+
+If the answer to these questions is negative or unknown,  follow-up questions all take an interesting form:
+Can we learn a smaller model with similar performance? 
+Can we identify the most important features? 
+Which individuals or groups are being treated unfairly, and can we change that?
+These questions ask us to identify a \textit{subset} of some relevant set, and this identification is our focus here.
+
+Moving specifically to machine learning methods,
+Figure~\ref{fig:dl} illustrates the typical pipeline. 
+A dataset is collected and used to train a model, by minimizing the error over
+those samples in the dataset (top).
+A ``sample`` can be a single measured value, or it can
+be a large, highly structured object with many ``features.``
+The model is made up of some ``parameters`` that are 
+tuned during training to learn a good predictor over the training dataset.
+This model is then used to predict, or \textit{infer}, on new
+data seen ``in the wild`` (bottom).
+Our questions above are formally asking to identify subsets of these objects: is a subset of the model parameters sufficient for learning? Which subset of the features are important for a prediction? Which subset of the dataset exhibit a specific attribute?
+
+% \textit{Explainability} can be seen as identifying important features of the input, as well as parts of the model (parameters) that ``light up`` for that input. \textit{Fairness} can be evaluated via measures over subsets of the data that correspond to specific groups. 
+
+\begin{mdframed}[style=MyFrame]
+\em 
+\textbf{This thesis} focuses its main efforts on identifying these important subsets of model, feature, and sample space, to enable answering questions necessary for mainstream adoption of machine learning methods.
+\end{mdframed}
+
+% In this dissertation, we explore the sizes of these models, samples, and datasets, and 
+% analyze under what situations 
+% a smaller \textit{subset} of them may be sufficient or important
+% for questions that run parallel to standard performance and accuracy measures.
+
+Let us step a bit deeper into a basic illustrative example. In order to ease understanding, we can first begin with a basic formulation of learning methods, from which the questions above can take specific forms. 
+Learning methods typically  try to identify a function mapping (model) that is able to effectively complete a specific task.
+% In Figure~\ref{fig:dl}, a model is trained using examples of classification task (top), in order to accurately predict the class of a newly provided input (bottom).
+% \begin{figure}
+%     \centering
+%     \includegraphics[trim={0 3cm 0 3cm},clip,width=0.95\textwidth]{diss/1_intro/figs/dl.png}
+%     \caption[Modern machine learning pipelines]{Machine learning training and inference visualization.}
+%     \label{fig:dl}
+% \end{figure}
+Say we have some dataset comprising of sample pairs $(x,y)$, where we wish to predict $y$ from $x$.
+Our prediction, say $\hat{y}$, might be the output of some unknown function $f$ that we attempt to learn. 
+Let our approximation to this function be $\hat{y}:=\hat{f}(x)$.
+This can take many forms, 
+based on assumptions and prior information we may have on the relationships among the data. 
+Consider the simple \textit{linear} case,
+where we want to learn some parameter $w$ such that $y = w\cdot x$. 
+Given $n$ sample pairs $(x_i,y_i)$ indexed by $i$, traditional statistics and optimization literature yield the following \textit{least squares} problem formulation, where we want to minimize the ``squared error" between the observed values $y_i$ and the predicted $\hat{y}_i:= w\cdot x_i$:
+\begin{align}\label{eq:lq}
+\hat{f}:=\hat{w} = \mathop{\arg\min}_{w} \sum_{i=1}^n (y_i - w\cdot x_i)^2
+\end{align}
+This formulation expands without much change to a multi-dimensional form of the input $x$ and respectively, $w$: the canonical case where a number of features or inputs (e.g., symptoms) are used together to predict the outcome (e.g., diagnosis). 
+If we are interested in which dimensions (features) of $x$ are important, we can look at the relative values of the learned ``weights" $w$. In this simple setting, the importance of a feature (say $x^j$) can be exactly determined by the importance of the parameter ($w^j$).
+A weight value far from zero may indicate that corresponding feature is important for diagnosis.
+% If instead we are interested in which samples are most important, we can use existing methods for sample reweighting or methods that use standard assumptions to efficiently identify important subsets.
+
+In this case and others, traditional statistical learning methods 
+have been studied 
+for many decades.
 Linear regressors, decision trees, and support vector machines
 have all been analyzed under these lenses,
 and as the modern machine learning community
-has returned to these questions
+has returned to these questions recently,
 so has a renewed interest in their methods of analysis.
 New research focuses
 particularly on the differences
 associated with moving from classical under-parametrized models to
-modern \textbf{over-parameterized} models: where
-the model dimension vastly outnumbers the number
-of input samples, and may even be comparable to 
-the \textit{entire sample space.}
+modern (deep) \textbf{over-parameterized} models: where
+the model size vastly outnumbers the number
+of input samples.
+% , and may even be comparable to 
+% the \textit{entire sample space.}
 While nascent, these new methods and analyses
 attempt to fill the gap between
 statistical and deep models to enable similar measures of sample influence, feature importance, and model understanding. 
 
-% Significant progress in the modern development of machine learning has
-% been built upon connections and patterns identified across myriad
-% interdisciplinary fields of study.
-% Up through the mid 2000's, 
-% many of these methods were inspired by and interested in 
-% highly focused and constrained problems. 
-% With a reasonably sized input domain, could a model of roughly equal size be used to
-% predict some output?
-% Linear regressors, decision trees, and support vector machines were all answers to these questions, with their own
-% varying degrees of scaling and complexity.
-% These methods necessitated carefully constructed formulations with specific restrictions to the learnable function class,
-% enabling straightforward analysis 
-% for provable performance guarantees 
-% and easy identification of critical training samples and important input features.
+\paragraph{A full picture.}
+Let us expand our notation from the example above to consider this more general framing.
+Consider a dataset $\{X\}_{i=1}^n$ of size $n$ where each data point in the set $X$ is considered drawn from some underlying distribution over the domain $X \sim \cX^d$, 
+with domain dimensionality $d$.
+A model $f$ is fit using a parametrizations $\theta \in \Theta$,
+with $\Theta$ the space of possible parametrization with some intrinsic dimension $p$. 
+%While all three of these problems are closely related, they require different approaches. 
+Generalizing the least squares``error measure" from Eq.~\ref{eq:lq} to an arbitrary \textit{loss} $l$, we have
+\begin{align}\label{eq:learning}
+    \hat{f}:=\hat{\theta} = \mathop{\arg\min}_{\theta\in\Theta} \sum_{x \in X} l(f_\theta(x_i))
+\end{align}
+From an analysis perspective, 
+we might be interested in any one of 
+(a) subsets of input features $\cC \subseteq \cX$ that are important for the downstream task,
+(b) associating model subsets $\cP \subseteq \Theta$ with specific inputs or groups of inputs, or 
+(c) subsets or subgroups of samples $S \subseteq \{X\}^n$ that are sufficient or representative of the entire dataset.
 
-% Contemporary machine learning, however, has a vastly different modus operandi. 
-% Driven in large part by the exponential growth of available computation via Moore's Law, \textit{deep learning} has fallen squarely in the realm of \textbf{over-parameterized} models.
-% With these overparametrizations and computation capacity, the typical learning questions posed as maximizing accuracy or reducing error have largely been addressed for even large scale problems.
-% As such, complementary questions have led to subfields focusing on other performance measures, such as robustness, fairness, interpretability, and explainability.
-% Many solutions to these questions end up looking back at answers found for the under- or non-parametrized settings.
-% While nascent, these approaches 
-% attempt to fill the gap between
-% statistical and deep models to enable similar measures of sample influence, feature importance, and model analysis. 
-% Most notable amongst these newer approaches is that of (Self)-Attention in Neural Networks \citep{sutskever2014sequence,vaswani2017attention}.
-% Other proposals 
-% end up looking back at the types of analysis typical of those more classical under-parametrized or nonparametrized methods.
+\begin{figure}
+    \centering
+    \includegraphics[trim={0 3cm 0 3cm},clip,width=0.9\textwidth]{diss/1_intro/figs/feat_select.png}
+    \caption[Visualization of feature selection]{An example of identifying specific features important to the learning task.}
+    \label{fig:feat_select}
+\end{figure}
+\paragraph{Feature Selection.}  methods generally and their applications. structure learning, attention, scan stats...emphasize naive methods being exponential, mention scan stats
 
-% Not limited to previous developments in learning or computation theory, the arguably most valuable contributions toward the exponential reduction in model error can be attributed to influences and intuitions taken
-% from biology, psychology, neuroscience, and even XXX \citep{srivastava, etc}.
-% Perhaps one explanation as to why this phenomenon exists may be attributed to the way in which deep learning evolved. 
-% The classical learning goal of function approximation lends itself nicely to a system which allows for arbitrary complexity via simple changes (e.g., addition of neural network layers). % Foundational works building on the original neural networks particularly have taken advantage of constraining this space of functions to search over: 
-% the most seminal case being those of convolutional filters for imaging data. 
-% While ``constraints" of this form have helped tremendously in model performance on modern vision and language machine learning tasks (GANs, Recurrent Networks, Residual Layers, Transformers, etc.), the ability to identify \textit{subsets} of important samples, input features, and model parameters has lagged significantly behind the development of these methods.
-% Recently larger interest has been taken by the community to understand and interpret models with this view, only after extremely large and opaque models have become ubiquitous.
-%This lag directly explains the more recent interest in developing methods for understanding and interpreting large scale machine learning models.
+\begin{figure}
+    \centering
+    \includegraphics[trim={0 3cm 0 3cm},clip,width=0.9\textwidth]{diss/1_intro/figs/param_select.png}
+    \caption[Visualization of parameter selection]{An example of identifying specific parameters important to the learning task.}
+    \label{fig:param_select}
+\end{figure}
+\paragraph{Parameter Selection.} methods generally. weight regularization methods, some asymptotics/hypothesis testing guarantees. In DNNs, some hyp testing but mostly indep of classical stats: sparsity, nonlinearity, gating...
+applications, interpretable/explainable
 
-
-\paragraph{A full picture.} Consider a dataset $\{X\}_{i=1}^n$ of size $n$ where each data point in the set $X$ is considered drawn from some underlying distribution over the domain $X \sim \cX^d$, with domain dimensionality $d$. A model $f$ is fit using a parametrizations $\theta \in \Theta$, with $\Theta$ the space of possible parametrization with some intrinsic dimension $p$. From an analysis perspective, we might be interested in any one of (a) subsets of input features $\cC \subseteq \cX$ that are important for the downstream task, (b) associating model subsets $\cP \subseteq \Theta$ with specific inputs or groups of inputs, or (c) subsets or subgroups of samples $S \subseteq \{X\}^n$ equally of interest. While all three of these problems are closely related, they require different approaches. 
+\begin{figure}
+    \centering
+    \includegraphics[trim={0 4.5cm 0 4cm},clip,width=0.9\textwidth]{diss/1_intro/figs/sample_select.png}
+    \caption[Visualization of sample selection]{An example of identifying specific samples important to the learning task.}
+    \label{fig:sample_select}
+\end{figure}
+\paragraph{Sample Selection.} methods generally. emphasize retraining ideas, diff priv/stability, all possible subsets
+outlier detection, representative subset
 
 \begin{mdframed}[style=MyFrame]
-\em 
-\textbf{This thesis} focuses its main efforts on identifying these important subsets of model, feature, and sample space for feature association, model size reduction, model unlearning, and, fairness. Specifically, taking advantage of both existing statistical and geometric methods, we develop new methods for localizing subsets, in a range of settings from hypothesis testing on the one hand to deep learning frameworks on the other.
+\textbf{ Thesis Goal: }
+\em Identify, construct, and evaluate methods for \textbf{efficient} subset identification in modern machine learning feature, model, and input spaces.
 \end{mdframed}
 
-% Features
-Feature selection in the case of typical regression or classification
-% Typical regression or classification 
-takes some form of learning parameters $\theta$ that allow for $\hat{y} = f_\theta(x)$ to be close to the true outcome of interest $y$.
-While forms of data $X := (x,y)$ may simply be continuous and real-valued, modern machine learning has greatly expanded formulations of the classical learning problem to include a wide variety of structured learning problems \citep{nowozin2011structured}. 
-% Structure learning and identification has taken a few different forms (object detection, segmentation, etc.),
-% but has remained somewhat removed from traditional
-% statistical settings.
-Consider the case when a high-dimensional input is used to predict an output with a highly-parametrized model. 
-Once learned, obvious questions arise as discussed above: are there specific low-dimensional spaces in either the input or the model space that are most important or necessary for the global learning problem of interest? Are there specific subspaces associated with particular subproblems of the global problem?
-The machine learning literature has come up with a number of ways to identify analogs of these spaces, 
-including extensions of sensitivity analysis to deep learning \citep{yeung2010sensitivity,zhang2015sensitivity}, and constructing and identifying nonzero model subsets via particular model choices such as activations \citep{selvaraju2017grad} and regularizers.
-In classical settings these are well understood: decision trees naturally provide ease of interpretibility via the information used to choose splits, and both linear and kernel support vector machines have been analyzed to provide for measures of sample importance via distances to the margin as well as feature importance via weights defining the learned hyperplane \citep{Mitchell97}.
-Attention and saliency maps have emerged as popular new methods,
-given their ease of implementation and interpretation \citep{sutskever2014sequence,vaswani2017attention,selvaraju2017grad}.
-By learning dimensions of a given input that are particularly important, either in a hard (binary) or soft (continuous weighting) manner, model builders are better able to understand and interpret what a model has learnt.
+\section{A specific example: Medical Imaging Analysis}
 
-The specific ideas of attention notwithstanding, many of these existing methods are far removed from traditional hypothesis testing frameworks.,
-While some work has begun in this direction \citep{tansey2018black},
-there remains a gap in direct identification of subsets and structures in these spaces that can be defined in statistically rigorous manners.
+% What features are most important for prediction?
+% Which samples were most important for my training?
+% Can we understand when a model is certain or uncertain about its output?
+% Are there layers in my network that have learned a particular subtask?
+% Questions of robustness, bias, influence, fairness, and importance have become central questions to contemporary machine learning research \citep{doshi2017towards,mehrabi2021survey,amodei2016concrete}.
+% machine learning, etc.
+
+% Feature selection in the case of
+% typical regression or classification 
+% takes some form of learning parameters $\theta$ that allow for $\hat{y} = f_\theta(x)$ to be close to the true outcome of interest $y$.
+% While forms of data $X := (x,y)$ may simply be continuous and real-valued, modern machine learning has greatly expanded formulations of the classical learning problem to include a wide variety of structured learning problems~\citep{nowozin2011structured}. 
+% Consider the case when a high-dimensional input is used to predict an output with a highly-parametrized model. 
+% Once learned, obvious questions arise as discussed above: are there specific low-dimensional spaces in either the input or the model space that are most important or necessary for the global learning problem of interest? Are there specific subspaces associated with particular subproblems of the global problem?
+% The machine learning literature has come up with a number of ways to identify analogs of these spaces, 
+% including extensions of sensitivity analysis to deep learning~\citep{yeung2010sensitivity,zhang2015sensitivity}, and constructing and identifying nonzero model subsets via particular model choices such as activations~\citep{selvaraju2017grad} and regularizers.
+% In classical settings these are well understood: decision trees naturally provide ease of interpretibility via the information used to choose splits, and both linear and kernel support vector machines have been analyzed to provide for measures of sample importance via distances to the margin as well as feature importance via weights defining the learned hyperplane~\citep{Mitchell97}.
+% Attention and saliency maps have emerged as popular new methods,
+% given their ease of implementation and interpretation~\citep{sutskever2014sequence,vaswani2017attention,selvaraju2017grad}.
+% By learning dimensions of a given input that are particularly important, either in a hard (binary) or soft (continuous weighting) manner, model builders are better able to understand and interpret what a model has learnt.
+% The specific ideas of attention notwithstanding, many of these existing methods are far removed from traditional hypothesis testing frameworks.
+% While some work has begun in this direction~\citep{tansey2018black},
+% there remains a gap in direct identification of subsets and structures in these spaces that can be defined in statistically rigorous manners.
 
 \begin{figure}
     \centering
@@ -113,9 +212,16 @@ there remains a gap in direct identification of subsets and structures in these 
     \caption[A simple subset selection example]{\color{red} Identifying and selecting in MRIs, subset, sample, model ID.}
 \end{figure}
 
-\paragraph{A specific example.} Consider a traditional machine learning classification task in which we would like to predict whether an individual has a specific disease condition based on a medical resonance image (MRI) scan of their brain. Our input feature $x$ may consist of a 3D-array of values lying in $\RR^{x\times y\times z}$ measuring some intensity of the imaging modality at each voxel, indexed by a tuple $(i,j,k)$.
+% \paragraph{A specific example.} 
+Consider a traditional machine learning classification task in which we would like to predict whether an individual has a specific disease condition based on a medical resonance image (MRI) scan of their brain. Our input feature $x$ may consist of a 3D-array of values lying in $\RR^{x\times y\times z}$ measuring some intensity of the imaging modality at each voxel, indexed by a tuple $(i,j,k)$.
 Our outcome variable $y$ may simply be a binary label of whether the input scan has been labeled by a radiologist as one demonstrating typical disease characteristics.
 Using an off the shelf 3D convolutional neural network with adjustments to match our input size, we can very quickly set up and train a system to predict disease presence with a high degree of accuracy.
+
+------------------------------------------
+
+below here will be moved and arranged with the "selection" sections and here if relevant
+
+------------------------------------------
 
 While attention can be directly applied to the network in order to identify ``hotspots" in the input space relating to the learned classification task, 
 given the high-dimensional nature of the input
@@ -123,7 +229,7 @@ and the relatively small sample size
 associated with medical imaging data, 
 it is very likely that an area of interest identified
 may be an intricacy of the training samples used rather than truly a region of disease signal.
-Class activation maps (CAMs) may be unclear, and can often associate with image artifacts unrelated to the scientific task \citep{adebayo2018sanity}.
+Class activation maps (CAMs) may be unclear, and can often associate with image artifacts unrelated to the scientific task~\citep{adebayo2018sanity}.
 Methods of generalization may help to increase confidence in identified regions, but statistical guarantees often remain out of reach.
 
 Furthermore, most recent problems associated with medical data have moved past simple difference detection: trends over time, and the ability to predict {\em future} disease development has by far become the setting of most interest.
@@ -181,14 +287,13 @@ However, many existing methods do not scale well as the number of subgroups grow
 \end{figure}
 
 \begin{mdframed}[style=MyFrame]
-\textbf{ Thesis Goal: }
-\em Identify, construct, and evaluate methods for subset identification in machine learning input, feature, and model spaces, taking advantage of inherent geometric and statistical structures that naturally arise in application domains. 
-Application focus is put on scientific domains in healthcare and social equity.
+\em 
+Here we focus our effort on identifying these important subsets of model, feature, and sample space for feature association, model size reduction, model unlearning, and, fairness. Specifically, taking advantage of both existing statistical and geometric methods, we develop new methods for localizing subsets in a range of settings from hypothesis testing to deep learning.
 \end{mdframed}
 
 \section{Thesis Scope and Contributions}
 
-In this thesis we explore the intersections of classical statistical and geometric constructions with modern machine learning methods. 
+We explore the intersections of classical statistical and geometric constructions with modern machine learning methods. 
 Figure~\ref{fig:scope} shows the overall scope projected along three axes: feature, parameter, and sample spaces.
 Below we briefly introduce the main problems studied in this thesis.
 \begin{figure}[!ht]
@@ -220,7 +325,7 @@ find scientifically interesting
 group differences where the default analysis, 
 i.e., models estimated on the {\em full graph}, do not survive reasonable 
 significance thresholds. 
-Preliminary work on this was published in \citep{covtraj}.
+% Preliminary work on this was published in \citep{covtraj}.
 
 
 \subsection{Efficient Tensor Representations for Feasible Temporal Deep Learning}
@@ -247,7 +352,7 @@ with faster convergence and stronger confidence intervals
 compared to the standard tensor train decomposition. 
 We provide code and show experiments on the ADNI dataset
 using image sequences to regress on a cognition related outcome.
-Preliminary work on this was published in \citep{ott}.
+% Preliminary work on this was published in \citep{ott}.
 
 \subsection{Practical Unlearning via Large-Scale Conditional Independence Testing}
 
@@ -281,7 +386,7 @@ in settings that would otherwise be infeasible,
 including vision models used for face recognition, 
 person re-identification 
 and NLP models that may require unlearning samples identified for exclusion.
-Preliminary work on this will appear in \citep{lcodec}.
+% Preliminary work on this will appear in \citep{lcodec}.
 
 
 \subsection{Reducing Subgroup Fairness via High Dimensional Earth Mover's Distances}
@@ -332,3 +437,43 @@ the $d$-dimensional earth mover's problem
 to regularize large models when the number of subgroups can be large.
 {\color{red} Chapter 7 describes future work, focused on applying a particular solution from Chapter 5 to understanding relationships among
 disease indicators and biomarkers associated with developing Alzheimer's Disease.}
+
+
+%%%%%%%%%%%%% 
+% Some old stuff
+
+% Significant progress in the modern development of machine learning has
+% been built upon connections and patterns identified across myriad
+% interdisciplinary fields of study.
+% Up through the mid 2000's, 
+% many of these methods were inspired by and interested in 
+% highly focused and constrained problems. 
+% With a reasonably sized input domain, could a model of roughly equal size be used to
+% predict some output?
+% Linear regressors, decision trees, and support vector machines were all answers to these questions, with their own
+% varying degrees of scaling and complexity.
+% These methods necessitated carefully constructed formulations with specific restrictions to the learnable function class,
+% enabling straightforward analysis 
+% for provable performance guarantees 
+% and easy identification of critical training samples and important input features.
+
+% Contemporary machine learning, however, has a vastly different modus operandi. 
+% Driven in large part by the exponential growth of available computation via Moore's Law, \textit{deep learning} has fallen squarely in the realm of \textbf{over-parameterized} models.
+% With these overparametrizations and computation capacity, the typical learning questions posed as maximizing accuracy or reducing error have largely been addressed for even large scale problems.
+% As such, complementary questions have led to subfields focusing on other performance measures, such as robustness, fairness, interpretability, and explainability.
+% Many solutions to these questions end up looking back at answers found for the under- or non-parametrized settings.
+% While nascent, these approaches 
+% attempt to fill the gap between
+% statistical and deep models to enable similar measures of sample influence, feature importance, and model analysis. 
+% Most notable amongst these newer approaches is that of (Self)-Attention in Neural Networks \citep{sutskever2014sequence,vaswani2017attention}.
+% Other proposals 
+% end up looking back at the types of analysis typical of those more classical under-parametrized or nonparametrized methods.
+
+% Not limited to previous developments in learning or computation theory, the arguably most valuable contributions toward the exponential reduction in model error can be attributed to influences and intuitions taken
+% from biology, psychology, neuroscience, and even XXX \citep{srivastava, etc}.
+% Perhaps one explanation as to why this phenomenon exists may be attributed to the way in which deep learning evolved. 
+% The classical learning goal of function approximation lends itself nicely to a system which allows for arbitrary complexity via simple changes (e.g., addition of neural network layers). % Foundational works building on the original neural networks particularly have taken advantage of constraining this space of functions to search over: 
+% the most seminal case being those of convolutional filters for imaging data. 
+% While ``constraints" of this form have helped tremendously in model performance on modern vision and language machine learning tasks (GANs, Recurrent Networks, Residual Layers, Transformers, etc.), the ability to identify \textit{subsets} of important samples, input features, and model parameters has lagged significantly behind the development of these methods.
+% Recently larger interest has been taken by the community to understand and interpret models with this view, only after extremely large and opaque models have become ubiquitous.
+%This lag directly explains the more recent interest in developing methods for understanding and interpreting large scale machine learning models.
