@@ -2,16 +2,16 @@
 
 Modern applications of machine learning have become ubiquitous.
 Most interactions with daily technologies now intrinsically involve 
-a request to some artificially intelligent system in the ``cloud``, 
+a request to some ``smart`` system in the ``cloud'', 
 where those interactions range from
 a request for map directions 
 to simply loading a webpage.
 Neural network models, and the recent advances of deep learning,
-have enabled extremely large models that 
-make these applications possible.
+have enabled these systems that 
+make such applications possible.
 These models have achieved
 human-level performance on learning tasks
-including image classification~\citep{resnet,alexnet}, image segmentation~\citep{segmentation}, video analysis~\citep{zhang2016video}, text understanding and generation~\citep{bert,gpt}, and have slowly begun to enable more fundamental scientific problems such as protein folding~\citep{protein} drug discovery~\cite{drugdisc}, and medical diagnosis~\cite{diag}.
+including image classification~\citep{resnet,alexnet}, image segmentation~\citep{segmentation}, video analysis~\citep{zhang2016video}, text understanding and generation~\citep{bert,gpt}, and have slowly begun to solve more fundamental scientific problems such as protein folding~\citep{protein} drug discovery~\citep{drugdisc}, and medical diagnosis~\citep{diag}.
 While this performance is largely attributed to model size,
 the abundance of high quality training data
 has equally contributed to real world performance,
@@ -19,19 +19,19 @@ enabling model training over millions of real world samples~\citep{imagenet,laio
 and potentially billions of synthetic samples via environment simulation~\citep{mcts}.
 
 While deployment in some domains (recommender systems, object detection) may benefit almost unconditionally from this vastly expanded capability, rightful hesitancy has limited their widespread use in particular applications where impacts on individuals, people, or environments may be at stake.
-This ``last mile`` takes a few forms.
+These ``last mile'' concerns take a few forms.
 % Because a completely accurate model is still out of reach, an important question that needs to be answered is: which inputs or individuals are being given incorrect outcomes, and why?
 % maybe a sentence suggesting unlearning/removal
 In mission critical applications such as medical diagnosis, 
 the impact of an error can be extremely large,
 even if a misprediction happens extremely infrequently.
 Additionally, large scale model training and architecture search
-can require large amounts of energy producing high emissions,
-and their scale can limit the market
-to only large actors with huge existing resources.
+can require exorbitant amounts of energy producing high emissions,
+and their scale can limit market participants
+to only large actors with vast existing resources.
 The accessibility and effectiveness of these models can also vary significantly based on the training data, and disparate outcomes can be exacerbated by existing social inequity.
 
-While existing ``dumb`` or ``natural`` systems that these models aim to assist are not perfect, 
+While existing human or ``natural'' systems that these models aim to assist are not perfect, 
 our real world has developed norms and regulations that 
 enable them to function.
 A medical diagnosis might require a physician to explain what symptoms led them to that particular conclusion.
@@ -42,7 +42,7 @@ analysis proving equal opportunity,
 or that specific protected classes
 are not used in decision making.
 % Specifically, these can include ideas as simple as the Hippocratic Oath and medical malpractice insurance, to asking your doctor what symptoms lead them to a particular diagnosis.
-These systems are difficult to directly translate to automated machine learning systems,
+These ideas are difficult to directly translate to automated machine learning systems,
 but proxies have been identified that we can build upon.
 
 \begin{figure}
@@ -53,7 +53,6 @@ but proxies have been identified that we can build upon.
 \end{figure}
 These norms and regulations answer a number of questions we may also try to pose to our machine learning models.
 What is the cost to learn this task?
-What is the cost for being wrong?
 What led to this particular outcome?
 Why is this outcome different from another?
 % We will explore how these questions can be formulated concretely. 
@@ -64,16 +63,16 @@ Can we identify the most important features?
 Which individuals or groups are being treated unfairly, and can we change that?
 These questions ask us to identify a \textit{subset} of some relevant set, and this identification is our focus here.
 
-Moving specifically to machine learning methods,
-Figure~\ref{fig:dl} illustrates the typical pipeline. 
+% Moving specifically to machine learning methods,
+Taking a step back, let's take a look at a representative system. Figure~\ref{fig:dl} illustrates a typical learning pipeline. 
 A dataset is collected and used to train a model, by minimizing the error over
 those samples in the dataset (top).
-A ``sample`` can be a single measured value, or it can
-be a large, highly structured object with many ``features.``
-The model is made up of some ``parameters`` that are 
+A ``sample'' can be a single measured value, or it can
+be a large, highly structured object with many ``features.''
+The model is made up of some ``parameters'' that are 
 tuned during training to learn a good predictor over the training dataset.
 This model is then used to predict, or \textit{infer}, on new
-data seen ``in the wild`` (bottom).
+data seen ``in the wild'' (bottom).
 Our questions above are formally asking to identify subsets of these objects: is a subset of the model parameters sufficient for learning? Which subset of the features are important for a prediction? Which subset of the dataset exhibit a specific attribute?
 
 % \textit{Explainability} can be seen as identifying important features of the input, as well as parts of the model (parameters) that ``light up`` for that input. \textit{Fairness} can be evaluated via measures over subsets of the data that correspond to specific groups. 
@@ -104,12 +103,12 @@ This can take many forms,
 based on assumptions and prior information we may have on the relationships among the data. 
 Consider the simple \textit{linear} case,
 where we want to learn some parameter $w$ such that $y = w\cdot x$. 
-Given $n$ sample pairs $(x_i,y_i)$ indexed by $i$, traditional statistics and optimization literature yield the following \textit{least squares} problem formulation, where we want to minimize the ``squared error" between the observed values $y_i$ and the predicted $\hat{y}_i:= w\cdot x_i$:
+Given $n$ sample pairs $(x_i,y_i)$ indexed by $i$, traditional statistics and optimization literature yield the following \textit{least squares} problem formulation, where we want to minimize the ``squared error'' between the observed values $y_i$ and the predicted $\hat{y}_i:= w\cdot x_i$:
 \begin{align}\label{eq:lq}
 \hat{f}:=\hat{w} = \mathop{\arg\min}_{w} \sum_{i=1}^n (y_i - w\cdot x_i)^2
 \end{align}
-This formulation expands without much change to a multi-dimensional form of the input $x$ and respectively, $w$: the canonical case where a number of features or inputs (e.g., symptoms) are used together to predict the outcome (e.g., diagnosis). 
-If we are interested in which dimensions (features) of $x$ are important, we can look at the relative values of the learned ``weights" $w$. In this simple setting, the importance of a feature (say $x^j$) can be exactly determined by the importance of the parameter ($w^j$).
+This formulation expands without much change to a multi-dimensional form of the input $x$ and respectively, $w$: the canonical case where a number of features, or \textit{covariates} (e.g., symptoms), are used together to predict the outcome (e.g., diagnosis). 
+If we are interested in which features of $x$ are important, we can look at the relative values of the learned ``weights'' $w$. In this simple setting, the importance of a feature (say $x^j$) can be exactly determined by the importance of the parameter ($w^j$).
 A weight value far from zero may indicate that corresponding feature is important for diagnosis.
 % If instead we are interested in which samples are most important, we can use existing methods for sample reweighting or methods that use standard assumptions to efficiently identify important subsets.
 
@@ -117,30 +116,31 @@ In this case and others, traditional statistical learning methods
 have been studied 
 for many decades.
 Linear regressors, decision trees, and support vector machines
-have all been analyzed under these lenses,
-and as the modern machine learning community
-has returned to these questions recently,
-so has a renewed interest in their methods of analysis.
+have all been analyzed under these lenses.
+% ,
+% and as the modern machine learning community
+% has returned to these questions recently,
+% so has a renewed interest in their methods of analysis.
 New research focuses
 particularly on the differences
-associated with moving from classical under-parametrized models to
+associated with moving from classical \textit{under-parametrized} models to
 modern (deep) \textbf{over-parameterized} models: where
 the model size vastly outnumbers the number
 of input samples.
 % , and may even be comparable to 
 % the \textit{entire sample space.}
-While nascent, these new methods and analyses
-attempt to fill the gap between
+While nascent, this research
+attempts to fill the gap between
 statistical and deep models to enable similar measures of sample influence, feature importance, and model understanding. 
 
 \paragraph{A full picture.}
 Let us expand our notation from the example above to consider this more general framing.
-Consider a dataset $\{X\}_{i=1}^n$ of size $n$ where each data point in the set $X$ is considered drawn from some underlying distribution over the domain $X \sim \cX^d$, 
-with domain dimensionality $d$.
-A model $f$ is fit using a parametrizations $\theta \in \Theta$,
-with $\Theta$ the space of possible parametrization with some intrinsic dimension $p$. 
+Consider a dataset $X:=\{x_i\}_{i=1}^n$ of size $n$ where each data point $x_i$ in the set $X$ is drawn from some underlying distribution over the domain $x_i \sim \cX^d$, 
+with domain dimensionality (number of features) $d$.
+A model $f$ is fit using a parametrization $\theta \in \Theta$,
+with $\Theta$ the space of possible parametrizations (models) with some intrinsic dimension $p$. 
 %While all three of these problems are closely related, they require different approaches. 
-Generalizing the least squares``error measure" from Eq.~\ref{eq:lq} to an arbitrary \textit{loss} $l$, we have
+Generalizing the least squares``error measure'' from Eq.~\ref{eq:lq} to an arbitrary \textit{loss} $l$, we have
 \begin{align}\label{eq:learning}
     \hat{f}:=\hat{\theta} = \mathop{\arg\min}_{\theta\in\Theta} \sum_{x \in X} l(f_\theta(x_i))
 \end{align}
@@ -150,13 +150,19 @@ we might be interested in any one of
 (b) associating model subsets $\cP \subseteq \Theta$ with specific inputs or groups of inputs, or 
 (c) subsets or subgroups of samples $S \subseteq \{X\}^n$ that are sufficient or representative of the entire dataset.
 
+Crucially, an uninformed search for a subset is computationally infeasible. For a superset of size $|S|$, The set of all subsets is the power set, with a size of $2^{|S|}$! If an identification procedure requires looking over all of these and choosing a ``best'' one by some metric, the procedure will be limited to very small supersets.
+Efficient methods have been developed in each of the three contexts above to avoid this exponential search.
+
 \begin{figure}
     \centering
     \includegraphics[trim={0 3cm 0 3cm},clip,width=0.9\textwidth]{diss/1_intro/figs/feat_select.png}
     \caption[Visualization of feature selection]{An example of identifying specific features important to the learning task.}
     \label{fig:feat_select}
 \end{figure}
-\paragraph{Feature Selection.}  methods generally and their applications. structure learning, attention, scan stats...emphasize naive methods being exponential, mention scan stats
+\paragraph{Feature Selection.} 
+With more complex models $f$ compared to the linear case above, newer ``black-box'' methods have been developed for identifying important features. From the more pure statistics side, scan statistics~\cite{scanstat,scanstatlrt} allow for a structured ``scanning'' over the input space, skipping subsets unlikely to provide additional information for the measure of interest.
+Further on the deep learning side, adaptations of sensitivity analysis, via noise addition and perturbations have found success~\citep{yeung2010sensitivity,zhang2015sensitivity}, alongside activation mapping~\citep{cam,selvaraju2017grad}.
+These methods typically generate an analagous ``weighting'' over the input space, identifying features most salient for the specific task (Figure~\ref{fig:feat_select}).
 
 \begin{figure}
     \centering
@@ -164,7 +170,14 @@ we might be interested in any one of
     \caption[Visualization of parameter selection]{An example of identifying specific parameters important to the learning task.}
     \label{fig:param_select}
 \end{figure}
-\paragraph{Parameter Selection.} methods generally. weight regularization methods, some asymptotics/hypothesis testing guarantees. In DNNs, some hyp testing but mostly indep of classical stats: sparsity, nonlinearity, gating...
+\paragraph{Parameter Selection.} 
+Selection in the model space generally takes two forms. First, as a prior or assumption over the model space, and second, as a post-hoc method for an ``explainable'' proxy.
+Weight regularization methods are often used independent of the type or size of the model, to encourage the solution to fall within a specific region of the model space. In non-deep settings these methods come with strong theoretical guarantees. 
+While the theoretical underpinnings of these methods in deep learning are still being actively researched,
+practical methods have been
+methods generally. 
+
+ sparsity, nonlinearity, gating...
 applications, interpretable/explainable
 
 \begin{figure}
