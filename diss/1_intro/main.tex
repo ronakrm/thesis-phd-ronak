@@ -129,6 +129,10 @@ the model size vastly outnumbers the number
 of input samples.
 % , and may even be comparable to 
 % the \textit{entire sample space.}
+Methods for estimating the number of samples needed,
+the time to learn a particular task,
+and the generalization ability 
+all require new perspectives in this regime.
 While nascent, this research
 attempts to fill the gap between
 statistical and deep models to enable similar measures of sample influence, feature importance, and model understanding. 
@@ -160,7 +164,7 @@ Efficient methods have been developed in each of the three contexts above to avo
     \label{fig:feat_select}
 \end{figure}
 \paragraph{Feature Selection.} 
-With more complex models $f$ compared to the linear case above, newer ``black-box'' methods have been developed for identifying important features. From the more pure statistics side, scan statistics~\cite{scanstat,scanstatlrt} allow for a structured ``scanning'' over the input space, skipping subsets unlikely to provide additional information for the measure of interest.
+With more complex models $f$ compared to the linear case above, newer ``black-box'' methods have been developed for identifying important features. From the more pure statistics side, scan statistics~\citep{scanstat,scanstatlrt} allow for a structured ``scanning'' over the input space, skipping subsets unlikely to provide additional information for the measure of interest.
 Further on the deep learning side, adaptations of sensitivity analysis, via noise addition and perturbations have found success~\citep{yeung2010sensitivity,zhang2015sensitivity}, alongside activation mapping~\citep{cam,selvaraju2017grad}.
 These methods typically generate an analagous ``weighting'' over the input space, identifying features most salient for the specific task (Figure~\ref{fig:feat_select}).
 
@@ -171,14 +175,11 @@ These methods typically generate an analagous ``weighting'' over the input space
     \label{fig:param_select}
 \end{figure}
 \paragraph{Parameter Selection.} 
-Selection in the model space generally takes two forms. First, as a prior or assumption over the model space, and second, as a post-hoc method for an ``explainable'' proxy.
-Weight regularization methods are often used independent of the type or size of the model, to encourage the solution to fall within a specific region of the model space. In non-deep settings these methods come with strong theoretical guarantees. 
-While the theoretical underpinnings of these methods in deep learning are still being actively researched,
-practical methods have been
-methods generally. 
-
- sparsity, nonlinearity, gating...
-applications, interpretable/explainable
+Selection in the model space generally takes two forms. First, as a prior, restriction, or assumption over the model space, and second, as a post-hoc method for an ``explainable'' proxy.
+Regularization, sparsity, and gating methods are often used independent of the type or size of the model, to encourage the solution to fall within a specific region of the model space.
+% In non-deep settings these methods come with strong theoretical guarantees. 
+The theoretical underpinnings of these methods in deep learning are still being actively researched~\citep{hardt2016train,jacot2018neural,neyshabur2014search}, but the methods have been nonetheless been effective in practice. 
+On the post-hoc side, of particular interest is the parameters relevant to specific regions of the input space \textit{after} training (Figure~\ref{fig:param_select}). Here, recent analysis of deployed networks has shown this to be true~\citep{bau2017network,fong2018net2vec}, and current work continues to explore these network regions to aid in interpretability and explainability.
 
 \begin{figure}
     \centering
@@ -186,15 +187,30 @@ applications, interpretable/explainable
     \caption[Visualization of sample selection]{An example of identifying specific samples important to the learning task.}
     \label{fig:sample_select}
 \end{figure}
-\paragraph{Sample Selection.} methods generally. emphasize retraining ideas, diff priv/stability, all possible subsets
-outlier detection, representative subset
+\paragraph{Sample Selection.} Many methods have been developed for outlier detection within training or testing sets~\citep{huang2020feature,ren2019likelihood} \textit{after} training. ``In-the-loop'' methods for accounting for ``outlierness'' behave similarly to accounting for group or individual fairness while training~\cite{mehrabi2021survey}. Unfortunately, once samples are identified in some manner, post-hoc adjustments to a trained model are generally very difficult. Recent work has focused on ``unlearning'', or removing a sample's influence on a model without retraining. If specific samples can be uniquely identified, performance and privacy reasons may require these specific interventions to reduce the ``influence'' of that sample subset.
 
 \begin{mdframed}[style=MyFrame]
 \textbf{ Thesis Goal: }
 \em Identify, construct, and evaluate methods for \textbf{efficient} subset identification in modern machine learning feature, model, and input spaces.
 \end{mdframed}
 
-\section{A specific example: Medical Imaging Analysis}
+\section{A Few Motivating Examples}
+Consider a traditional machine learning classification task in which we would like to predict whether an individual has a specific disease condition based on a medical resonance image (MRI) scan of their brain. Our input feature $x$ may consist of a 3D-array of values lying in $\RR^{x\times y\times z}$ measuring some intensity of the imaging modality at each voxel, indexed by a tuple $(i,j,k)$.
+Our outcome variable $y$ may simply be a binary label of whether the input scan has been labeled by a radiologist as one demonstrating typical disease characteristics.
+Using an off the shelf 3D convolutional neural network with adjustments to match our input size, we can very quickly set up and train a system to predict disease presence with a high degree of accuracy.
+
+\begin{example}
+    feat select, region showing diff, methods work ,but hard for longitudinal ,theoretical guarantees.
+\end{example}
+\begin{example}
+    model select
+    evaluate generalizability
+    if samples have different activations, maybe overfitting,
+    even so, iding these activations may not be sufficient, dependencies among network regions may cause correlations making it difficult to find the true sufficient set
+\end{example}
+\begin{example}
+    feat select, region showing diff, methods work ,but hard for longitudinal ,theoretical guarantees.
+\end{example}
 
 % What features are most important for prediction?
 % Which samples were most important for my training?
@@ -226,9 +242,6 @@ outlier detection, representative subset
 \end{figure}
 
 % \paragraph{A specific example.} 
-Consider a traditional machine learning classification task in which we would like to predict whether an individual has a specific disease condition based on a medical resonance image (MRI) scan of their brain. Our input feature $x$ may consist of a 3D-array of values lying in $\RR^{x\times y\times z}$ measuring some intensity of the imaging modality at each voxel, indexed by a tuple $(i,j,k)$.
-Our outcome variable $y$ may simply be a binary label of whether the input scan has been labeled by a radiologist as one demonstrating typical disease characteristics.
-Using an off the shelf 3D convolutional neural network with adjustments to match our input size, we can very quickly set up and train a system to predict disease presence with a high degree of accuracy.
 
 ------------------------------------------
 
