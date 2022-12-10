@@ -144,17 +144,17 @@ with domain dimensionality (number of features) $d$.
 A model $f$ is fit using a parametrization $\theta \in \Theta$,
 with $\Theta$ the space of possible parametrizations (models) with some intrinsic dimension $p$. 
 %While all three of these problems are closely related, they require different approaches. 
-Generalizing the least squares``error measure'' from Eq.~\ref{eq:lq} to an arbitrary \textit{loss} $l$, we have
+Generalizing the least squares``error measure'' from Eq.~\ref{eq:lq} to an arbitrary \textit{loss} $\ell$, we have
 \begin{align}\label{eq:learning}
-    \hat{f}:=\hat{\theta} = \mathop{\arg\min}_{\theta\in\Theta} \sum_{x \in X} l(f_\theta(x_i))
+    \hat{f}:=\hat{\theta} = \mathop{\arg\min}_{\theta\in\Theta} \sum_{x \in X} ell(f_\theta(x_i))
 \end{align}
 From an analysis perspective, 
 we might be interested in any one of 
 (a) subsets of input features $\cC \subseteq \cX$ that are important for the downstream task,
 (b) associating model subsets $\cP \subseteq \Theta$ with specific inputs or groups of inputs, or 
-(c) subsets or subgroups of samples $S \subseteq \{X\}^n$ that are sufficient or representative of the entire dataset.
+(c) subsets or subgroups of samples $S \subseteq \{X\}$ that are sufficient or representative of the entire dataset.
 
-Crucially, an uninformed search for a subset is computationally infeasible. For a superset of size $|S|$, The set of all subsets is the power set, with a size of $2^{|S|}$! If an identification procedure requires looking over all of these and choosing a ``best'' one by some metric, the procedure will be limited to very small supersets.
+Crucially, an uninformed search for a subset is computationally infeasible. For a superset of size $n=|X|$, The set of all subsets is the power set, with a size of $2^{n}$! If an identification procedure requires looking over all of these and choosing a ``best'' one by some metric, the procedure will be limited to very small supersets.
 Efficient methods have been developed in each of the three contexts above to avoid this exponential search.
 
 \begin{figure}
@@ -181,13 +181,14 @@ Regularization, sparsity, and gating methods are often used independent of the t
 The theoretical underpinnings of these methods in deep learning are still being actively researched~\citep{hardt2016train,jacot2018neural,neyshabur2014search}, but the methods have been nonetheless been effective in practice. 
 On the post-hoc side, of particular interest is the parameters relevant to specific regions of the input space \textit{after} training (Figure~\ref{fig:param_select}). Here, recent analysis of deployed networks has shown this to be true~\citep{bau2017network,fong2018net2vec}, and current work continues to explore these network regions to aid in interpretability and explainability.
 
+\paragraph{Sample Selection.} Many methods have been developed for outlier detection within training or testing sets~\citep{huang2020feature,ren2019likelihood} \textit{after} training, as well as methods for understanding sample influence~\citep{abc} . ``In-the-loop'' methods for accounting for ``outlierness'' behave similarly to accounting for group or individual fairness while training~\cite{mehrabi2021survey}. Unfortunately, once samples are identified in some manner, post-hoc adjustments to a trained model are generally very difficult. Recent work has focused on ``unlearning'', or removing a sample's influence on a model without retraining. If specific samples can be uniquely identified, performance and privacy reasons may require these specific interventions to reduce the ``influence'' of that sample subset.
 \begin{figure}
     \centering
     \includegraphics[trim={0 4.5cm 0 4cm},clip,width=0.9\textwidth]{diss/1_intro/figs/sample_select.png}
     \caption[Visualization of sample selection]{An example of identifying specific samples important to the learning task.}
     \label{fig:sample_select}
 \end{figure}
-\paragraph{Sample Selection.} Many methods have been developed for outlier detection within training or testing sets~\citep{huang2020feature,ren2019likelihood} \textit{after} training. ``In-the-loop'' methods for accounting for ``outlierness'' behave similarly to accounting for group or individual fairness while training~\cite{mehrabi2021survey}. Unfortunately, once samples are identified in some manner, post-hoc adjustments to a trained model are generally very difficult. Recent work has focused on ``unlearning'', or removing a sample's influence on a model without retraining. If specific samples can be uniquely identified, performance and privacy reasons may require these specific interventions to reduce the ``influence'' of that sample subset.
+
 
 \begin{mdframed}[style=MyFrame]
 \textbf{ Thesis Goal: }
@@ -199,18 +200,62 @@ Consider a traditional machine learning classification task in which we would li
 Our outcome variable $y$ may simply be a binary label of whether the input scan has been labeled by a radiologist as one demonstrating typical disease characteristics.
 Using an off the shelf 3D convolutional neural network with adjustments to match our input size, we can very quickly set up and train a system to predict disease presence with a high degree of accuracy.
 
-\begin{example}
-    feat select, region showing diff, methods work ,but hard for longitudinal ,theoretical guarantees.
-\end{example}
-\begin{example}
-    model select
-    evaluate generalizability
-    if samples have different activations, maybe overfitting,
-    even so, iding these activations may not be sufficient, dependencies among network regions may cause correlations making it difficult to find the true sufficient set
-\end{example}
-\begin{example}
-    feat select, region showing diff, methods work ,but hard for longitudinal ,theoretical guarantees.
-\end{example}
+\paragraph{Example 1.}
+With a prediction for a specific scan, or predictions over a number of scans, we might be interested in identifying which regions of the brain are most important for diagnosis. These regions, $R \subset \cR:=\RR^{x\times y\times z}$, can be specific groups of pixels in the image that may correspond to known functional networks. Methods such as attention and class activation maps may work here, but there are a few issues. The number of samples available to learn a model is very small compared to the both the dimension of the input and the number of parameters in the model, i.e., $n \ll p$ and $n \ll d$. Thus it is very easy to overfit, and for areas of interest to be associated with intricacies of particular input data rather than true, real differences defined by the disease.
+
+Furthermore, recent medical imaging studies have moved past simple difference detection: trends over time, and the ability to predict {\em future} disease development have by far become the setting of most interest.
+Given an image of a healthy individual, is it possible to predict what their scan, or their future disease diagnosis, may be up to 10, 20, or more years in the future?
+If a number of scans have been collected over some timeframe, can the \textit{trajectory} of the individuals' development be extrapolated to estimate progression?
+As traditional models extended for temporal analysis grow in both size and complexity,
+a number of subproblems explicitly related to model and input subspaces arise. In this thesis we address two such problems: \textbf{statistically rigorous identification of temporally evolving subsets}, and \textbf{characterizations of deep models that enable efficient training of recurrent models with large scale time-varying data}.
+    
+\paragraph{Example 2.}
+With the rapid growth of AI and machine learning applications has come valid concerns regarding both guarantees of privacy.
+Recent technology legislation has made the importance clear in all aspects of data use,
+and particular projects and groups have demonstrated that machine learning is not independent of
+this need \citep{Exposing}.
+A new issue raised within this intersection is the ``right to be forgotten".
+If a model has been trained with a particular users' data, 
+they should have some recourse or right
+to both remove their data from the training set,
+and also know that the model has not learned from their data.
+On the surface, this poses a significant problem for model builders
+and organizations that spend large amounts
+of time and resources in 
+training deep learning models.
+
+In the medical imaging example above this is especially important: with fewer samples it is more likely that information about any particular one could ``leak'', and the model's performance may degrade significantly as a relatively large percentage of it's training data is removed.
+Thus particular methods must be developed to ensure both privacy and performance, without requiring full retraining.
+As we will see, 
+\textbf{identification of model parameter subsets}
+that are particularly important
+for a particular sample's influence
+in a model enables \textit{efficient machine unlearning}.
+
+\paragraph{Example 3.}
+    sample select
+    method above can be used to id outliers
+    what if others correlate?
+    systematic multimodal distributions,
+    artifact of different scanners or procedures
+    but can be more subtle and related to protected
+    altas eurocentric poor perf on others
+    want perf to be similar
+    dp/eo
+
+From an alternative perspective, we may want to identify specific samples rather than have them specified a priori.
+Traditionally a rigorous area of study under classical statistics, outlier detection and accounting have become a subfocus for many within the machine learning community as well \citep{golatkar2020eternal,golatkar2020forgetting,huang2020feature,ren2019likelihood}.
+While subgroups of input samples may be outliers, it is more often the case that they represent known heterogeneity within the data. 
+These differences may be marked using 
+group information known a priori, and 
+most learning tasks aim to learn tasks
+in a \textit{subgroup-independent} manner.
+In our disease prediction model above,
+these groups could simply be stratified by the type of scanner used to acquire the image, but it could also
+be a systematic difference correlated with some protected attribute. {\color{red} sentence about original brain atlas for registration being eurocentric}
+This can directly lead to disparate performance and results on \textit{all} individuals outside of that group.
+Optimization and regularization methods with this focus come under the umbrella of model fairness.
+However, many existing methods do not scale well to larger models or as the number of subgroups grows, as is often the case when intersections of protected classes must be considered. Here we identify and construct a particular solution for \textbf{groupwise fairness that enables efficient in the loop fairness regularization}.
 
 % What features are most important for prediction?
 % Which samples were most important for my training?
@@ -243,74 +288,36 @@ Using an off the shelf 3D convolutional neural network with adjustments to match
 
 % \paragraph{A specific example.} 
 
-------------------------------------------
+% ------------------------------------------
 
-below here will be moved and arranged with the "selection" sections and here if relevant
+% below here will be moved and arranged with the "selection" sections and here if relevant
 
-------------------------------------------
+% ------------------------------------------
 
-While attention can be directly applied to the network in order to identify ``hotspots" in the input space relating to the learned classification task, 
-given the high-dimensional nature of the input
-and the relatively small sample size 
-associated with medical imaging data, 
-it is very likely that an area of interest identified
-may be an intricacy of the training samples used rather than truly a region of disease signal.
-Class activation maps (CAMs) may be unclear, and can often associate with image artifacts unrelated to the scientific task~\citep{adebayo2018sanity}.
-Methods of generalization may help to increase confidence in identified regions, but statistical guarantees often remain out of reach.
+% While attention can be directly applied to the network in order to identify ``hotspots" in the input space relating to the learned classification task, 
+% given the high-dimensional nature of the input
+% and the relatively small sample size 
+% associated with medical imaging data, 
+% it is very likely that an area of interest identified
+% may be an intricacy of the training samples used rather than truly a region of disease signal.
+% Class activation maps (CAMs) may be unclear, and can often associate with image artifacts unrelated to the scientific task~\citep{adebayo2018sanity}.
+% Methods of generalization may help to increase confidence in identified regions, but statistical guarantees often remain out of reach.
 
-Furthermore, most recent problems associated with medical data have moved past simple difference detection: trends over time, and the ability to predict {\em future} disease development has by far become the setting of most interest.
-Given an image of a healthy individual, is it possible to predict what their scan, or their future disease diagnosis, may be up to 10, 20, or more years in the future?
-If a number of scans have been collected over some timeframe, can the \textit{trajectory} of the individuals' development be extrapolated to estimate progression?
-As traditional models extended for temporal analysis grow in both size and complexity,
-a number of subproblems explicitly related to model and input subspaces arise. Here we address two such problems: \textbf{statistically rigorous identification of temporally evolving subsets}, and \textbf{characterizations of deep models that enable efficient training of recurrent models with large scale time-varying data}.
+% Furthermore, most recent problems associated with medical data have moved past simple difference detection: trends over time, and the ability to predict {\em future} disease development has by far become the setting of most interest.
+% Given an image of a healthy individual, is it possible to predict what their scan, or their future disease diagnosis, may be up to 10, 20, or more years in the future?
+% If a number of scans have been collected over some timeframe, can the \textit{trajectory} of the individuals' development be extrapolated to estimate progression?
+% As traditional models extended for temporal analysis grow in both size and complexity,
+% a number of subproblems explicitly related to model and input subspaces arise. Here we address two such problems: \textbf{statistically rigorous identification of temporally evolving subsets}, and \textbf{characterizations of deep models that enable efficient training of recurrent models with large scale time-varying data}.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.4\textwidth]{example-image-b}
-    \includegraphics[width=0.4\textwidth]{example-image-c}
-    \caption[Selecting feature subsets]{\color{red} Blue/green figure from covtraj presentations, figure from OTT.}
-\end{figure}
-
-With the rapid growth of AI and machine learning applications has come valid concerns regarding both guarantees of privacy.
-Recent technology legislation has made the importance clear in all aspects of data use,
-and particular projects and groups have demonstrated that machine learning is not independent of
-this need \citep{Exposing}.
-A new issue raised within this intersection is the ``right to be forgotten".
-If a model has been trained with a particular users' data, 
-they should have some recourse or right
-to both remove their data from the training set,
-and also know that the model has not learned from their data.
-On the surface, this poses a significant problem for model builders
-and organizations that spend large amounts
-of time and resources in 
-training deep learning models.
-As we will see, 
-\textbf{identification of model parameter subsets}
-that are particularly important
-for a particular sample's influence
-in a model enables \textit{efficient machine unlearning}.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\textwidth]{example-image-b}
-    \caption[Selecting parameter subsets]{\color{red} different paths for different samples figure from codec.}
-\end{figure}
-
-A sample's particular influence on model parameters aside, the identification of influential samples or subsets of samples more generally is of independent interest. 
-Traditionally a rigorous area of study under classical statistics, outlier detection and accounting have become a subfocus for many within the machine learning community as well \citep{golatkar2020eternal,golatkar2020forgetting,huang2020feature,ren2019likelihood}.
-While subgroups of input samples may be outliers, it is more often the case that they represent known heterogeneity within the data. 
-These differences are typically marked using 
-group information known a priori, and 
-most learning tasks aim to learn tasks
-in a \textit{subgroup-independent} manner.
-Optimization and regularization methods with this focus come under the umbrella of model fairness, and instead of identifying and boosting independences within the model or data, we aim to minimize them.
-However, many existing methods do not scale well as the number of subgroups grows, as is often the case when intersections of protected classes must be considered. In the sequel we identify and construct a particular solution for \textbf{groupwise fairness that enables efficient in the loop fairness regularization}.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\textwidth]{example-image-b}
-    \caption[Equating sample subsets]{\color{red} group disparity figure from demd pres.}
-\end{figure}
+% A sample's particular influence on model parameters aside, the identification of influential samples or subsets of samples more generally is of independent interest. 
+% Traditionally a rigorous area of study under classical statistics, outlier detection and accounting have become a subfocus for many within the machine learning community as well \citep{golatkar2020eternal,golatkar2020forgetting,huang2020feature,ren2019likelihood}.
+% While subgroups of input samples may be outliers, it is more often the case that they represent known heterogeneity within the data. 
+% These differences are typically marked using 
+% group information known a priori, and 
+% most learning tasks aim to learn tasks
+% in a \textit{subgroup-independent} manner.
+% Optimization and regularization methods with this focus come under the umbrella of model fairness, and instead of identifying and boosting independences within the model or data, we aim to minimize them.
+% However, many existing methods do not scale well as the number of subgroups grows, as is often the case when intersections of protected classes must be considered. In the sequel we identify and construct a particular solution for \textbf{groupwise fairness that enables efficient in the loop fairness regularization}.
 
 \begin{mdframed}[style=MyFrame]
 \em 
