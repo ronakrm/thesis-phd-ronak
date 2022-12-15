@@ -24,7 +24,10 @@
 \def\cH{\mathcal{H}}
 \def\cI{\mathcal{I}}
 \def\cL{\mathcal{L}}
+
 \def\cM{\mathcal{M}}
+\def\Mc{\mathcal{M}} % back compat
+
 \def\cP{\mathcal{P}}
 \def\cR{\mathcal{R}}
 \def\cS{\mathcal{S}}
@@ -35,10 +38,54 @@
 \def\cY{\mathcal{Y}}
 \def\cZ{\mathcal{Z}}
 
-\newcommand{\SPD}{\text{SPD}}
-\newcommand{\VAR}{\text{VAR}}
-\newcommand{\EXP}{\text{Exp}}
-\newcommand{\LOG}{\text{Log}}
+\DeclareMathOperator*{\SPD}{SPD}
+\DeclareMathOperator*{\VAR}{VAR}
+\DeclareMathOperator*{\EXP}{Exp}
+\DeclareMathOperator*{\LOG}{Log}
+
+\DeclareMathOperator{\vvec}{vec}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\rank}{rank}
+
+%%%  Independence symbols
+\makeatletter
+\newcommand*{\indep}{%
+  \mathbin{%
+    \mathpalette{\@indep}{}%
+  }%
+}
+\newcommand*{\nindep}{%
+  \mathbin{%                   % The final symbol is a binary math operator
+    \mathpalette{\@indep}{\not}% \mathpalette helps for the adaptation
+                               % of the symbol to the different math styles.
+  }%
+}
+\newcommand*{\@indep}[2]{%
+  % #1: math style
+  % #2: empty or \not
+  \sbox0{$#1\perp\m@th$}%        box 0 contains \perp symbol
+  \sbox2{$#1=$}%                 box 2 for the height of =
+  \sbox4{$#1\vcenter{}$}%        box 4 for the height of the math axis
+  \rlap{\copy0}%                 first \perp
+  \dimen@=\dimexpr\ht2-\ht4-.2pt\relax
+      % The equals symbol is centered around the math axis.
+      % The following equations are used to calculate the
+      % right shift of the second \perp:
+      % [1] ht(equals) - ht(math_axis) = line_width + 0.5 gap
+      % [2] right_shift(second_perp) = line_width + gap
+      % The line width is approximated by the default line width of 0.4pt
+  \kern\dimen@
+  {#2}%
+      % {\not} in case of \nindep;
+      % the braces convert the relational symbol \not to an ordinary
+      % math object without additional horizontal spacing.
+  \kern\dimen@
+  \copy0 %                       second \perp
+} 
+\makeatother
+
+
 
 \mdfdefinestyle{MyFrame}{%
     linecolor=blue!50!white,

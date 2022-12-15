@@ -18,82 +18,13 @@ For general and generative settings, $x_i$ may be used in place, and for predict
 \end{itemize}
 
 \section{Differential Geometry}
+\input{diss/2_bknd/dffgeom.tex}
 
-\subsection{The Geometry of Tensors}
+\subsection{Tensors and their Geometry}
+\input{diss/2_bknd/tensors.tex}
 
-tensors, multiindexing, tensor decompositions
-
-\section{Graphs and Conditional Independence}
-
-Graphs $G \in \cG$ will generally be defined by their vertex and edge sets $G:=(E,V)$.
-
-\begin{verbatim}
-A graph G, edges E, vertices V
-
-undirected graphs
-random variables X
-markov property/blanket
-
-conditional independence generally
-
-for samples from distributions, can we estimate conditional indep?
-
-If there are some assumptions on XYZ, yes...
-conditional gaussian
-
-extending this to an arbitrary query and conditioning sets...multidim
-
-with some assumptions, methods exist
-glasso, others
-precision matrix, l1 reg
-
-what if we have no distributional asssumptions?
-other methods exist for other distributions, and sbms...
-
-recent work...CODEC, 
-indep, pairwise, extends/compares to measures of correlation
-
-cond ind, measure similarly:
-cont.
-sample.
-
-Identifying the full cond indep set: FOCI, 
-can be used for building full ``coherent" graphs, see last chapter for more.
-    
-\end{verbatim}
-
-\subsection{Hypothesis Testing}
-\begin{verbatim}
-basics
-    form
-    measures
-    continuous, traditionally want "gap" to be at least "alpha" large
-    example: means
-
-some of the measures described above have specific 
-guarantees when evaluated under
-standard hypothesis testing frameworks...
-
-a common test: likelihood ratio...
-
-scan statistics
-\end{verbatim}
+\section{Probability and Independence}
+\input{diss/2_bknd/probstat.tex}
 
 \section{Deep Networks, Optimization, and Objectives}
-\begin{verbatim}
-networks
-    objective
-how to minimize?
-    general optimization?
-    gradients
-    stochastic grad
-
-NNs aside, lets go back to simple formulations where things are nicer...
-linear programming
-\end{verbatim}
-
-\subsection{Optimal Transport}
-\begin{verbatim}
-    OT can be framed as a linear program....
-\end{verbatim}
-    
+\input{diss/2_bknd/dnnopt.tex}

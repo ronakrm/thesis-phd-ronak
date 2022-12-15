@@ -1,0 +1,128 @@
+
+A random variable $X$ is a mapping from each element in an outcome space $x \in X$ to a real number $\RR$. This mapping is generally written as $p(x):=\PP(X=x), x \in X$ to denote the distribution over possible realizations $x$ of $X$. $X$ may also denote a \textit{set} of random variables $X:=\{x_i\}_{i=1}^n$, where a draw from the distribution over $X$ results in a vector $x$ of dimension $n$.
+The \textit{expectation} of a random variable $\EE[X]$ is the ``weighted average'' over all outcomes. For discrete variables (which will be our main focus with expectations), 
+\begin{align}
+\EE[X] = \sum_{x\in X} x\cdot p(x)
+\end{align}
+The properties of distributions below extend to measures of expectations among multiple variables, with some caveats mentioned in specific chapters as needed.
+
+Over a set of random variables $X$ and $Y$, the distribution $p(x,y):= \PP(X=x,Y=y)$ is the \textit{joint} distribution both variables $(X,Y)$. The \textit{marginal} distribution for $x$ is computed by ``summing out'' $y$, i.e.,
+\begin{align}
+p(x) = \PP(X=x) &= \sum_y \PP(X=x,Y=y) = \sum_y p(x,y) \\
+&= \int p(x,y) dy
+\end{align}
+We say that the random variables $X$ and $Y$ are \textit{independent} if their joint distribution is equal to the product of their marginals: $p(x,y) = p(x)p(y)$.
+Intuitively, a draw from one distribution has no impact on the draw from the other. In the case where the variables are \textit{dependent}, the distributions are linked. The dependent draw is defined by the \textit{conditional} distribution $p(y|x)$. Then, a joint distribution can factor as an iterative draw: $p(x,y) = p(x)p(y|x)$. Importantly, this dependence is commutative: it is also true that $p(x,y) = p(y)p(x|y)$. When $p(y|x) = p(y)$, we say that $Y$ is independent of $X$. This commutativity leads to the formulation of Bayes' Rule:
+\begin{align}
+    p(y|x) = \frac{p(x|y)p(y)}{p(x)}
+\end{align}
+This form is used throughout statistics and machine learning. In most settings, we are interested in estimating some parameters $\theta$, or distribution over parameters $p(\theta)$, given a distribution over data $p(x)$. Applying Bayes' Rule:
+\begin{align}
+    p(\theta|x) = \frac{p(x|\theta)p(\theta)}{p(x)}
+\end{align}
+Where $p(x|\theta)$ is the \textit{likelihood} of observing the data $x$ given some parameter set, $p(\theta)$ is the \textit{prior} assumption on the base distribution over parameters, $p(x)$ is the marginal over all data (treated as a normalizing constant), and $p(\theta|x)$ is the \textit{posterior} distribution over the parameters given some data.
+Alternatively, we wish to update our estimation of the parameters $\theta$ from $p(\theta)$ to $p(\theta|x)$ given some observations $x$ that change our beliefs about the parameter space.
+Maximum a posteriori (MAP) estimation attempts to find the parameters that maximize this posterior, using Bayes' rule for tractable computation and estimation.
+
+\subsection{Conditional Independence} 
+With three or more variables, independence relations among variables may be determined by which variables are being conditioned upon. 
+\begin{definition}[Conditional Independence]\label{def:condindep}
+For three random variables $X,Y,Z$, we say that 
+$Y$ is \textit{conditionally independent} of $X$ given $Z$, written as $Y \indep X | Z$, if
+\begin{align}
+    p(y,x|z) = p(y|z)p(x|z).
+\end{align}    
+\end{definition}
+Intuitively, once you know $Z$, $X$ provides no additional information in predicting $X$. This can also be written as $p(y|x,z)=p(y|z)$.
+
+
+
+\paragraph{Graphs.}
+With a larger number of variables, independence relations can be difficult to define with this notation. \textit{Graphs} are commonly used in place.
+Graphs $G \in \cG$ are defined by their vertex and edge sets $G:=(E,V)$.
+The vertices $V$ correspond to some random variables $X,Y,Z,\ldots$, or $X_1,\ldots,X_n$. 
+An \textit{undirected} graph is one in which the existence of an edge $e_{ij}$ implies the existence of edge $e_{ji}$.
+Within a \textit{probabilistic graphical model}, an edge $e_{ij}$ implies a \textit{conditional dependence}. The omission of a particular edge thus has an explicit meaning:
+\begin{align}
+    e_{ij} \not\in E \iff X_i \indep X_j | X_{V\setminus(i,j)}
+\end{align}
+Where $V\setminus(i,j)$ is the rest of the variables in the set and graph. A graph with these independence relations is also referred to as a Markov graph: pairwise conditional independence relations imply \textit{global} conditional independence relations: for any sets of variables $A,B,C$, if $C$ ``separates'' $A$ and $B$, 
+While directed graphs are used and are of independent interest, in this thesis we focus on undirected graphs.
+
+\paragraph{Multivariate Gaussians.}
+Extending the typical univariate Gaussian distribution $p(x) = \frac{1}{\sqrt{2\pi\sigma^2}}e^{-(x-\mu)^2/2\sigma^2}$ defined by mean and variance parameters $\mu,\sigma^2$, we have the following density function for multivariate Gaussian distributions over $n$ variables, with realizations as the vector $\mathbf{x}:=[x_1,\ldots,x_n]^\top$:
+\begin{align}\label{eq:mvgauss}
+    p(x_1,\ldots,x_n) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}} \EXP\left(\frac{1}{2}(\mathbf{x} - \mathbf{\mu})^\top \Sigma^{-1} (\mathbf{x} - \mathbf{\mu})\right)
+\end{align}
+Where $\mathbf{\mu}$ is the vector of means for each individual variable, and $\Sigma$ is the $n\times n$ \textit{covariance} matrix describing the second-order interactions among the variables. 
+The tractability of both computing the density and estimating it in typical likelihood estimation frameworks makes the multivariate Gaussian a particular attractive prior used in many applications,
+including estimating independence.
+Specifically, 
+\begin{theorem}\label{thm:mvnindep}
+    Let $X$ be governed by a multivariate Gaussian as defined in \ref{eq:mvgauss}. Then it holds that
+    \begin{align}
+        \Sigma_{ij} = 0 \iff X_i \indep X_j
+    \end{align}
+\end{theorem}
+Complete independence among variables is often not possible and in most settings not valuable. However, a more powerful result for conditional independence exists.
+\begin{theorem}\label{thm:mvncondindep}
+    Let $X$ be governed by a multivariate Gaussian as defined in \ref{eq:mvgauss}, and $\Omega:=\Sigma^{-1}$ be the precision matrix. Then it holds that
+    \begin{align}
+        \Omega_{ij} = 0 \iff X_i \indep X_j | X_{\setminus(i,j)}
+    \end{align}
+\end{theorem}
+This immediately yields that the precision matrix encodes the edges of the probabilistic graphical model over the variables. Estimating these dependencies is thus equivalent to estimation of the precision matrix.
+
+\subsection{Estimating Parameters and Measures Over and Among Distributions}
+When samples are drawn from a particular family of distributions, a number of methods exist to estimate the parameters that fit that data best. 
+MAP estimation and maximum likelihood estimation as described above are typically used,
+but in many cases their standard forms do not yield
+parameters that reveal independence, i.e., it is often impossible for standard
+methods to result in a parameter estimate of zero.
+
+To determine the relationship among two random variables, measures such as the Pearson correlation coefficient, and Spearman and Kendall rank coefficients \citep{abc} are frequently used, with values close to zero suggesting a low importance, and a value close to 1 suggesting perfect dependence. However,
+these measures are only applicable with specific assumptions about the possible dependencies between the variables: Pearson coefficients can only identify linear dependencies, and rank coefficients typically fail with non-monotonic dependencies (e.g., periodic functions). These methods can be computed pairwise among all variables among a set of variables with size greater than 2, however, to estimate conditional dependencies typically requires the estimation of \textit{partial} coefficient measures.
+Additionally, while results similar to Theorem~\ref{thm:mvncondindep} exist under specific assumptions ,
+practical estimation does not often yield exact zeros,
+and estimating all partial coefficients separately can be computationally heavy.
+
+With some assumptions, \textit{sparse} recoveries are possible while estimating ALL conditional independencies. Following the results from multivariate Gaussians above,
+a \textit{penalized} version of a maximum likelihood estimate can be recovered through the following \textit{graphical lasso} \cite{abc} formulation:
+\begin{align}\label{eq:glasso}
+    \hat{\Omega} = \min_{\Omega \succeq} \tr(S\Omega) + \log|\Omega| + \lambda||\Omega||_1
+\end{align}
+With $S$ being the sample covariance of the data samples, and $\lambda$ a penalization weight. This $\ell_1$ penalization has been shown to be easy to compute, and a number of alternative versions have been proposed with varying theoretical properties and recovery guarantees~\citep{abc}.
+Particularly interesting are extensions to \textit{nonparanormal} distributions, which allow for a much larger set of graphs to be estimated over other distributions via a rank covariance matrix, generalizing the pairwise rank and distance coefficients above \cite{abc}.
+
+The distributional assumptions needed for all of these methods, however, are often completely unknown in practice, or the data represent highly complex densities and functions that cannot be represented by simple exponential families or rank-based measures.
+Newer measures of \textit{nonparametric} estimations of dependence have been developed, such as distance correlation and kernel-based coefficients \cite{abc}, but they tend to either only test for independence and not strength of functional relationship, or have complex instantations or asymptotic theories, making them difficult to deploy and rely upon in practice.
+
+A recent coefficient, the Chatterjee coefficient, has been demonstrated to have a number of desirable properties, and has been further developed into an elegant method for testing conditional independence~\citep{abc,abc}. 
+Particularly,
+no conditional densities need to be estimated,
+it can be computed in $O(n\log n)$ time where $n$ is the number of data samples,
+it asymptotically to 0 for conditional independence, and 1 for measurable functions,
+and it requires \textit{absolutely no assumptions} on the law over the random variables.
+For arbitrary variables random $X,Y,Z$, where $Y$ is univariate and $X,Z$ can be multivariate of any size, the conditional coefficient is given  by
+\begin{align}\label{eq:contcodec}
+    T(Y,X|Z) = \frac{\int\EE\left[\VAR(\PP(Y\geq t)|X,Z)|Z)\right]d\mu(t)}{\int\EE\left[\VAR(\II\{Y\geq t\}|Z\right] d\mu(t)}
+\end{align}
+In the following chapters we will take advantage of these properties. Critically, without a specific procedure, identifying the conditioning set for a particular independence test is exponential. If we wish to find which variables $X_1,\ldots,X_n$ are sufficient for creating independence between some outcome $Y$ and the rest of the variables, na\"ively we would need to test all possible subsets.
+An advantage of the coefficient of dependence in \cite{abc} is that it admits a linear time algorithm for iteratively building the sufficient set, naturally enabling an algorithm for constructing a Markov graph over the variables of interest.
+
+\subsection{Hypothesis Testing}
+\begin{verbatim}
+basics
+    form
+    measures
+    continuous, traditionally want "gap" to be at least "alpha" large
+    example: means
+
+some of the measures described above have specific 
+guarantees when evaluated under
+standard hypothesis testing frameworks...
+
+a common test: likelihood ratio...
+
+subsec: scan statistics
+\end{verbatim}
