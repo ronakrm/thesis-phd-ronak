@@ -1,73 +1,30 @@
 \chapter{Background}\label{sec:bknd}
 
+Here we will briefly describe some background concepts and ideas that will aid and facilitate discussion of subset identification in later chapters.
+
 \section{General Notations}
+The following notations will be standard and followed consistently throughout the sequel, unless otherwise noted.
+\begin{itemize}
+\item Calligraphic capital letters will typically represent spaces, and capital letters will typically represent an instance or element from those spaces.
 
+\item Set sizes will typically take the form of lowercase $n,d,p$, generally associated with the number of samples, the dimension of some feature space, and the number of parameters respectively. $i,j,k$ will be used for indexing various sets within context.
 
+\item We use $\RR^d$ to represent $d$-dimensional vector space over the reals, and vectors will be lowercase typically as $x,y,z$ and matrices and higher order tensors will be denoted in uppercase, with local clarity on their distinction between a set instance.
+
+\item $S$ will denote a of training examples.
+A sample $s_i\in S$ may be indexed by $i \in [1,\ldots,n]$. 
+For general and generative settings, $x_i$ may be used in place, and for predictive settings will be represented by the tuple $s_i:=(x_i,y_i)$.
+
+\end{itemize}
 
 \section{Differential Geometry}
+\input{2_bknd/dffgeom.tex}
 
-\subsection{The Geometry of Tensors}
+\subsection{Tensors and their Geometry}
+\input{2_bknd/tensors.tex}
 
-
-\section{Graphs and Conditional Independence}
-
-A graph G, edges E, vertices V
-
-undirected graphs
-random variables X
-markov property/blanket
-
-conditional independence generally
-
-for samples from distributions, can we estimate conditional indep?
-
-If there are some assumptions on XYZ, yes...
-conditional gaussian
-
-extending this to an arbitrary query and conditioning sets...multidim
-
-with some assumptions, methods exist
-glasso, others
-precision matrix, l1 reg
-
-what if we have no distributional asssumptions?
-other methods exist for other distributions, and sbms...
-
-recent work...CODEC, 
-indep, pairwise, extends/compares to measures of correlation
-
-cond ind, measure similarly:
-cont.
-sample.
-
-Identifying the full cond indep set: FOCI, 
-can be used for building full ``coherent" graphs, see last chapter for more.
-
-\subsection{Hypothesis Testing}
-\begin{verbatim}
-basics
-    form
-    measures
-    continuous, traditionally want "gap" to be at least "alpha" large
-    example: means
-
-some of the measures described above have specific guarantees when evaluated under standard hypothesis testing frameworks...
-
-a common test: likelihood ratio...
-\end{verbatim}
+\section{Probability and Independence}
+\input{2_bknd/probstat.tex}
 
 \section{Deep Networks, Optimization, and Objectives}
-\begin{verbatim}
-networks
-    objective
-how to minimize?
-    general optimization?
-    gradients
-    stochastic grad
-
-NNs aside, lets go back to simple formulations where things are nicer...
-linear programming
-\end{verbatim}
-
-\subsection{Optimal Transport}
-    OT can be framed as a linear program....
+\input{2_bknd/dnnopt.tex}
