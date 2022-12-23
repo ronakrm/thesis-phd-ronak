@@ -111,6 +111,82 @@ In the following chapters we will take advantage of these properties. Critically
 An advantage of the coefficient of dependence in \cite{abc} is that it admits a linear time algorithm for iteratively building the sufficient set, naturally enabling an algorithm for constructing a Markov graph over the variables of interest.
 
 \subsection{Hypothesis Testing}
+
+Statistical hypothesis testing involves formally defining and testing a hypothesis about the world.
+A prior ``null'' assumption is defined. The \textit{null} hypothesis, $H_0$
+represents the default assumption or expectation
+that there is no relationship or distinction among
+the true population states,
+whereas the \textit{alternative} hypothesis, $H_A$,
+describes the world in which some hypothesized 
+relationship or distinction does exist.
+Testing proceeds by collecting observations
+of the variables of interest,
+computing a \textit{test statistic},
+and comparing that statistic against
+a prior \textit{null distribution}.
+If the test statistic is larger
+than a predefined critical value,
+the null hypothesis is rejected:
+there is reasonable evidence to suggest
+the alternative may be true.
+When we fail to reject the null,
+there is insufficient evidence to support
+the alternative claim.
+
+The form of the test statistic and null distribution
+are defined by the specific hypothesis being tested,
+as well as the prior assumptions about the parameters
+of interest and data collected.
+
+\paragraph{Example: Testing a difference of means.} 
+Say we have collected samples from two different groups,
+representing the height of each person in the group.
+Our task is to determine if the average height
+of the two groups is significantly different from each other.
+Na\"ively, we can compute the averages of the two groups and compare.
+In practice these averages will never be equal, so how can we 
+more rigorously determine if we should consider some measured difference
+significant enough to say the groups are different?
+We can set up the following hypothesis test.
+
+Let $\mu_1$ be the true \textit{population mean} of group 1,
+and $\mu_2$ the true population mean of group 2.
+Our hypotheses are:
+\begin{align}
+H_0: \mu_1 = \mu_2 \qquad H_A: \mu_1 \neq \mu_2
+\end{align}
+Let us assume we have collected the same number of samples from each group,
+$n$, and that the means of the collected samples are $\hat{\mu}_1$ and $\hat{\mu}_2$,
+and the standard deviations are $s_1$ and $s_2$.
+Then the test statistic
+\begin{align}
+t = \frac{\hat{\mu}_1 - \hat{\mu}_2}{\sqrt{\frac{s_1^2 + s_2^2}{n}}}
+\end{align}
+follows a $t$-distribution with $n-1$ degrees of freedom,
+\textit{if} there is no difference between the means.
+Comparing the value of the measured statistic over the observed data
+to the corresponding $t$-distribution allows
+us to determine how likely or unlikely it is that 
+our observation follows the law that the means are equal.
+If we want our test to accurately identify
+a difference between means 95\% of the time,
+we can set our threshold $t^*$ (critical value) for rejecting the null
+to be the point where $\PP(t \geq t^*) \geq 0.95$.
+
+Importantly, the value of the $t$-statistic and corresponding
+distribution and critical value are extremely
+dependent on the number of samples $n$ acquired for the test.
+As we will see, in cases where the number of samples is 
+very small and our hypothesis describes 
+a subtle difference between groups,
+novel tests and procedures are necessary
+to effectively identify those differences.
+
+
+
+
+
 \begin{verbatim}
 basics
     form

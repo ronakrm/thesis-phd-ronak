@@ -57,7 +57,7 @@ The inverse of the exponential map is the \textit{logarithm map}, $\LOG(y_i,\cdo
 For completeness, Table \ref{tab:comp} shows corresponding operations in the Euclidean space and Riemannian manifolds.
 In the main paper, for the readability when operations are multiply nested, exponential map and its inverse logarithm map are denoted by $\EXP(p, x)$ and $\LOG(p, v)$ respectively, where $p, x \in \Mc$ and $v\in T_p\Mc$. They are usually denoted $\exp_p(x)$ and $\log_p(v)$ in most of differential geometry books. 
  
-Separate from the above notations, matrix exponential, i.e, $\exp(X):= \sum \frac{1}{k!} X^k$, where $0!=1$ and $X^0=I$  and matrix logarithm are denoted by as $\exp(\cdot)$ and $\log(\cdot)$. 
+Separate from the above notations, the matrix exponential, i.e, $\exp(X):= \sum \frac{1}{k!} X^k$, where $0!=1$ and $X^0=I$  and the matrix logarithm are denoted by as $\exp(\cdot)$ and $\log(\cdot)$. 
 
 
 % \renewcommand{\arraystretch}{1.5}
@@ -97,7 +97,7 @@ Separate from the above notations, matrix exponential, i.e, $\exp(X):= \sum \fra
 \label{tab:comp}
 \end{table}
 
-\noindent {\bf Intrinsic mean.} 
+\paragraph{Intrinsic mean} 
 Let $d(\cdot,\cdot)$ define the distance between two points. The intrinsic (or Karcher) mean is the minimizer to
 {\small \begin{equation}
 \label{eq:karchermean}
@@ -126,7 +126,7 @@ which may be an arithmetic, geometric or harmonic mean depending on $d(\cdot,\cd
  
 This identity implies the first order necessary condition of \eqref{eq:karchermean}, i.e., $\bar{y}$ is a local minimum with a zero norm gradient \cite{karcher1977riemannian}. In general, on manifolds, the existence and uniqueness of th.e Karcher mean is not guaranteed unless we assume, for uniqueness, that the data is in a small neighborhood.\\
 
-\noindent {\bf Parallel transport.} 
+\paragraph{Parallel transport} 
 %\subsection{Parallel Transport} 
 Let $\Mc$ be a differentiable manifold with an affine connection $\nabla$ and $I$ be an open interval. Let $c:I \rightarrow \Mc$ be a differentiable curve in $\Mc$ and let $V_0$ be a tangent vector in $T_{c(t_0)}\Mc$, where $t_{0} \in I$. 
 Then, there exists a unique parallel vector field $V$ along $c$, such that $V(t_0)=V_0$. Here, $V(t)$ is called the \textit{parallel transport} of $V(t_0)$ along $c$. 
@@ -149,7 +149,7 @@ Here, $T_{p}\Mc$ is a tangent space at $p$ (which is a vector space) is the spac
 The geodesic distance is $d(p,q)^{2} = \tr( \log^{2}(p^{-1/2}qp^{-1/2}))$.
 
 
-The exponential map and logarithm map are  given as 
+The exponential map and logarithm map are given as 
 \begin{equation}
 \begin{split}
   \EXP(p,v) = p^{1/2} \exp(p^{-1/2}vp^{-1/2})p^{1/2}, \;\;
