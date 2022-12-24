@@ -9,13 +9,53 @@ a deep neural network.
 The advantages
 and successes of deep neural networks
 rely heavily on their ease of optimization:
+the \textit{computation graph} that 
+underlies the neural network
+allows for gradients
+to be computed by parts
+and accumulated via the chain rule.
 
+Consider a simple function $f_\theta(x)$
+that is defined as a linear combination of 
+some parameters $\theta:=w, w\in \RR^d$ with $x\in \RR^d$ followed by 
+a differentiable, nonlinear scalar \textit{activation} function $a(\cdot)$:
+\begin{align}
+	f_\theta(x) := a(w\cdot x)
+\end{align}
+If we have some estimate of the parameters $\theta:=w$,
+then the gradient of the full network with respect to those parameters is
+\begin{align}
+	\frac{df}{d\theta} = \frac{df}{da}\frac{da}{dw}
+\end{align}
+where $df/da$ is the (known) derivative of the \textit{activation} function,
+and $da/dw$ is exactly $x$, the derivative of a linear function.
+With a direction of descent,
+we can update the parameters via some update to minimize the functional $f$ of interest:
+\begin{align}
+	\theta_{t+1} = \theta_t + g(\theta_t,x)
+\end{align}
+where $g(\cdot)$ is some function of the full derivative $g(\cdot) := g(\nablaf_\theta(x))$,
+and $\theta_t$ are the current parameter estimates.
+Optimization proceeds and terminates when a certain amount
+of iterations $t$ have completed,
+or some stopping criterion has been reached,
+typically that the gradient is small,
+indicating that a minima has been identified.
 
-
+This formulation and gradient update generalize
+to extremely large and complex stacks
+of operations, and are what have enabled
+the enormous success and ubiquity of learning
+methods to this day.
 Importantly,
-the \textit{solution} identified can 
+the final minima identified can 
 vary significantly based on the particular form 
-of the function $f_\theta$.
+of the function $f_\theta$, and,
+in the case where the function $f$ is
+not \textit{convex},
+it can also depend on
+the initial estimate $\theta_0$ at initialization.
+
 
 \begin{verbatim}
 networks
