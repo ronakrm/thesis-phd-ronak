@@ -34,13 +34,16 @@ we can update the parameters via some update to minimize the functional $f$ of i
 \begin{align}
 	\theta_{t+1} = \theta_t + g(\theta_t,x)
 \end{align}
-where $g(\cdot)$ is some function of the full derivative $g(\cdot) := g(\nablaf_\theta(x))$,
+where $g(\cdot)$ is some function of the full derivative $g(\cdot) := g(\nabla f_\theta(x))$,
 and $\theta_t$ are the current parameter estimates.
 Optimization proceeds and terminates when a certain amount
 of iterations $t$ have completed,
 or some stopping criterion has been reached,
 typically that the gradient is small,
 indicating that a minima has been identified.
+
+full gradients not feasible, large samples,
+
 
 This formulation and gradient update generalize
 to extremely large and complex stacks
@@ -57,6 +60,13 @@ it can also depend on
 the initial estimate $\theta_0$ at initialization.
 
 
+forms of $f$, architectures
+	architecture search
+	initializations
+		lottery ticket
+		
+
+
 \begin{verbatim}
 networks
     objective
@@ -64,12 +74,20 @@ how to minimize?
     general optimization?
     gradients
     stochastic grad
-
-NNs aside, lets go back to simple formulations where things are nicer...
-linear programming
 \end{verbatim}
 
-\subsection{Losses and More Optimal Transport}
+\subsection{Losses and Optimal Transport}
+loss functions, objectives
+arbitrary distances
+MSE
+regularizers
+
+probabilistic distances
+KL
+mutual information
+MMD
+
+Optimal transport	
 \begin{verbatim}
     OT can be framed as a linear program....
 \end{verbatim}

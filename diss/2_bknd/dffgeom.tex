@@ -105,7 +105,8 @@ Let $d(\cdot,\cdot)$ define the distance between two points. The intrinsic (or K
 \end{equation}}
 which may be an arithmetic, geometric or harmonic mean depending on $d(\cdot,\cdot)$. A Karcher mean is a local minimum to \eqref{eq:karchermean} and a global minimum is referred as a Fr\'{e}chet mean. On manifolds, the Karcher mean satisfies $\sum_{i=1}^{N} \LOG_{\bar{y}}y_i =0$.
 
- \begin{figure}[H]
+\iffalse
+ \begin{figure}
  \begin{center}
  \begin{minipage}{.45\linewidth} 
  \begin{algorithmic}[plain]
@@ -123,6 +124,7 @@ which may be an arithmetic, geometric or harmonic mean depending on $d(\cdot,\cd
  \caption{Karcher mean on manifolds}
      \label{alg:karcher} 
  \end{figure}
+ \fi
  
 This identity implies the first order necessary condition of \eqref{eq:karchermean}, i.e., $\bar{y}$ is a local minimum with a zero norm gradient \cite{karcher1977riemannian}. In general, on manifolds, the existence and uniqueness of th.e Karcher mean is not guaranteed unless we assume, for uniqueness, that the data is in a small neighborhood.\\
 

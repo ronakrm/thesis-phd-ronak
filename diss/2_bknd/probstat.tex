@@ -12,7 +12,7 @@ p(x) = \PP(X=x) &= \sum_y \PP(X=x,Y=y) = \sum_y p(x,y) \\
 &= \int p(x,y) dy
 \end{align}
 We say that the random variables $X$ and $Y$ are \textit{independent} if their joint distribution is equal to the product of their marginals: $p(x,y) = p(x)p(y)$.
-Intuitively, a draw from one distribution has no impact on the draw from the other. In the case where the variables are \textit{dependent}, the distributions are linked. The dependent draw is defined by the \textit{conditional} distribution $p(y|x)$. Then, a joint distribution can factor as an iterative draw: $p(x,y) = p(x)p(y|x)$. Importantly, this dependence is commutative: it is also true that $p(x,y) = p(y)p(x|y)$. When $p(y|x) = p(y)$, we say that $Y$ is independent of $X$. This commutativity leads to the formulation of Bayes' Rule:
+Intuitively, a draw from one distribution has no impact on the draw from the other. In the case where the variables are \textit{dependent}, the distributions are linked. The dependent draw is defined by the \textit{conditional} distribution $p(y|x)$. Then, a joint distribution can factor as an iterative draw first from $p(x)$ followed by from $p(y|x)$: $p(x,y) = p(x)p(y|x)$. Importantly, this dependence is commutative: it is also true that $p(x,y) = p(y)p(x|y)$. When $p(y|x) = p(y)$, we say that $Y$ is independent of $X$. This commutativity leads to the formulation of Bayes' Rule:
 \begin{align}
     p(y|x) = \frac{p(x|y)p(y)}{p(x)}
 \end{align}
@@ -23,6 +23,14 @@ This form is used throughout statistics and machine learning. In most settings, 
 Where $p(x|\theta)$ is the \textit{likelihood} of observing the data $x$ given some parameter set, $p(\theta)$ is the \textit{prior} assumption on the base distribution over parameters, $p(x)$ is the marginal over all data (treated as a normalizing constant), and $p(\theta|x)$ is the \textit{posterior} distribution over the parameters given some data.
 Alternatively, we wish to update our estimation of the parameters $\theta$ from $p(\theta)$ to $p(\theta|x)$ given some observations $x$ that change our beliefs about the parameter space.
 Maximum a posteriori (MAP) estimation attempts to find the parameters that maximize this posterior, using Bayes' rule for tractable computation and estimation.
+\begin{align}\label{eq:map}
+	\max_\theta p(\theta|x) = \max_\theta \frac{p(x|\theta)p(\theta)}{p(x)} =  \max_\theta p(x|\theta)p(\theta)
+\end{align}
+If we have some samples $\{x_i\}_{i=1}^n$ from the data distribution that comprise a dataset,
+then we have the following equivalent log-transformed model:
+\begin{align}
+	\max_\theta \sum_{i=1}^n \log p(x_i|\theta) + \log
+\end{align}
 
 \subsection{Conditional Independence} 
 With three or more variables, independence relations among variables may be determined by which variables are being conditioned upon. 
@@ -80,19 +88,19 @@ but in many cases their standard forms do not yield
 parameters that reveal independence, i.e., it is often impossible for standard
 methods to result in a parameter estimate of zero.
 
-To determine the relationship among two random variables, measures such as the Pearson correlation coefficient, and Spearman and Kendall rank coefficients \citep{abc} are frequently used, with values close to zero suggesting a low importance, and a value close to 1 suggesting perfect dependence. However,
+To determine the relationship among two random variables, measures such as the Pearson correlation coefficient, and Spearman and Kendall rank coefficients \citep{myers2013research} are frequently used, with values close to zero suggesting a low importance, and a value close to 1 suggesting perfect dependence. However,
 these measures are only applicable with specific assumptions about the possible dependencies between the variables: Pearson coefficients can only identify linear dependencies, and rank coefficients typically fail with non-monotonic dependencies (e.g., periodic functions). These methods can be computed pairwise among all variables among a set of variables with size greater than 2, however, to estimate conditional dependencies typically requires the estimation of \textit{partial} coefficient measures.
 Additionally, while results similar to Theorem~\ref{thm:mvncondindep} exist under specific assumptions ,
 practical estimation does not often yield exact zeros,
 and estimating all partial coefficients separately can be computationally heavy.
 
 With some assumptions, \textit{sparse} recoveries are possible while estimating ALL conditional independencies. Following the results from multivariate Gaussians above,
-a \textit{penalized} version of a maximum likelihood estimate can be recovered through the following \textit{graphical lasso} \cite{abc} formulation:
+a \textit{penalized} version of a maximum likelihood estimate can be recovered through the following \textit{graphical lasso} \cite{friedman2008sparse} formulation:
 \begin{align}\label{eq:glasso}
     \hat{\Omega} = \min_{\Omega \succeq} \tr(S\Omega) + \log|\Omega| + \lambda||\Omega||_1
 \end{align}
-With $S$ being the sample covariance of the data samples, and $\lambda$ a penalization weight. This $\ell_1$ penalization has been shown to be easy to compute, and a number of alternative versions have been proposed with varying theoretical properties and recovery guarantees~\citep{abc}.
-Particularly interesting are extensions to \textit{nonparanormal} distributions, which allow for a much larger set of graphs to be estimated over other distributions via a rank covariance matrix, generalizing the pairwise rank and distance coefficients above \cite{abc}.
+With $S$ being the sample covariance of the data samples, and $\lambda$ a penalization weight. This $\ell_1$ penalization has been shown to be easy to compute, and a number of alternative versions have been proposed with varying theoretical properties and recovery guarantees~\citep{cai2011constrained,yuan2010high}.
+Particularly interesting are extensions to \textit{nonparanormal} distributions, which allow for a much larger set of graphs to be estimated over other distributions via a rank covariance matrix, generalizing the pairwise rank and distance coefficients above \cite{liu2009nonparanormal,xue2012regularized}.
 
 The distributional assumptions needed for all of these methods, however, are often completely unknown in practice, or the data represent highly complex densities and functions that cannot be represented by simple exponential families or rank-based measures.
 Newer measures of \textit{nonparametric} estimations of dependence have been developed, such as distance correlation and kernel-based coefficients \cite{abc}, but they tend to either only test for independence and not strength of functional relationship, or have complex instantations or asymptotic theories, making them difficult to deploy and rely upon in practice.

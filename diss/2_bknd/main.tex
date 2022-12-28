@@ -1,6 +1,27 @@
 \chapter{Background}\label{sec:bknd}
 
-Here we will briefly describe some background concepts and ideas that will aid and facilitate discussion of subset identification in later chapters.
+Here we will briefly describe some background concepts and ideas that will aid and facilitate discussion of subset identification in later chapters. 
+Following some general notation,
+we will begin with an overview
+of classical probability and statistics,
+and a focus on the hypothesis testing
+schemes built upon in the third chapter.
+This is followed by the basics of Riemannian differential geometry
+and the geometry of tensor objects,
+the key objects that enable the 
+tests and efficiencies described in both 
+Chapters 3 and 4.
+Next we provide
+an overview of optimization tools
+and methods particularly suited
+and developed for neural network methods,
+alongside typical forms and objectives 
+in the machine learning literature.
+We conclude this chapter
+with a discussion on optimal transport
+methods in deep learning, important
+for our discussion of novel optimization schemes
+in Chapter 6.
 
 \section{General Notations}
 The following notations will be standard and followed consistently throughout the sequel, unless otherwise noted.
@@ -17,14 +38,14 @@ For general and generative settings, $x_i$ may be used in place, and for predict
 
 \end{itemize}
 
-\section{Differential Geometry}
+\section{Probability and Independence}
+\input{2_bknd/probstat.tex}
+
+\section{Differential Geometry}\label{sec:diffgeom}
 \input{2_bknd/dffgeom.tex}
 
 \subsection{Tensors and their Geometry}
 \input{2_bknd/tensors.tex}
-
-\section{Probability and Independence}
-\input{2_bknd/probstat.tex}
 
 \section{Deep Networks, Optimization, and Objectives}
 \input{2_bknd/dnnopt.tex}
