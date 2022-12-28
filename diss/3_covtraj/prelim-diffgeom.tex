@@ -1,0 +1,81 @@
+%We briefly review some of basic concepts \cite{do1992riemannian} and notations that will be utilized in the remainder of the presentation. For more details, readers can refer to 
+{\bf Basic differential geometry notations.} 
+%\noindent {\bf Riemannian manifolds.} 
+%Before discussion about general regressions models for manifold-valued response variables, let's revisit manifolds.
+Let $\Mc$ be a \textit{differentiable (smooth) manifold} in arbitrary dimensions.
+%$\Mc$ is a maximal family of \textit{injective} mappings $\varphi_{i}:U_{i}
+%\subset \textbf{R}^{n} \rightarrow \Mc$ of open sets $U_{i}$ of
+%$\textbf{R}^{n}$ into $\Mc$ such that:
+%\begin{inparaenum}[\bfseries (1)]
+%\item $\cup_{i} \varphi_i(U_{i}) =\Mc$; 
+%\item for any pair $i,j$ with $\varphi_{i} (U_{i}) \cap
+%\varphi_{j} (U_{j}) = W \neq \phi$, the sets $\varphi_{i}^{-1}(W)$
+%and $\varphi_{j}^{-1}(W)$ are open sets in $\textbf{R}^{n}$ and the
+%mappings $\varphi_{j}^{-1} \circ \varphi_{i}$ are
+%differentiable, where $\circ$ denotes function composition. 
+%\item The family $\{(U_{i},\varphi_{i})\}$ is maximal relative to
+%the conditions (1) and (2). 
+%\end{inparaenum}
+%In other words, 
+A differentiable manifold $\Mc$ is a topological
+space that is locally similar to Euclidean space and has a globally
+defined differential structure. 
+%
+%A \textit{Riemmannian manifold} is a differentiable manifold $\Mc$ equipped with a smoothly varying inner product $g_p$ in the tangent space ($T_{p}\Mc$) at a point $p$ on the manifold.
+%, is a vector space that consists of
+%the tangent vectors of {\em all} possible curves passing through $p$. The Tangent bundle of $\Mc$, i.e., $T\Mc$, is the disjoint union of tangent spaces at all points of $\Mc$, 
+%$T\Mc = \coprod_{p \in \Mc}T_{p}\Mc$. 
+%The tangent bundle is equipped with a natural \textit{projection map} $\pi: T\Mc \rightarrow \Mc$ \cite{lee2012introduction}. 
+%
+A \textit{Riemannian manifold} is a differentiable manifold $\Mc$ equipped with a smoothly varying inner product.
+%The family of inner products on all tangent spaces is known as 
+%the \textit{Riemannian metric}, 
+%This definition 
+%enables us to 
+%With Riemannian metrics, we can 
+%which defines various geometric notions on curved manifolds such as the length of a curve. 
+A \textit{geodesic curve} is a locally shortest path, which is  analogous to straight lines in $\textbf{R}^{p}$ --- such a geodesic 
+curve will be the object that defines the trajectory of our covariance matrices in $\SPD$ space. 
+Unlike the Euclidean space, note that there may exist multiple geodesic curves between two points on a curved manifold. 
+So, the \textit{geodesic distance}
+between two points on $\Mc$ is defined as the length of the {\em shortest} geodesic curve connecting two points.
+The geodesic distance helps in measuring the error of our trajectory estimation (analogous to a Frobenius or $\ell_2$ norm based loss in the Euclidean setting).
+The geodesic curve from $y_i$ to $y_j$  is parameterized by a tangent vector in the tangent space anchored at $y_i$ with an exponential map $\EXP(y_i,\cdot ): T_{y_i}\Mc \rightarrow \Mc$. 
+The inverse of the exponential map is the logarithm map, $\LOG(y_i,\cdot):\M \rightarrow T_{y_i}\M$. These two operations move us back and forth between 
+the manifold and the tangent space. 
+%For completeness, Table \ref{tab:comp} shows corresponding %operations in the Euclidean space and Riemannian manifolds.
+%In this paper, we use $\EXP(\cdot, \cdot)$ and $\LOG(\cdot, \cdot)$ for exponential map and its inverse logarithm map for Riemannian manifold. 
+Separate from the above notation, matrix exponential (and logarithm) are simply $\exp(\cdot)$ (and $\log(\cdot)$).  
+%Lastly, \textit{parallel transport} is a generalized parallel translation on manifolds. 
+%Let $\Mc$ be a differentiable manifold with
+%an affine connection $\nabla$ and $\mathcal{I}$ be an open interval. 
+%Let $g : \mathcal{I} \rightarrow  \Mc$ be a differentiable curve in $\Mc$ and let $V_0$ be a tangent vector in $T_{g(t_0)}\Mc$, where $t_0 \in I$. 
+%Then, there exists a unique parallel vector field $V$ along $c$, such that $V (t_0) = V_0$. Here, $V (t)$ is called the parallel transport of $V (t_0)$ along $g$. 
+%We denote the parallel transport from $y$ to $y_0$ of $V$ as $\Gamma_{y\rightarrow y'}V$ . Intuitively, parallel transport of $V_0$ along curve $g$ can be interpreted as the parallel translation of $V_0$ on manifolds preserving the angle between $V (t)$ and $g$.
+Finally, \textit{parallel transport} is a generalized parallel translation on manifolds. Given a differentiable curve $\gamma : \mathcal{I} \rightarrow  \Mc$, where $\mathcal{I}$ is an open interval, 
+the parallel transport of $v_0 \in T_{\gamma(t_0)}\Mc$ along curve $\gamma$ can be interpreted as the parallel translation of $v_0$ on the manifold preserving its length and the angle between $v (t)$ and $\gamma$. 
+The parallel transport of $v$ from $y$ to $y'$ is $\Gamma_{y\rightarrow y'}v$.
+We include in the appendix additional differential geometry background.
+%For , the reader may refer to the supplement (includes a detailed appendix).
+
+%\renewcommand{\arraystretch}{1.5}
+%\begin{table}[!b]
+%{\footnotesize
+%\begin{center}
+%    \begin{tabular}{| l | l | l | }
+%    \hline
+%    Operation & Euclidean & Riemannian  \\  \hline 
+%    \footnotesize Subtraction & $\overrightarrow{x_i x_j} = x_j - x_i$ & $\overrightarrow{x_i x_j} = \LOG(x_i,x_j)$ \\ 
+%    \footnotesize Addition & $x_i + \overrightarrow{x_j x_k}$ & $\EXP(x_i,\overrightarrow{x_j x_k})$ \\     
+%    \footnotesize Distance  & $\| \overrightarrow{x_i x_j} \|$ & $\|\LOG(x_i,x_j) \|_{x_i}$ \\ 
+%    Mean  & $\sum_{i=1}^{n} \overrightarrow{\bar{x}x_{i}}=0$ & \footnotesize $\sum_{i=1}^{n} \LOG(\bar{x}, x_i)=0$  \\ 
+%    Covariance & \footnotesize$\EE \left [ (x_i - \bar{x})(x_i - \bar{x})^{T} \right ]$&\footnotesize $\EE \left [ \LOG(\bar{x}, x)\LOG(\bar{x}, x)^{T} \right ]$\\ [1ex] \hline 
+%  \end{tabular}
+%\end{center}
+%}
+%\caption{\footnotesize Basic operations in Euclidean space and Riemannian manifolds.}
+%\label{tab:comp}
+%\end{table}
+
+%The interested reader may
+%refer to \cite{do1992riemannian} for technical details.

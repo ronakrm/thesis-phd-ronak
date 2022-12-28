@@ -1,0 +1,77 @@
+With an algorithm to construct a regression model for covariance matrix responses in hand, we can now describe a key
+component of our contribution: a test statistic which allows addressing the main question of interest: 
+{\em Is the progression/trajectory of covariance matrices (over time) different across two groups?} In the standard two-sample testing problem, a hypothesis test is set up
+to check if the parameters of each group are significantly different:
+\begin{align}\label{eq:hyptest}
+H_0: \theta_1 = \theta_2 \quad vs. \quad H_A: \theta_1 \neq \theta_2
+\end{align}
+Recall that in a general linear model (GLM), when testing for mean group differences, the test parameters are the regression slopes from a standard GLM fit. 
+In our setting, the parameters of interest are the population covariance trajectories estimated from the manifold regression in \eqref{eq:multigr}, see Fig. \ref{fig:manifold}. 
+While the trajectories and the slopes are related, note that our parameters are estimated {\em on the manifold}. 
+Two unique manifold trajectories, when projected as simple multivariate responses in Euclidean space, may not be significantly different under the GLM hypothesis testing framework, as has been observed by \cite{du2014geodesic}. Returning to our longitudinal trajectory formulation, we have the following na\"ive Covariance GLM:
+\begin{definition} Let $vec(C_{g,t})$ be the vectorized covariance matrix at timepoint $t$ for group $g \in \{1,2\}$. Then the 
+na\"ive Covariance GLM is defined as
+\begin{align}\label{eq:euclideanGLM}
+vec(C_{g,t}) = \beta_g^{0} + \beta_g t + \epsilon
+\end{align}
+with the slope $\theta = \beta$ in the hypothesis test in \eqref{eq:hyptest}, and $vec(\cdot)$ is the vectorized form of the input matrix. 
+\end{definition}
+With this model, hypothesis testing reduces to a simple difference of slopes, which is well-studied in classical statistics literature.
+\begin{definition}\citep{seber2003linear} \label{eq:euclideanhyptest}
+Let $\Bbeta_1,\Bbeta_2$ be the multivariate slopes calculated from estimating \eqref{eq:euclideanGLM}.
+Then an $\alpha$-level hypothesis test rejects the null hypothesis $\Bbeta_1 = \Bbeta_2$ when $L > \chi^2_{p}|_{1-\alpha}$, where
+\begin{align}
+L = (\hat{\Bbeta}_1 - \hat{\Bbeta}_2)\Sigma^{-1}(\hat{\Bbeta}_1 - \hat{\Bbeta}_2)
+\end{align}
+\end{definition}
+Knowing that the response space is structured, i.e., our covariance matrices lie on the $\SPD$ manifold, we seek a more appropriate test and corresponding test statistic which 
+adequately captures this knowledge. 
+
+Observe that we can directly apply the manifold regression in \S \ref{sec:mglm} to solve for a linear model on the manifold. 
+That is, we construct the manifold GLM as
+\begin{definition} Let $C_{g,t}$ be the covariance matrix at timepoint $t$ for group $g \in \{1,2\}$. Then the 
+	Longitudinal-Covariance GLM (LCGLM) is defined as
+	\begin{align}\label{eq:LCGLM}
+		C_{g,t} = \EXP(b_g, \BV_g t)
+	\end{align}
+	with $b_g$ and $\BV_g$ being the base point and tangent vector respectively, as described in \S\ref{sec:mglm}.
+\label{eq:lcglm}
+\end{definition}
+%Evaluating this model in general turns out to be significantly more involved than the standard vectorized approach. 
+But instead of solving $p(p-1)/2$ independent regressions, now we must concurrently solve for the entire manifold-valued response variable.
+In this case, we cannot directly compare our trajectories because they lie in {\em different} tangent spaces. To accurately compare two tangent vectors, 
+we must parallel transport both vectors to the same tangent space. Once they are both in the same space, we can construct a simple test statistic for the trajectory difference.
+\begin{align}
+L = \|\Gamma_{b_1 \rightarrow I} \BV_1 - \Gamma_{b_2 \rightarrow I} \BV_2 \|_{I}^2
+\label{eq:traj}
+\end{align}
+Recall that the inner product at the Identity $I$ coincides with the Euclidean metric. This can now be naturally interpreted as a difference of slopes, and together with a standard Euclidean Normal noise assumption yields the following hypothesis test.
+\begin{proposition}\label{prop_prodstat}
+Assume that $\Gamma_{b \rightarrow I} \BV$ is normally distributed $N(0,I)$. Then the statistic defined in \eqref{eq:traj} follows a $\chi^2_{p}$ distribution with $p$ degrees of freedom, and the threshold test in \eqref{eq:euclideanhyptest} is an $\alpha$-level hypothesis for the covariate trajectory group difference.
+\end{proposition}
+
+%\subsection{Test Statistics and Evaluation}
+%Recall that F-statistics \cite{} are a textbook procedure to evaluate the two-sample hypothesis test. 
+%In our case, however, one subtle issue that needs careful handling is that the null model is not directly nested within the alternative. 
+%Specifically, although we use all of the data to fit the null model, the {\em linear models are fit on the manifold} while the {\em data samples are grouped in feature space}. 
+%For this reason, we instead use some form of a likelihood ratio statistic instead of the F-statistic. We describe this idea next. 
+%
+%For each of the three linear models generated (the null and the two separate models among the groups), we calculate the predicted covariance matrix 
+%at each timepoint for which we have samples in the feature space.
+%\begin{align}
+%\hat{\Sigma}_t = \EXP(\hat{p},\hat{V}t)
+%\end{align}
+%These matrices are then used to calculate the {\em likelihood for each observed sample}. To remove the mean effect, we use the average of the samples $\hat{\mu}_t = \bar{X}_t$ 
+%at each timepoint as an estimate. We can now define the likelihood of the progression model $\hat{\Theta} = (\hat{\mu},\hat{\Sigma})$ given the data as
+%\begin{align}
+%L(\hat{\Theta}|\vec{X}) = L(\hat{\mu},\hat{\Sigma}) = \prod_{t=1}^T \prod_{x: t(x) = t} \frac{1}{\sqrt{2\pi}|\hat{\Sigma}_t|^{p/2}} \exp{\left\{\frac{1}{2}(x - \hat{\mu}_t)^\top \hat{\Sigma}_t (x - \hat{\mu}_t) \right\}}
+%\end{align}
+%The ratio statistic can then be written in its standard form:
+%\begin{equation}
+%\lambda(\vec{X}) = \frac{L(\hat{\Theta}|\vec{X})}{L(\hat{\Theta}_1|\vec{X}_{G1})L(\hat{\Theta}_2|\vec{X}_{G2})}
+%\end{equation}
+%
+%In general, the null distribution for a model such as the one above is difficult to characterize, specifically because of the non-nested hypothesis spaces. 
+%In place of an exact null distribution, we make use of permutation testing to estimate the null distribution. 
+%The statistic of the true group label distribution is then used to calculate a $p$-value for the estimated model. While this is more computationally 
+%intensive, this design choice ensures that our results are statistically accurate.

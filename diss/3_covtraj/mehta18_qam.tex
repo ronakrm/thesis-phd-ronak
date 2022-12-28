@@ -1,0 +1,187 @@
+%-----------------------------------------------------------------------
+% Beginning of qam-l-template.tex
+%-----------------------------------------------------------------------
+%
+%     AMS-LaTeX v.2 template for the Quarterly of Applied Mathematics
+%
+%     Templates for various common text, math and figure elements are
+%     given following the \end{document} line.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%     Remove any commented or uncommented macros you do not use.
+
+\documentclass{qam-l}
+
+\usepackage{subfigure} 
+
+
+\usepackage{enumerate}
+
+% For algorithms
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype,color,xcolor}      % microtypography
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shapes.misc}
+\usepackage{amsmath}
+\usepackage{paralist}
+\graphicspath{{figs/}}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{paralist}
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{bm}
+
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{hyperref}
+
+\usepackage[framemethod=tikz]{mdframed}
+
+\input{hyunwoo-def}
+\input{symboldefs.tex}
+%     Update the information and uncomment if Brown University is not
+%     the copyright holder.
+%\copyrightinfo{2009}{Brown University}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{xca}[theorem]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\numberwithin{equation}{section}
+
+\begin{document}
+
+% \title[short text for running head]{full title}
+\title[Localizing Differentially Evolving Covariance Structures]{Localizing Differentially Evolving Covariance Structures via Scan Statistics}
+
+%    Only \author and \address are required; other information is
+%    optional.  Remove any unused author tags.
+%    Enter the address for every author, even if some are the same.
+
+%    author one information
+% \author[short version for running head]{name for top of paper}
+\author[Mehta]{Ronak Mehta}
+\address{Department of Computer Sciences, University of Wisconsin-Madison, Madison, WI 53706, USA}
+\email{ronakrm@cs.wisc.edu}
+\thanks{Supported in part by NIH grants R01 AG040396, AG021155, EB022883 and NSF grants DMS-1265202 and DMS-1803450, and CAREER award 1252725. The authors were also supported by the UW Center for Predictive Computational Phenotyping (via BD2K award AI117924) and the Wisconsin Alzheimer's Disease Research Center (AG033514). Mehta was supported by NLM grant T32LM012413.}
+
+%    author two information
+\author[Kim]{Hyunwoo J. Kim}
+\address{Department of Computer Sciences, University of Wisconsin-Madison, Madison, WI 53706, USA}
+\email{hwkim@cs.wisc.edu}
+\thanks{The second author's work on this project was performed at UW-Madison in 2017, before joining Amazon.}
+
+%    author three information
+\author[Wang]{Shulei Wang}
+\address{Department of Statistics, Columbia University, New York, NY 10027, USA}
+\email{sw3229@columbia.edu}
+%\thanks{}
+
+%    author four information
+\author[Johnson]{Sterling C. Johnson}
+\address{Alzheimer's Disease Research Center, University of Wisconsin-Madison, Madison, WI 53792, USA}
+\email{scj@medicine.wisc.edu}
+
+%    author five information
+\author[Yuan]{Ming Yuan}
+\address{Department of Statistics, Columbia University, New York, NY 10027, USA}
+\email{ming.yuan@columbia.edu}
+%\thanks{}
+
+%    author six information
+\author[Singh]{Vikas Singh}
+\address{Department of Biostatistics and Medical Informatics, University of Wisconsin-Madison, Madison, WI 53706, USA}
+\email{vsingh@biostat.wisc.edu}
+%\thanks{}
+
+%    \subjclass is required.
+\subjclass[2000]{Primary }
+%    The 2010 edition of the Mathematics Subject Classification is
+%    now available.  If you are citing a classification from the
+%    new scheme, use the following input coding instead.
+%\subjclass[2010]{Primary }
+
+\date{}
+
+\dedicatory{}
+
+%    Abstract is required.
+\begin{abstract}
+\input{abstract.tex}
+\end{abstract}
+
+\maketitle
+
+%    Text of article.
+\section{Introduction}
+\input{intro.tex}
+\section{Characterizing Covariance Trajectories}
+\label{sec:mglm}
+\input{mmglm.tex}
+\subsection{Riemannian Manifold Regression}
+\input{logeuc-mmglm.tex}
+\section{Test Statistics for $\SPD(p)$ Trajectories}
+\label{sec:hyp-test}
+\input{icml_model.tex}
+\subsection{Incorporating First-Order Differences}
+\input{prodspace.tex}
+\section{Localizing Group Differences for $\SPD(p)$ Trajectories}
+\label{sec:loc}
+\input{icml_localization.tex}
+\section{Localization Evaluation: Trends of Tobacco Usage Across Gender}
+\label{sec:loceval}
+\input{loc_eval.tex}
+\section{Pipeline Evaluation on Simulations and Baby Name Trends Over Time}
+\label{sec:pipeval}
+\input{pipe_eval.tex}
+\section{Identifying Differentially Covarying Features in Preclinical Alzheimer's Disease}
+\label{sec:wrap}
+\input{wrap.tex}
+\section{Conclusions}
+\input{conclusions.tex}
+
+\section{Acknowledgements.}
+This research was supported in part by NIH grants R01 AG040396, AG021155, EB022883 
+	and NSF grants DMS 1265202 and CAREER award 1252725. The authors were also supported by 
+	the \href{http://cpcp.wisc.edu/}{UW Center for Predictive Computational Phenotyping} (via BD2K award AI117924) and the 
+	\href{http://www.adrc.wisc.edu/}{Wisconsin Alzheimer's Disease Research Center} (AG033514). 
+	Mehta was supported by a fellowship via training grant award T32LM012413. 
+
+\appendix
+\section{Technical Proofs.}
+\input{supp_locproofs.tex}
+\section{Implementation Details.}
+\input{supp_implementation.tex}
+\input{supp_sim.tex}
+\section{Preclinical AD Extended Details and Results.}
+\input{supp_exp_data.tex}
+\input{supp_exp.tex}
+\input{supp_cog_exp.tex}
+\clearpage
+\section{Differential Geometry Basics and Notes.}
+\label{sec:diffgeom}
+\input{diffgeom.tex}
+
+%    Bibliographies can be prepared with BibTeX using amsplain,
+%    amsalpha, or (for "historical" overviews) natbib style.
+\bibliographystyle{amsplain}
+%    Insert the bibliography data here.
+\bibliography{main}
+
+\end{document}

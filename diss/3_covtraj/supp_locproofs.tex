@@ -1,0 +1,325 @@
+\subsection{Proof of Lemma \ref{lm:entropy}}
+To remind the reader, this result was necessary in order to allow us to reduce the number of subgraphs (regions) that need to be evaluated over the graph. By bounding the covering number we have a guarantee that we do not need to consider an exponential number of subgraphs in order to find a localization.
+
+%Let $|E(X)|$ be the number of edges of a graph $X$, and $B(v,r)$ be the ball subgraph of size $r$ centered at $v$ as defined in the paper.
+%
+%\begin{align}\label{eq:lightskirt2}
+%\frac{|E(B(v,r'))|}{|E(B(v,r))|} \geq H\left(1 - \frac{|E(B(v,r-r'))|}{|E(B(v,r))|}\right)^S.
+%\end{align}
+%
+%\begin{lemma}
+%	\label{lm:entropy2}
+%	If we assume (\ref{eq:lightskirt2}) holds, then, for some constant $C_{H,S}$ only depending on $H$ and $S$ in (\ref{eq:lightskirt2}),
+%	\begin{equation}
+%	\label{eq:entropy2}
+%	N(A,\epsilon)\le C_{H,S}{|E|\over A}\left({1\over \epsilon}\right)^{S+1}
+%	\end{equation}
+%	where $|E|$ is the total number of edges in $G$.
+%\end{lemma}
+
+\begin{proof}
+	To upper bound $N(A,\epsilon)$, we first construct the $\epsilon$-covering set of $\cR(A)$ under metric $d$.
+	To this end, we decompose $\cR(A)$ into several disjoint sets 
+	$$
+	\cR_j(A)=\left\{B(v,r)\in \cR(A): \left(1-{(j+1)\epsilon \over 2}\right)A<|E(B(v,r))|\le \left(1-{j\epsilon \over 2}\right)A\right\} ,
+	$$
+	for $j=0,1,\ldots, \lceil{1 \over \epsilon}\rceil$. Our strategy is to construct $\epsilon$-covering set for each set $\cR_j(A)$. 
+	
+	We only construct $\epsilon$-covering set for $\cR_0(A)$; $\cR_j(A)$ ($j\ge 1$) can be treated similarly.
+	To construct the $\epsilon$-covering set for $\cR_0(A)$, we denote by $d_{v,r}$ the largest positive number such that
+	\begin{equation}
+	\label{eq:d}
+	{|E(B(v,r-d_{v,r}))| \over |E(B(v,r))|}\ge 1-{\epsilon\over 2},
+	\end{equation}
+	for every $v\in V$ and $r\in \NN$. Let $\cD_{1}$ the collection of $d_{v,r}$ such that $B(v,r)\in \cR_0(A)$, i.e.
+	$$
+	\cD_{1}=\{d_{v,r}:B(v,r)\in \cR_0(A)\},
+	$$
+	and $\cV_{1}$ the collection of nodes such that $B(v,r)\in \cR_0(A)$, i.e. 
+	$$
+	\cV_1=\{v:B(v,r)\in \cR_0(A)\}.
+	$$
+	We pick up the largest number in $\cD_1$, denoted by $d_{v_1,r_1}$, i.e. $
+	d_{v_1,r_1}\ge d_{v,r}\ \forall\ d_{v,r}\in \cD_1$
+	and define $\tilde{\cV}_{1}$  as
+	$$
+	\tilde{\cV}_{1}=\{v\in \cV_1:v\in B(v_1,d_{v_1,r_1}/2)\}.
+	$$
+	After defining $\tilde{\cV}_{1}$, $\cD_{2}$ and $\cV_2$ can be defined as
+	$$
+	\cD_{2}=\cD_{1}\setminus \{d_{v,r}:v\in \tilde{\cV}_{1}\}\qquad{\rm and}\qquad \cV_{2}=\cV_{1}\setminus  \tilde{\cV}_{1}.
+	$$
+	Then we can pick up the largest number in $\cD_{2}$, denote by $d_{v_2,r_2}$ and $\tilde{\cV}_{2}$ can be defined similarly.
+	We can repeat the above process until $\cD_M$ and $\cV_M$ are empty for some $M$.We actually obtain a partition of $\cV_1$, 
+	$$
+	\bigcup_{i=1}^{M}\tilde{\cV}_i=\cV_1\qquad{\rm and}\qquad \tilde{\cV}_{i_1}\cap \tilde{\cV}_{i_2}=\emptyset \qquad 1\le i_1< i_2\le M.
+	$$
+	Based on $d_{v_1,r_1},\ldots, d_{v_M,r_M}$, we are ready to prove the set
+	$$
+	\cR_0(A,\epsilon)=\{B(v_i,r_i):1\le i\le M\}
+	$$
+	is actually an $\epsilon$-covering set for $\cR_0(A)$. To this end, it is equivalent to show that for arbitrary $B(v',r')\in \cR_0(A)$, we have
+	\begin{equation}
+	\label{eq:dist}
+	d(B(v',r'),B(v_i,r_i))\le \epsilon
+	\end{equation}
+	when $v'\in \tilde{\cV}_i$. To show (\ref{eq:dist}), we consider two cases where $r'>r_i-d_{v_i,r_i}/2$ and $r'\le r_i-d_{v_i,r_i}/2$.
+	When $r'>r_i-d_{v_i,r_i}/2$, then 
+	$$
+	B(v_i,r_i-d_{v_i,r_i})\subset B(v',r').
+	$$
+	Combining above result, (\ref{eq:d}), and the definition of $\cR_0(A)$ yields
+	\begin{align*}
+	&{|E(B(v',r'))\cap E(B(v_i,r_i)) |\over\sqrt{|E(B(v',r'))||E(B(v_i,r_i))|}}\\
+	\ge& {|E(B(v_i,r_i-d_{v_i,r_i})) |\over\sqrt{|E(B(v',r'))||E(B(v_i,r_i))|}} \\
+	\ge& \sqrt{1-{\epsilon\over 2}}{|E(B(v_i,r_i-d_{r_i}))| \over |E(B(v',r'))|}\\
+	\ge& 1-\epsilon.
+	\end{align*}
+	On the other hand, if $r'\le r_i-d_{v_i,r_i}/2$, then 
+	\begin{align}
+	B(v',r')\subset B(v_i,r_i).
+	\end{align}
+	By definition of $\cR_0(A)$, we can get
+	$$
+	{|E(B(v',r'))\cap E(B(v_i,r_i)) |\over\sqrt{|E(B(v',r'))||E(B(v_i,r_i))|}}\ge \sqrt{|E(B(v',r'))| \over |E(B(v_i,r_i))|}\ge  1-\epsilon.
+	$$
+	Therefore, (\ref{eq:dist}) is proved and $\cR_0(A,\epsilon)$ is an  $\epsilon$-covering set for $\cR_0(A)$.
+	
+	The rest of the proof is to bound the cardinality of $\cR_0(A,\epsilon)$, i.e. $M$.
+	Note that (\ref{eq:lightskirt}) implies there exists some constant $D_{H,S}$ only depending on $H$ and $S$ such that, for any $v\in V$ and $r\in \NN$,
+	$$
+	|E(B(v,r/2))|\ge D_{H,S} |E(B(v,r))|.
+	$$
+	By the definition of $d_{v_i, r_i}$, we can ensure $B(v_i,d_{v_i,r_i}/4)$ are disjoint.
+	Hence, this implies
+	$$
+	|E(\tilde{\cV}_i) |\ge |E(B(v_i,d_{v_i,r_i}/4))|\ge D_{H,S}^2|E(B(v_i,d_{v_i,r_i}))|\ge D_{H,S}^2 HA\epsilon^S/2^{S+1}.
+	$$
+	The last inequality is suggested by (\ref{eq:lightskirt}) and (\ref{eq:d}). The volume argument yields
+	$$
+	M\le {|E|\over D_{H,S}^2 HA\epsilon^S/2^{S+1}}\le {2^{S+1}\over D_{H,S}^2H}{|E|\over A}\left({1\over \epsilon}\right)^S
+	$$
+	(\ref{eq:entropy}) is obtained upon application of the above to each $\cR_j(A)$.
+\end{proof}
+
+\subsection{Proof of Theorem \ref{lm:mainthm}}
+	
+Before we are ready to prove Theorem \ref{lm:mainthm}, we need the following result:
+
+\begin{lemma}
+	\label{lm:diffbd}
+	Let $Y_1,\ldots,Y_d$ be i.i.d. standard Gaussian variable, i.e. $N(0,1)$ and $a_1,\ldots,a_d$ be a sequence of numbers.
+	If 
+	\begin{equation}
+	Z=\sum_{i=1}^d a_i(Y_i^2-1),
+	\end{equation}
+	then
+	\begin{equation}
+	\PP(|Z|\ge 2|a|_2\sqrt{x}+2|a|_\infty x)\le 2\exp(-x)
+	\end{equation}
+	where $|a|_2=\sqrt{\sum_{i=1}^d a_i^2}$ and $|a|_\infty=\max_{i=1,\ldots,d}|a_i|$.
+\end{lemma}
+
+\begin{proof}
+	This is a direct extension of lemma 1 in \cite{laurent2000adaptive} to the negative case. We follow arguments similar to theirs.
+	Let $\phi(x)$ be the  the logarithm of the Laplace transform of $Y_i^2-1$. For any $-1/2<x<1/2$,
+	$$
+	\phi(x)=\log\left(\EE\left(\exp(x(Y_i^2-1))\right)\right)=-x-{1\over 2}\log(1-2x)\le {x^2\over 1-2|x|}.
+	$$
+	This leads to
+	\begin{align*}
+	\log(\EE(e^{xZ}))&=\sum_{i=1}^d \log\left(\EE\left(\exp(a_ix(Y_i^2-1))\right)\right)\\
+	&\le \sum_{i=1}^d {a_i^2x^2\over 1-2|a_i|x}\\
+	&\le {|a|_2^2x^2\over 1-2|a|_\infty x}
+	\end{align*}
+	With the same arguments in \cite{laurent2000adaptive}, we could prove that 
+	$$
+	\PP\left(Z\ge 2|a|_\infty x+2|a|_2\sqrt{x}\right)\le \exp(-x).
+	$$
+	The other direction can be proved if we apply the same argument for $-Z$.
+\end{proof}
+
+With this in hand we proceed to prove Theorem \ref{lm:mainthm}.
+	
+
+%\begin{theorem}
+%Suppose the Avocado Assumption (\ref{eq:lightskirt2}) is true and the number of edges in the candidate subgraph is larger than $\log^2 |E|$, i.e.
+%\begin{equation}
+%\label{eq:setsize2}
+%|E(R)|\gg \log^2 |E|\qquad \forall\ R\in\cR.
+%\end{equation}
+%Then the critical value $q_\alpha$ satisfies
+%\begin{equation}
+%\label{eq:criticalvl2}
+%q_\alpha=O(1).
+%\end{equation}
+%Moreover, if a subgraph $R_0$ obeys 
+%\begin{equation}
+%\label{eq:sigcond2}
+%{(\Bbeta_1^{R_0}-\Bbeta_2^{R_0})^T\Sigma_{R_0}^{-1}(\Bbeta_1^{R_0}-\Bbeta_2^{R_0})\over \sqrt{|E({R_0})|}}\gg 2\sqrt{\log{|E|\over |E({R_0})|}},\qquad{\rm as}\ |E|\to \infty
+%\end{equation}
+%then 
+%\begin{equation}
+%\label{eq:power2}
+%\PP\left(L_{R_0}-2\sqrt{\log{|E|\over |E({R_0})|}}>q_\alpha\right)\to 1,\qquad{\rm as}\ |E|\to \infty.
+%\end{equation}
+%\end{theorem}
+
+\begin{proof}
+In the following proof, $C$ always refers to some constant, although its value may change from place to place. First, we prove (\ref{eq:criticalvl}). To this end, we prove concentration inequalities for $L_R$ for some $R$ and $L_{R_1}-L_{R_2}$ for some $R_1\ne R_2$.
+Since we assume the noise follows normal distribution, we have 
+$$
+(\hat{\Bbeta}_1^R-\hat{\Bbeta}_2^R)^T\Sigma_R^{-1}(\hat{\Bbeta}_1^R-\hat{\Bbeta}_2^R)={\sum X_i^2-(\sum X_i)^2\over 2}\|\hat{\Bbeta}_1^R-\hat{\Bbeta}_2^R\|^2\sim \chi^2_{|E(R)|}.
+$$
+By tail bound for $\chi^2$ random variables (see e.g. \cite{laurent2000adaptive}), we can yield
+\begin{equation}
+\label{eq:single}
+\PP\left(L_R>2t+{2t^2\over \sqrt{|E(R)|}}\right)\le \exp(-t^2).
+\end{equation}
+By definition, $L_{R_1}-L_{R_2}$ can be written as
+$$
+L_{R_1}-L_{R_2}={\sum_{i\in R_1\setminus R_2}Z_i\over \sqrt{|E(R_1)|}}+ \left({1 \over \sqrt{|E(R_1)|}}-{1 \over \sqrt{|E(R_2)|}}\right)\sum_{i\in R_1\cap R_2}Z_i -{\sum_{i\in R_2\setminus R_1}Z_i\over \sqrt{|E(R_2)|}}
+$$
+where $Z_i$ are independent random variable following distribution $\chi_1^2-1$.
+Lemma~\ref{lm:diffbd} implies
+\begin{equation}
+\label{eq:diff}
+\PP\left(|L_{R_1}-L_{R_2}|>2\sqrt{2d(R_1,R_2)}t+{2t^2\over \min(|E(R_1)|,|E(R_2)|)}\right)\le 2\exp(-t^2).
+\end{equation}
+
+We now proceed to prove (\ref{eq:criticalvl}) by applying a chaining argument (See \cite{talagrand2006generic}) and concentration inequalities (\ref{eq:single}) and (\ref{eq:diff}).
+Recall $\cR_{app}(A,\epsilon)$ is the smallest $\epsilon$-covering set of $\cR(A)$ and $N(A,\epsilon)$ is the covering number of $\cR(A)$.
+For any subgraph candidate $R$, we denote by
+$$
+\pi_l(R)={\arg\min}_{R'\in \cR_{app}(A,e^{-l})} d(R,R').
+$$
+For any $l^\ast>l_\ast$, which will be specified later, we write $\max_{R\in\cR(A)}L_R$ into three parts
+$$
+\max_{R\in\cR(A)}L_R\le \max_{R\in\cR(A)}|L_R-L_{\pi_{l^\ast}(R)}|+\sum_{l=l_\ast}^{l^\ast-1}\max_{R\in\cR(A)}|L_{\pi_{l+1}(R)}-L_{\pi_{l}(R)}|+\max_{R\in\cR(A)}L_{\pi_{l_\ast}(R)}.
+$$
+Now, we bound these three terms above separately.
+\begin{enumerate}
+\item[] \textbf{Term 1}. Let $l^\ast=2\log |E|$. By concentration inequality (\ref{eq:diff}) and union bound, we have 
+\begin{align*}
+& \PP\left(\max_{R\in\cR(A)}|L_R-L_{\pi_{l^\ast}(R)}|>{2\sqrt{2(x+\log|E|)}\over |E|}+{4x+8\log |E|\over A}\right)\\
+\le & |\cR(A)| \PP\left(|L_R-L_{\pi_{l^\ast}(R)}|>{2\sqrt{2(x+\log|E|)}\over |E|}+{4x+8\log |E|\over A}\right)\\
+\le & 2{|\cR(A)|\over |E|^2}\exp(-x)\le 2\exp(-x) 
+\end{align*}
+for $x<\log |E|$. Therefore, we have
+$$
+\PP\left(\max_{R\in\cR(A)}|L_R-L_{\pi_{l^\ast}(R)}|>{C(x+\log |E|)\over A}\right)\le \exp(-x),
+$$
+for $x<\log |E|$.
+\item[] \textbf{Term 2}. Let $l_\ast=\log\log (|E|/A)$. 
+Recall that the Avocado assumption (\ref{eq:lightskirt}) suggests that
+\begin{equation}
+\label{eq:cvnum}
+N(A,\epsilon)\le C_{H,S}{|E|\over A}\left(1\over \epsilon\right)^{S+1}.
+\end{equation}
+Applying concentration inequality (\ref{eq:single}) along with
+\begin{equation}
+t=\sqrt{\log\left(|E|\over A\right)+(S+1)\log\log\left(|E|\over A\right)+x+C}
+\end{equation}
+and the union bound, we have 
+\begin{align*}
+&\PP\left(\max_{R\in\cR(A)}L_{\pi_{l_\ast}(R)}>2t+{2t^2\over \sqrt{A}}\right)\\
+\le & N\left(A,{1\over \log (|E|/A)}\right) \PP\left(L_{\pi_{l_\ast}(R)}>2t+{2t^2\over \sqrt{A}}\right)\\
+\le & C_{H,S}{|E|\over A}\left(\log {|E|\over A}\right)^{S+1} \PP\left(L_{\pi_{l_\ast}(R)}>2t+{2t^2\over \sqrt{A}}\right)\\
+\le & \exp(-x) 
+\end{align*}
+for $x<\log |E|$. Here we also apply condition (\ref{eq:setsize}). Therefore, we obtain
+$$
+\PP\left(\max_{R\in\cR(A)}L_{\pi_{l_\ast}(R)}>2\sqrt{\log\left(|E|\over A\right)+(S+1)\log\log\left(|E|\over A\right)+x}+C\right)\le \exp(-x) 
+$$
+for $x<\log |E|$.
+\item[] \textbf{Term 3}. For any given $l$, application of concentration inequality (\ref{eq:diff}), covering number condition (\ref{eq:cvnum}), and the union bound yields,
+\begin{align*}
+&\PP\left(\max_{R\in\cR(A)}|L_{\pi_{l+1}(R)}-L_{\pi_{l}(R)}|>\sqrt{C(\log(|E|/A)+l+x)\over e^l}+{C(\log(|E|/A)+l+x) \over A }\right) \\
+\le & C_{H,S}{|E|\over A}e^{(l+1)(S+1)}\PP\left(|L_{\pi_{l+1}(R)}-L_{\pi_{l}(R)}|>\sqrt{C(\log(|E|/A)+l+x)\over e^l}+{C(\log(|E|/A)+l+x) \over A }\right)\\
+ \le & {\exp(-x)\over l^2}.
+\end{align*}
+for any $x<\log |E|$. 
+With another standard application of the union bound, we have
+\begin{align*}
+&\PP\left(\sum_{l=l_\ast}^{l^\ast-1}\max_{R\in\cR(A)}|L_{\pi_{l+1}(R)}-L_{\pi_{l}(R)}|>\sqrt{C(\log(|E|/A)+x) \over \log(|E|/A)}+{\log^2|E|+x\log|E|\over A}\right)  \\ 
+\le & \sum_{l=l_\ast}^{l^\ast-1} \PP\left(\max_{R\in\cR(A)}|L_{\pi_{l+1}(R)}-L_{\pi_{l}(R)}|>\sqrt{C(\log(|E|/A)+l+x)\over e^l}+{C(\log(|E|/A)+l+x) \over A }\right)\\
+\le & \sum_{l=l_\ast}^{l^\ast-1} {\exp(-x)\over l^2}\\
+\le & 2\exp(-x).
+\end{align*}
+\end{enumerate}
+Putting the three terms above together yields
+$$
+\PP\left(\max_{R\in\cR(A)}L_R>2\sqrt{\log\left(|E|\over A\right)}+C(x+1)\right)\le {4\over \log(e|E|/A)}\exp(-x),
+$$
+where we apply $A\gg \log^2|E|$ and the inequalities $\sqrt{a+b}\le \sqrt{a}+\sqrt{b}$ and $\sqrt{a+b}\le \sqrt{a}+b/\sqrt{a}$.
+
+Now, we apply this bound to $A=|E|2^{-k}$, $k\ge 0$ yielding 
+$$
+\PP\left(\max_{R\in\cR}\left(L_R-2\sqrt{\log{|E|\over |E(R)|}}\right)>C(x+1)\right)\le 8\exp(-x).
+$$
+This immediately suggests that $q_\alpha=O(1)$.
+
+Now, let's turn to the case when a subgraph is significant, that is to prove (\ref{eq:power}). Assume the significant region is $R_0$. Using standard statistics we calculate the mean and variance of $L_{R_0}$
+$$
+\EE(L_{R_0})={(\Bbeta_1^{R_0}-\Bbeta_2^{R_0})^T\Sigma_{R_0}^{-1}(\Bbeta_1^{R_0}-\Bbeta_2^{R_0})\over \sqrt{|E({R_0})|}} \ \ \text{and} \ \  Var(L_{R_0})=2+4{(\Bbeta_1^{R_0}-\Bbeta_2^{R_0})^T\Sigma_{R_0}^{-1}(\Bbeta_1^{R_0}-\Bbeta_2^{R_0})\over |E({R_0})|}.
+$$
+By Chebyshev's inequality, we have
+\begin{equation}
+\label{eq:alche}
+\PP\left({|L_{R_0}-\EE(L_{R_0})|\over \sqrt{Var(L_{R_0})}}>x\right)\le {1\over x^2}.
+\end{equation}
+If $(\Bbeta_1^{R_0}-\Bbeta_2^{R_0})^T\Sigma_{R_0}^{-1}(\Bbeta_1^{R_0}-\Bbeta_2^{R_0})\ge |E({R_0})|$, then (\ref{eq:alche}) suggests 
+$$
+\PP(L_{R_0}>\sqrt{|E(R_0)|})\to 1,\  |E|\to \infty
+$$ by taking $x$ as a sequence (e.g., $\log\log(|E(R_0)|)$) which increases slow enough in (\ref{eq:alche}). This leads to (\ref{eq:power}).
+If $(\Bbeta_1^{R_0}-\Bbeta_2^{R_0})^T\Sigma_{R_0}^{-1}(\Bbeta_1^{R_0}-\Bbeta_2^{R_0})<|E({R_0})|$, then $Var(L_{R_0})<6$. Then (\ref{eq:sigcond}) and (\ref{eq:alche}) imply
+$$
+\PP\left(L_{R_0}-2\sqrt{|E|\over |E(R_0)|}>q_\alpha\right)\to 1, \qquad{\rm as}\  |E|\to \infty.
+$$
+\end{proof}
+
+
+%\begin{theorem}
+%If $X_e$ follows independent normal distribution $N(0,1)$ and (\ref{eq:entropy}) holds, then
+%\begin{align*}
+%\PP\left(\max_{R\in \cR(A)}L_R> \sqrt{2\log{|E|\over A}}+t\right)\le C_1\exp\left(-C_2t^2\right)
+%\end{align*}
+%for some constant $C_1$ and $C_2$.
+%\end{theorem}
+%
+%\begin{proof}
+%In following proof, $C$ represent some constant although its value may differ from place to place.
+%Applying Theorem 2.2.4 of \cite{van1996weak}, (\ref{eq:entropy}) yields, for any $t>0$ and $0<\eta\le 1$,
+%\begin{align*}
+%\PP\left(\max_{R_1,R_2\in\cR(A): d(R_1,R_2)\le \eta}\left|L_{R_1}-L_{R_2}\right|>t\right)\le C\exp\left(-{t^2\over C \eta^2\log N(A,\eta)}\right).
+%\end{align*}
+%Let $\cR(A,\eta)$  be an $\eta$ covering set of $\cR(A)$ so that
+%\begin{align*}
+%|\cR(A,\eta)|= N(A,\eta,).
+%\end{align*}
+%An application of $X_e$ following normal distribution and the union bound on $\cR(A,\eta)$ yields, for any $h>0$,
+%\begin{align*}
+%\PP\left(\max_{R\in \cR(A,\eta)}L_R>h\right)\le C N(A,\eta) \exp\left(-{h^2\over 2}\right).
+%\end{align*}
+%Taking 
+%\begin{align*}
+%t=\sqrt{C_2 \eta^2\log N(A,\eta)x^2},
+%\end{align*}
+%\begin{align*}
+%h=\sqrt{2\log N(A,\eta)+2x^2}\qquad{\rm and}\qquad \eta={1\over \log(e|E|/A)}
+%\end{align*}
+%yields
+%\begin{align*}
+%\PP\left(\max_{R\in \cR(A)}L_R>t+h\right)\le C \exp\left(-x^2\right).
+%\end{align*}
+%
+%Basic inequality suggests there's some constant $C$ such that
+%\begin{align*}
+%x+y\le \sqrt{2\log{|E|\over A}}+Ct+C.
+%\end{align*}
+%This immediately suggests 
+%\begin{align*}
+%\PP\left(\max_{R\in \cR(A)}\left(L_R-\sqrt{2\log{|E|\over |R|}}\right)>Cx\right)\le C \exp\left(-x^2\right).
+%\end{align*}
+%It should be noted that $C$ doesn't depend on $A$.
+%\end{proof}

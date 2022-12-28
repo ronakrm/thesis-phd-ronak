@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage{tikz,amsmath,siunitx}
+\usetikzlibrary{arrows,snakes,backgrounds,patterns,matrix,shapes,fit,calc,shadows,plotmarks}
+\usepackage[graphics,tightpage,active]{preview}
+\begin{document}
+	\begin{tikzpicture}
+			\path[draw,line width=2pt,black!70!white] (-0.5,-0.5) -- (2,-0.5)--(2,2)--(-0.5,2)--cycle; 
+			\fill[black!30!white,fill opacity=0.8] (0.75,0.75) -- (0.75,1.25) -- (0.25,1.25) -- (0.25,0.75) --cycle ; 
+			\path[draw,line width=2pt,black!70!white] (-0.5,2)--(2,-0.5);
+			
+			\draw[-latex,thick,black!70!white,line width=3pt](2.5,1)
+			to[out=0,in=180] (3.0,1);
+			
+			\node[shape=circle,draw=black,line width=2pt] (A) at (4,-0.2) {A};
+			\node[shape=circle,draw=black,line width=2pt] (F) at (3.7,1) {F};
+			\node[shape=circle,draw=black,line width=2pt] (C) at (6,1.2) {C};
+			\node[shape=circle,draw=black,line width=2pt] (D) at (6,-0.2) {D};
+			\node[shape=circle,draw=black,line width=2pt] (E) at (5,2) {E};
+			\path [draw,line width=2pt,black!70!white] (A) edge node {}  (F);
+			\path [draw,line width=2pt,black!70!white] (A) edge node {}  (C);
+			\path [draw,line width=2pt,black!70!white] (E) edge node {}  (F);
+			\path [draw,line width=2pt,black!70!white] (E) edge node {}  (C);
+			\path [draw,line width=2pt,black!70!white] (C) edge node {}  (D);
+			
+			\draw[-latex,thick,black!70!white,line width=3pt](7.0,1)
+			to[out=0,in=180] (7.5,1);
+			
+			\node[shape=circle,draw=black,line width=2pt] (B2) at (8.2,1) {F};
+			\node[shape=circle,draw=black,line width=2pt] (C2) at (10.5,1.2) {C};
+			\node[shape=circle,draw=black,line width=2pt] (E2) at (9.5,2) {E};
+			\path [draw,line width=2pt,black!70!white] (E2) edge node {}  (B2);
+			\path [draw,line width=2pt,black!70!white] (E2) edge node {}  (C2);
+			
+			\draw[thick,red] ([shift=(-40:2)]9.5,2.1) arc (-40:-152:2.1);
+			\draw[thick,red] ([shift=(-40:2)]5,2) arc (-40:-150:2);
+			\draw[thick,red] ([shift=(-30:0.5)]5,2) arc (-30:-170:0.5);
+			\draw[thick,red] ([shift=(-50:2.8)]5,2) arc (-50:-140:2.8);
+			
+			\draw[thick,black](5.5,1.9)node[right]{$r=0$};
+			\draw[thick,black](6.4,0.6)node[right]{$r=1$};
+			\draw[thick,black](6.8,0)node[right]{$r=2$};
+			%         \draw[thick,black](8.7,0.8)node[right]{$B(E,1)$};
+			\draw[thick,black](10,0.1)node[right]{$r=1$};
+			%\draw[thick,black](0.4,-1.3)node[right]{$(a)$};
+			%\draw[thick,black](4.75,-1.3)node[right]{$(b)$};
+			%\draw[thick,black](9.15,-1.3)node[right]{$(c)$};
+			\draw[thick,black](7.9,-0.5)node[right]{$B(E,1)=\{F,C,E\}$};
+			
+	\end{tikzpicture}
+\end{document}

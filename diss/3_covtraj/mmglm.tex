@@ -1,0 +1,119 @@
+% Emacs, this is -*-latex-*-
+Our main statistical testing framework, to be described shortly, needs an efficient means for calculating a ``trajectory" of the feature-by-feature interaction graphs over time
+for the given longitudinal data. We now describe a scheme which offers this capability. 
+%Let $t_i$ be the time at which the sample was taken, with $t_i \in \{t^1,\ldots,t^T\}$, where 
+Let $X_t \in \RR^{n_t,p}$ be the design matrix of all $n_t$ samples at time $t$, where $t \in \{1,\ldots,T\}$, and $T$ is the total number of distinct timepoints.
+We wish to capture the trends in the relationships between the features as a function of $t$. 
+To evaluate the groupwise differences in changes of such interactions, we make use of the fact
+that these interactions are commonly captured by correlation or conditional independence, represented by the covariance matrix (with normalized features)
+and the precision matrix (the inverse of covariance matrix).
+
+Here we simply use the covariance matrix for each timepoint $t$ to denote the interaction between features, 
+%\begin{align}
+$C_t = cov(X_t)$. 
+%\end{align}
+Our goal now is to estimate the parameters of the function, $t \to C_t$. 
+%
+%Because population covariance matrices have a distinct structure in the form of symmetric positive definite ($\SPD$) manifolds, classical vector space models may not be directly applicable.
+%The default option here is to
+%
+We may vectorize the covariance matrix and apply a linear model; its parameters
+will give the trajectory in ``vectorized covariance space'' as we scan through $t$. 
+But these predictions are {\em not} guaranteed to be valid  $\SPD$ matrices and even if a projection is performed to obtain a covariance estimate, distortions introduced by the process may be significant \cite{fletcher2013geodesic}.
+%Also, 
+It is well known that classical vector space models tend to be suboptimal 
+in the manifold setting (covariance matrices live on the $\SPD$ manifold)
+since they use Euclidean metrics which are defined in the ambient space. For manifold-valued data, Riemannian metrics are shown to be superior in many applications 
+\cite{fletcher2007riemannian,banerjee2015nonlinear,jayasumanakernel,tuzel2007human}, 
+%
+%Inspired by these recent advances in the
+%use of Riemannian frameworks
+and are increasingly being deployed in machine learning/statistics. 
+We will utilize an appropriate statistical model informed by the manifold-structure of the data and 
+then derive a hypothesis 
+testing procedure to detect groupwise difference in the changes of interactions between features in longitudinal analysis.
+%As motivated earlier, o
+%Therefore, our model estimation and hypothesis test scheme will be based on the structure of this $\SPD$ manifold. 
+%To address these issues, we use a Riemannian framework to model the trajectories of manifold-valued data for longitudinal analysis.
+%In addition, unlike cross-sectional analysis, we compare the trajectories of manifold-valued data.
+%Recently, in machine learning/statistics literature, 
+%
+To do so, we first summarize basic differential geometry notations \cite{do1992riemannian,lee2012introduction} and 
+then describe our models. If desired,
+any other (efficient) manifold-valued linear model \cite{fletcher2013geodesic} can be substituted in; no 
+change in the workflow is needed. A reader familiar with manifold regression algorithms may consider this module as a black-box and skip ahead to
+Section \ref{sec:hyp-test} which uses the parameter estimates from this procedure. 
+
+\subsection{Riemannian Geometry}
+
+Let $\Mc$ be a \textit{differentiable (smooth) manifold} in arbitrary dimensions.
+%$\Mc$ is a maximal family of \textit{injective} mappings $\varphi_{i}:U_{i}
+%\subset \textbf{R}^{n} \rightarrow \Mc$ of open sets $U_{i}$ of
+%$\textbf{R}^{n}$ into $\Mc$ such that:
+%\begin{inparaenum}[\bfseries (1)]
+%\item $\cup_{i} \varphi_i(U_{i}) =\Mc$; 
+%\item for any pair $i,j$ with $\varphi_{i} (U_{i}) \cap
+%\varphi_{j} (U_{j}) = W \neq \phi$, the sets $\varphi_{i}^{-1}(W)$
+%and $\varphi_{j}^{-1}(W)$ are open sets in $\textbf{R}^{n}$ and the
+%mappings $\varphi_{j}^{-1} \circ \varphi_{i}$ are
+%differentiable, where $\circ$ denotes function composition. 
+%\item The family $\{(U_{i},\varphi_{i})\}$ is maximal relative to
+%the conditions (1) and (2). 
+%\end{inparaenum}
+%In other words, 
+A differentiable manifold $\Mc$ is a topological
+space that is locally similar to Euclidean space and has a globally
+defined differential structure. 
+%
+%A \textit{Riemmannian manifold} is a differentiable manifold $\Mc$ equipped with a smoothly varying inner product $g_p$ in the tangent space ($T_{p}\Mc$) at a point $p$ on the manifold.
+%, is a vector space that consists of
+%the tangent vectors of {\em all} possible curves passing through $p$. The Tangent bundle of $\Mc$, i.e., $T\Mc$, is the disjoint union of tangent spaces at all points of $\Mc$, 
+%$T\Mc = \coprod_{p \in \Mc}T_{p}\Mc$. 
+%The tangent bundle is equipped with a natural \textit{projection map} $\pi: T\Mc \rightarrow \Mc$ \cite{lee2012introduction}. 
+%
+A \textit{Riemannian manifold} is a differentiable manifold $\Mc$ equipped with a smoothly varying inner product.
+%The family of inner products on all tangent spaces is known as 
+%the \textit{Riemannian metric}, 
+%This definition 
+%enables us to 
+%With Riemannian metrics, we can 
+%which defines various geometric notions on curved manifolds such as the length of a curve. 
+The \textit{geodesic curve} is the locally shortest path, analogous to straight lines in $\mathcal{R}^{p}$ --- this geodesic 
+curve will be the object that defines the trajectory of our covariance matrices in $\SPD$ space. 
+Unlike the Euclidean space, note that there may exist multiple geodesic curves between two points on a curved manifold. 
+So, the \textit{geodesic distance}
+between two points on $\Mc$ is defined as the length of the {\em shortest} geodesic curve connecting two points.
+The geodesic distance helps in measuring the error of our trajectory estimation (analogous to a Frobenius or $\ell_2$ norm based loss in the Euclidean setting).
+The geodesic curve from $y_i$ to $y_j$  is parameterized by a tangent vector in the tangent space anchored at $y_i$ with an exponential map $\EXP(y_i,\cdot ): T_{y_i}\Mc \rightarrow \Mc$. 
+The inverse of the exponential map is the logarithm map, $\LOG(y_i,\cdot):\Mc \rightarrow T_{y_i}\Mc$. These two operations move us back and forth between 
+the manifold and the tangent space. For completeness, Table \ref{tab:comp1} shows corresponding operations in the Euclidean space and Riemannian manifolds.
+\begin{table}[]
+	{
+		\begin{center}
+			\begin{tabular}{| l | l | l | }
+				\hline
+				Operation & Euclidean & Riemannian  \\  
+				\hline 
+				Subtraction & $\overrightarrow{x_i x_j} = x_j - x_i$ & $\overrightarrow{x_i x_j} = \LOG(x_i,x_j)$ \\ 
+				 Addition & $x_i + \overrightarrow{x_j x_k}$ & $\EXP(x_i,\overrightarrow{x_j x_k})$ \\     
+				 Distance  & $\| \overrightarrow{x_i x_j} \|$ & $\|\LOG(x_i,x_j) \|_{x_i}$ \\ 
+				Mean  & $\sum_{i=1}^{n} \overrightarrow{\bar{x}x_{i}}=0$ &  $\sum_{i=1}^{n} \LOG(\bar{x}, x_i)=0$  \\ 
+				Covariance & $\EE \left [ (x_i - \bar{x})(x_i - \bar{x})^{T} \right ]$& $\EE \left [ \LOG(\bar{x}, x)\LOG(\bar{x}, x)^{T} \right ]$\\ [1ex] \hline 
+			\end{tabular}
+		\end{center}
+	}
+	\caption{\label{tab:comp1} Basic operations in Euclidean space and Riemannian manifolds.}
+\end{table}
+%In this paper, we use $\EXP(\cdot, \cdot)$ and $\LOG(\cdot, \cdot)$ for exponential map and its inverse logarithm map for Riemannian manifold. 
+Separate from the above notation, matrix exponential (and logarithm) are simply $\exp(\cdot)$ (and $\log(\cdot)$).  
+%Lastly, \textit{parallel transport} is a generalized parallel translation on manifolds. 
+%Let $\Mc$ be a differentiable manifold with
+%an affine connection $\nabla$ and $\mathcal{I}$ be an open interval. 
+%Let $g : \mathcal{I} \rightarrow  \Mc$ be a differentiable curve in $\Mc$ and let $V_0$ be a tangent vector in $T_{g(t_0)}\Mc$, where $t_0 \in I$. 
+%Then, there exists a unique parallel vector field $V$ along $c$, such that $V (t_0) = V_0$. Here, $V (t)$ is called the parallel transport of $V (t_0)$ along $g$. 
+%We denote the parallel transport from $y$ to $y_0$ of $V$ as $\Gamma_{y\rightarrow y'}V$ . Intuitively, parallel transport of $V_0$ along curve $g$ can be interpreted as the parallel translation of $V_0$ on manifolds preserving the angle between $V (t)$ and $g$.
+%We summarize some of these notations in the table below, and include in the appendix additional differential geometry background.
+%
+Finally, \textit{parallel transport} is a generalized parallel translation on manifolds. Given a differentiable curve $\gamma : \mathcal{I} \rightarrow  \Mc$, where $\mathcal{I}$ is an open interval, 
+the parallel transport of $v_0 \in T_{\gamma(t_0)}\Mc$ along curve $\gamma$ can be interpreted as the parallel translation of $v_0$ on the manifold preserving its length and the angle between $v (t)$ and $\gamma$. 
+The parallel transport of $v$ from $y$ to $y'$ is $\Gamma_{y\rightarrow y'}v$.

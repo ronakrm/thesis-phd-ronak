@@ -1,0 +1,25 @@
+In many real world situations, first-order information in the data is often valuable in identifying group differences. Restricting 
+our analysis to only the second-order interactions, i.e., covariances, may be inefficient (or sub-optimal) when the mean signal difference between groups is large. Our construction easily extends to these cases. Particularly, the \textit{product space} over both means and covariances is in $\mathbb{R}^{p} \times \SPD{(p)}$. 
+\begin{remark}
+The typical GLM on the first order information is defined in the standard Euclidean space. So, computing the regression in the product space 
+$\mathbb{R}^{p} \times \SPD{(p)}$ 
+amounts to simply 
+computing the regression on the first and second order statistics (mean and covariance) separately.
+\end{remark}
+The above statement suggests that by applying the manifold regression to the covariances and the standard regression model for the means, 
+we are directly solving the product space regression problem, incorporating both first and second order statistics.
+However, in these cases, the statistic defined above in \eqref{eq:traj} does {\em not} directly take into account the potential difference in means. 
+However, given our Normal noise assumption we can easily invoke the standard Gaussian multivariate likelihood statistic for group differences.
+\begin{definition}
+Let $\hat{\mu}_t, \hat{\Sigma}_t$ be the estimated mean and covariance from the standard linear model and our manifold-covariance GLM respectively. Then the Gaussian likelihood of our data $X$ is
+\begin{align}
+P(X|\hat{\mu},\hat{\Sigma}) = \prod_{t=1}^{T}\prod_{i=1}^{n_t} P(X_t | N(\hat{\mu}_t,\hat{\Sigma}_t)),
+\end{align}
+where $X_t$ is the subset of our data collected at timepoint $t$. Additionally, we can define a standard likelihood ratio test statistic as:
+\begin{align}
+L_{prod} = \frac{P(X_1|\hat{\mu}_1,\hat{\Sigma}_1)P(X_2|\hat{\mu}_2,\hat{\Sigma}_2)}{P(X_{1,2}|\hat{\mu}_{1,2},\hat{\Sigma}_{1,2})}
+\end{align}
+\end{definition}
+This statistic is again $\chi^2_{p}$-distributed \cite{seber2003linear}, and an $\alpha$-level hypothesis test for group difference analysis 
+can be defined in the same way as above. While our manifold regression modeling is focused on the case of centered data (where the mean signal may not be 
+significantly different between the groups), we use the product space construction, wherever appropriate, in experimental evaluations.

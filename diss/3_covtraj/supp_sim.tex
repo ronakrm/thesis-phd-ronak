@@ -1,0 +1,112 @@
+\subsection*{A note on localization accuracy}
+In addition to simply checking whether or not we were able to correctly answer the hypothesis test group difference, it is important that if a significance is found, that it is found in the features that were originally used to generate the data. Using the same simulation setup as previous, we take the union of all subsets returned to be significant and check if each of the truly changing features $p_t$ are contained within the superset.
+
+In this particular case we find that our localization is only dependent on the graphical lasso procedure we use to generate the oracle graph. As long as the sparsity specified is large enough to include at least $p_t$ edges, we find that in \textit{every} simulation where we find a significant difference, the features that express the difference are a superset of the true features.
+%
+%\subsection{False Positive Rates}
+%
+%Table \ref{fpr-table} shows results from our model and the GLM-based approaches for data simulated from the same underlying distribution at each timepoint for both groups. For each timepoint, data for both groups was drawn from a single trajectory generated using the procedure outlined in the previous section. We report the false positive rates of the models over a range of sample sizes, again averaged across 100 runs. 
+%
+%\begin{table}[h]
+%  \begin{center}
+%  \caption{False Positive Rates for simulations of the localization procedure.}
+%  \label{fpr-table}
+%  \centering
+%  \begin{tabular}{llllll}
+%    \toprule
+%         & $n = 50$   & $n = 100$	& $n = 200$	& $n = 500$ & $n = 1000$ \\
+%    \midrule
+%		Na\"ive GLM	&  0.04  &  0.02  &  0.02 & 0.04 & 0.04 \\
+%		GLM with Interactions	&  0.02  &  0.10  &  0.02 & 0.04 & 0.02 \\
+%		Cov. Trajectories	&  0.18  &  0.28  &  0.20 & 0.22 & 0.16 \\
+%    \bottomrule
+%  \end{tabular}
+%  \end{center}
+%\end{table}
+%
+%While our method does have an increased false positive rate in comparison to the more simple methods, we note that this simulation was run with the exact same setup as those reported in the sensitivity analysis presented in the main paper. Together with these results we note that in the case of a stratified evolving covariance trajectory, we are completely able to detect the group difference without a significant decrease in power.
+%
+%A clear path for future work may be to incorporate a complete framework in which the localized subsets from our model can be rigorously (in a statistical sense) tested in a downstream analysis. While it may be tempting to directly use all of the features returned by our model as features for a GLM or structural equation model based on the oracle graph, because we have already performed a statistical test we cannot use standard methods for evaluating the group difference test at that downstream level.  }
+
+%\begin{table}[ht]
+%  \caption{False Positive Rates for simulations of the localization procedure.}
+%  \label{fpr-table}
+%  \centering
+%  \begin{tabular}{lllll}
+%    \toprule
+%         & $p = 10$   & $p = 20$	& $p = 50$	& $p = 100$ 	\\
+%    \midrule
+%		$n=10$	&  0.04  &  0.05  &  0.06 & aaa \\
+%		$n=20$	&  aaa  &  aaa  &  aaa & aaa \\
+%		$n=50$	&  aaa  &  aaa  &  aaa & aaa \\
+%		$n=100$	&  aaa  &  aaa  &  aaa & aaa \\
+%		$n=200$	&  aaa  &  aaa  &  aaa & aaa \\
+%		$n=1000$&  aaa  &  aaa  &  aaa & aaa \\
+%    \bottomrule
+%  \end{tabular}
+%\end{table}
+
+%
+%
+%\begin{table}[t]
+%  \caption{False Positive Rates for simulations of the localization procedure.}
+%  \label{fpr-table}
+%  \centering
+%  \begin{tabular}{lllll}
+%    \toprule
+%         & $p_t = 5$   & $p_t = 10$	& $p_t = 15$	& $p_t = 20$ 	\\
+%    \midrule
+%		$s =0.2$  &  0.7242  &  0.4222  &  0.5906  &  0.5662  \\
+%		$s =0.3$  &  0.7442  &  0.7944  &  0.4882  &  0.7762  \\
+%		$s =0.4$  &  0.8589  &  0.8856  &  0.8718  &  0.9500  \\
+%		$s =0.5$  &  0.9558  &  0.9900  &  0.9859  &  0.8512  \\
+%    \bottomrule
+%  \end{tabular}
+%\end{table}
+
+%    0.7242    0.4222    0.5906    0.5662
+%    0.7442    0.7944    0.4882    0.7762
+%    0.8589    0.8856    0.8718    0.9500
+%    0.9558    0.9900    0.9859    0.8512
+
+%\begin{table}[t]
+%	\caption{Detection Accuracy for simulations of hypothesis testing procedure.}
+%	\label{recover-table}
+%	\centering
+%	\begin{tabular}{lllll}
+%	\toprule
+%         		& $p_t = 5$& $p_t = 8$	& $p_t = 10$&  $p_t = 15$ 	\\
+%	\midrule
+%		$n=10$	&  0.06  &  0.02  &  0.04  &  0.03 \\
+%		$n=20$	&  0.75  &  0.75  &  0.53  &  0.29 \\
+%		$n=50$	&  0.99  &  1.00  &  1.00  &  0.80 \\
+%		$n=100$	&  1.00  &  1.00  &  1.00  &  0.95 \\
+%		$n=200$	&  1.00  &  1.00  &  1.00  &  0.98 \\
+%		$n=1000$&  1.00  &  1.00  &  1.00  &  1.00 \\
+%	\bottomrule
+%	\end{tabular}
+%\end{table}
+	
+%
+%To evaluate the subgraph localization procedure, we estimate the null distribution of our size-corrected statistic by assuming that there is no difference between the groups. We define the critical value at which to reject $T > t$ at the $95\%$ $\alpha = 0.05$ quantile of the distribution (For a representative sparsity level of 0.2, $ t = 0.5$). Particularly we generate normal random datasets for each timepoint, and for a specified sparsity level, evaluate the statistic at each subgraph that meets the ball subgraph assumption. Table \ref{fpr-table} shows the resulting false positive rate calculated calculated from the number of correct and incorrect nodes identified, based on a range of sparsity parameters and a range of sizes of truly correlated regions. As the density of the graph increases, we observe that the false positive rate increases because $\Rcal$ tends to include larger regions.
+
+%we need to define some similarity measure over the subsets returned from our algorithm and the true region of interest. A natural candidate measure is the Jaccard similarity coefficient:
+%\begin{align}
+%J(A,B) = \frac{|A \cap B|}{|A \cup B|}
+%\end{align}
+%In our setting we can define $A$ as $p_t$, the ground truth feature set known to be changing significantly over the covariate, and $B = R$, the region discovered as a candidate by our localization procedure. For a candidate subset, $J(p_t,R)$ is the fraction of correct features discovered against the total number of features in both sets.
+%
+%In a similar vein, we define the \textit{power} of our localization procedure as the fraction of true features identified by the selection process.
+%\begin{align}
+%Power = \frac{|B\setminus A|}{|V|}
+%\end{align}
+%Similarly, our false positive rate is the ratio of features returned not in the true feature set to the ratio of total unlocalized features.
+%\begin{align}
+%FPR = \frac{|B\setminus A|}{|V\setminus (A\cup B)|}
+%\end{align}
+
+%Next, to evaluate the subgraph localization procedure, we need to define some similarity measure over the subsets returned from our algorithm and the true region of interest. A natural candidate measure is the Jaccard similarity coefficient:
+%\begin{align}
+%J(A,B) = \frac{|A \cap B|}{|A \cup B|}
+%\end{align}
+%In our setting we can define $A$ as $p_t$, the ground truth feature set known to be changing significantly over the covariate, and $B = R$, the region discovered as a candidate by our localization procedure. For a candidate subset, $J(p_t,R)$ is the fraction of correct features discovered against the total number of features in both sets.
