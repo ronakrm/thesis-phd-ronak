@@ -1,0 +1,90 @@
+\section{Introduction}\label{sec:intro}
+
+Recurrent Neural networks (RNNs) and its variants are the de facto 
+tool of choice 
+for modeling sequential data in machine learning and vision.
+%For high-dimensional data, a large problem initially faced by these models included exploding/vanishing gradients. 
+But until only recently, these models have been limited in their ability to model high-dimensional data.
+Part of the reason is that recurrent structures often lead to large model sizes dependent on sequence length, and thus also require an equivalent number of increased computation.
+While RNNs have been successfully applied to video data in some cases, the strategy 
+requires problem specific innovations because of the large mapping necessary 
+from inputs to hidden representations. It is fair to say that the growth 
+in the number of model parameters in various types of 
+recurrent models remains a bottleneck for high 
+dimensional datasets. 
+%
+Convolutional neural networks (CNNs), on the other hand, 
+%better suited at 
+handle high dimensional data
+%Modern deep learning architectures now almost exclusively use Convolutional neural networks (CNNs) %to alleviate this issue. 
+%CNNs, partly due to how most networks in broad use today are set up,
+far better and 
+can reduce the dimension of an input significantly by deriving rich feature maps. Most computer vision tasks involve some form of a CNN within the architecture, but incorporating CNNs within recurrent structures 
+seamlessly to mitigate the RNN specific model size issues described above is not always straightforward. Notice that a direct replacement of input and output layers with CNNs leads to a shrinkage of the sequence length considerably \cite{srivastava2015unsupervised}, and pre-training CNN layers may lead to poor local minima when we train without using an end-to-end pipeline \cite{donahue2015long}. Some recent works suggest the use of dilated convolutional networks 
+for sequence modeling \cite{yu2015multi} to partly mitigate these issues, but this line of work is still developing \cite{zhenIccv2019}. 
+%A similar issue exists with other 
+For model-size reduction, both for RNN style networks and otherwise, 
+PCA or random projections \cite{ye2005two,bingham2001random} style ``compression" ideas have 
+also been used with varying degrees of success.
+
+An interesting perspective on the effective degrees of freedom afforded 
+by a given network, a surrogate for the actual ``size'' of the architecture, 
+is provided by tensor methods.
+% and traces its roots to early 
+%results in approximation theory and numerical linear algebra. 
+%distinct but related line of work is on t
+Tensor decomposition based methods have recently been shown to enable low dimensional representations of very high dimensional data \cite{hwangCvpr18}, 
+and while these ideas were known to be effective in the ``shallow" regime much earlier, new results also demonstrate their applicability for deep neural 
+networks. 
+In particular, in the last year, we see a number of tensor based methods being successfully adapted for deep neural network design and compression \cite{cohen2016expressive,zhang2017tucker,yu2017compressing,xiong2019antnets}.
+Specifically, \cite{pmlr-v70-yang17e} shows that these compression methods can be very effective in reducing the parameter cost of weight layers in RNNs, enabling simple video analysis tasks that previously would have been computationally prohibitive.
+
+There are a number of key reasons why the size of the model, especially in the context of formulations for sequential data, is central to this paper. Our goal is to design rich sequential or recurrent models to analyze a longitudinal sequence of high dimensional 3D brain images. 
+This task raises two issues. {\bf First}, 
+unless the model size is parsimonious, we find that merely instantiating the 
+model with data involving 3D images over multiple time points, even on multiple high end GPU instances, is challenging.
+{\bf Second}, 
+the eventual goal of medical image analysis is either scientific discovery or generating 
+actionable knowledge for the patient. 
+Both goals require evaluating a model's confidence via 
+classical or contemporary statistical techniques: for instance, how confident is the model of its prediction?  
+Most, if not all, available tools for assessing 
+model uncertainty of deep neural network models 
+have a strong dependence on the number of parameters in 
+the model. Therefore, even if the first issue above could be mitigated by clever implementation ideas, purely as a practical 
+matter, the design of rich and expressive models with a small number of parameters yields immense benefits for calculating model uncertainty.
+
+{\bf This paper and its contributions.}
+We tackle the problem of modeling 
+sequential 3D brain imaging data using 
+recurrent/sequential models. 
+Our development starts from well known results on tensor decomposition. In particular, we 
+make use of the tensor train representation, which has been shown to be effective in several 
+applications in vision and machine learning. We derive a reformulation of the decomposition using 
+orthogonality constraints and show that while this makes the estimation slightly more challenging, 
+it {\bf reduces the number of parameters by as much as half}. 
+We present a novel parameter estimation scheme based on Stiefel manifold optimization and demonstrate 
+how the end to end construction yields benefits for convergence and uncertainty estimation. 
+Finally, from the empirical side, we discuss how we enable analysis of and prediction using sequential 3D brain imaging datasets, which to our knowledge is the first such result using 
+deep recurrent architectures. 
+
+
+
+
+
+
+
+
+
+
+
+%Motivated by the above and by recent theoretical results regarding tensor train optimization \cite{?,?}, we %propose a new decomposition with fewer parameters and equal effective expressive power, leading directly to %natural manifold optimization schemes and a reduction in 
+%uncertainty estimation cost.
+
+%The rest of the paper is organized as follows: In Section \ref{sec:prelim} we summarize the tensor train %construction and its application to nueral networks and RNNs, along with some brief differential geometry %backgound. In Section \ref{sec:ott} we introduce our \textit{orthogonal tensor train} construction, and detail %its theoretical properties. In Section \ref{sec:exps} we empirically test the construction in a variety of %setups, comparing with traditional tensor train formulations and evaluating simple sequential image frame %datasets. Finally, in Section \ref{sec:adni}, we demonstrate the ability of our model to scale to large %neuroimaging data, enabling uncertainty estimation in output prediction.
+
+
+
+
+
+%A number of models have been proposed to solve this problem. The current preference of researchers and developers are GRUs and LSTMs \cite{}, because of their ability to ``forget" and ``reset" through gating activation functions. Recently, another scheme proposing the the unitary evolution RNN has seen success \cite{}. Using a unitary recurrent hidden weight matrix, gradient flow through time is naturally stable and cannot vanish or explode. Building on this work, a number of related approaches have been developed \cite{wisdom2016full, mhammedi2017efficient, jing2017tunable}. independently, scaled cayley paper uses some of these ideas to directly construct orthogonality in the network graph, allowing for gradients to directly flow to unconstrained variables.
