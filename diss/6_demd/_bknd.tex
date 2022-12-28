@@ -1,0 +1,115 @@
+\section{Background}
+% Before stating the generalized Earth Mover's problem, it is helpful to have a complete description of the classical program.  No new concepts are required to understand the general program once the classical program has been grasped. 
+% \noindent\textbf{Notations.}
+
+Denote by $[n]\coloneqq\left\{1,\ldots,n\right\}$, the set of positive integers no larger than $n$. For elements $x\in\RR^{n}$, we denote the $i$th entry of $x$ as $x(i)$, e.g.,  
+for any $x\in\RR^{n}$, $x=(x(i):i\in[n])$.    
+The positive orthant of $\RR^n$ is denoted $\RR_{+}^{n} \coloneqq \left\{x\in\RR^{n}:x(i)\geq 0, i\in [n]\right\}$. 
+We denote by $e\coloneqq (1,\ldots,1)\in\RR^{n}$ the constant vector. 
+For $q\geq 1$, we define the $q$-norm  as $\norm{x}_q\coloneqq \left(\sum_{i\in[n]}\left|{x(i)}\right|^{q}\right)^{1/q}$, and if $q$ is suppressed, then $\left\|x\right\|\coloneqq \left\|x\right\|_2$. 
+A discrete probability distribution is a point $p\in\RR^{n}_+$ with $e'p=\norm{p}_1=1$.
+
+Given a pair of discrete probability distributions $p_1,p_2\in\RR^{n}_+$, we may want to quantify similarity. 
+%$p_1$ and $p_2$ are. 
+Often, it is more convenient to quantify dissimilarity between $p_1$ and $p_2$, and one may do this by selecting from many options including the $q$-norm, KL-divergence or the Earth Mover's Distance (EMD).
+%
+% \vikas{describe that we want to find how similar $p_1$ and $p_2$ are}
+%This problem is most well known as discrete optimal transport, or the Earth Mover's problem, and can be described as a linear program.
+The EMD for a pair of distributions has several equivalent interpretations. First, let $p_1$ be a source of mass, and $p_2$ be a sink for mass, and  $x(i,j)$, where  $x\in\RR^{n\times n}$, represent the flow of mass from $p_1(i)$ to $p_2(j)$.
+Denote by $c(i,j)$ the cost of moving one unit of mass from  $p_1(i)$ to $p_2(j)$.
+The EMD between $p_1$ and $p_2$ is the minimal cost to transform $p_1$ into $p_2$, 
+%given by the sum of the costs associated with shifting mass, according to $x(i,j)$ such that $p_1$ is transformed into $p_2$.
+% Unless otherwise specified, we assume $c(i,j)=|i-j|$, which corresponds to ground distance. 
+%This can be 
+written as a linear program (LP):
+\begin{align}\label{eq:2demd}
+\begin{aligned}
+\underset{{x\in \RR^{n\times n}_+}}{\textrm{min}} \sum_{i,j} c(i,j) x(i,j) \quad  \textrm{s.t.}\quad \sum_j x(i,j) &= p_1(i); \ 
+\sum_i x(i,j) = p_2(j),\ (\forall i,j\in[n]).
+\end{aligned}
+\end{align}
+The source-sink interpretation is asymmetric in $p_1$ and $p_2$, but the LP is symmetric in $p_1$ and $p_2$.  It can be shown that the objective value of this LP defines a {\em metric} \citep{kantorovich1960mathematical}, and the optimal value of the objective function can be interpreted as a distance between $p_1$ and $p_2$,  %For this reason, the Earth Mover's Distance is 
+and useful to quantify dissimilarity between pairs of distributions. In particular,  $p_1=p_2$ if and only if the optimal objective value of the Earth Mover's problem vanishes.
+%
+%Since the Earth Mover's program is a linear program, it has 
+The LP in (\ref{eq:2demd}) has an equivalent dual LP, 
+%which has the form
+\begin{align}\label{eq:2dualemd}\begin{aligned}
+    &\underset{z_1,z_2\in\RR^{n}}{\textrm{max}} z_1'p_1 + z_2'p_2 \quad 
+    \textrm{s.t.}\quad  z_1(i) + z_2(j)\leq c(i,j),\  (\forall i,j\in [n]).
+    \end{aligned}
+\end{align}
+By strong duality, the optimal value of the primal program~(\ref{eq:2demd}) equals the optimal value of the dual program (\ref{eq:2dualemd}). 
+% We show below that a solution to dual program is useful for computing gradients.
+Many practical relaxations have been proposed for (\ref{eq:2demd}), including entropic regularization \citep{cuturi2013sinkhorn}.
+%, which is notable for being both practical and scalable.
+%as it has led to practical approximations over large histograms.
+The EMD is available in Python Optimal Transport (POT) \citep{flamary2021pot}.
+
+%Minimization of the EMD is feasible via backend-supported implementations such as POT \citep{flamary2021pot}.
+
+
+% This can equivalently been seen as identification of a joint distribution $x$ with both $p_1$ and $p_2$ as marginals, where the total energy of the joint $x$ is minimized under some cost $c$. 
+% Other interpretations include the flow of mass between a source and a sink.
+
+
+
+
+% Outcome variable $Y$, discrete random. $y \in \{0,1\}$.
+% Sensitive Attribute $A$, random discrete variable. $a \in A$.
+
+% A sample may be a tuple of $\{x_i, a_i, y_i\}$, and a model may take in the subset $\{x_i, a_i\}$ and generate a prediction $\hat{y}_i = f_\theta(x_i, a_i)$. Dataset $S:= \{x_i,a_i,y_i\}_{i=1}^n$. A fairness measure $G(a,y,\hat{y})$.
+
+% Demographic Parity
+% \begin{align}
+%     G(a,y,\hat{y}) &= p(\hat{Y} = \hat{y} | A = a) \\
+%     g(S, a, y, \hat{y}) &= \frac{1}{n} \sum_{i=1}^n \II[a_i = a, \hat{y}_i = y] \\
+%     &= p_a
+% \end{align}
+% $Y$ binary, so we don't need to distinguish $p_a$ for different $y$.
+
+% Fairness across all groups $\forall a \in A$ requires finding a point (model, parameters, $\theta$) where these probabilities are close.
+% \begin{align}
+%     \theta^* = \min_{\theta} \sum_{i,j} d(p_{a_i},p_{a_j})
+% \end{align}
+% For each group, there may be an optimal $\theta_a$. Then we can rewrite the problem as
+% \begin{align}
+%     \theta^* = \min_{\theta} \sum_a d(\theta,\theta_a)
+% \end{align}
+% General formulation \cite{jiang2020wasserstein} requires computing the wasserstein-1 barycenter, computationally intensive, many approximations, complicated algorithm, requires entropic regularization, sinkhorn iterations.
+
+% Many calls to 1-d wasserstein problem.
+% \begin{align}
+%     d(\theta_1, \theta_2) = &\min \langle P, C \rangle \\
+%     &s.t. \sum_j P = \theta_1,\ \sum_i P = \theta_2
+% \end{align}
+% For fairness with two groups, the distributions can be the conditional fairness definitions (DP, EO, etc.).
+
+% How about with d groups? d-dimensional tensor.
+% \begin{align}
+%     \min \langle P, C \rangle_{\otimes}
+% \end{align}
+% How do we solve this efficiently? \cite{kline2019properties}
+% Kline 2019: d-dimensional Earth Movers.
+
+% Main technical piece: Using new solutions to the d-dimensional EMD for barycenter computation.
+
+% d-dimensional earthmover's problem.
+% \begin{align}\label{eq:dEMD}
+%     &\min \sum_{I \in \cI} C_I P_I \\
+%     &s.t. \sum_{I\setminus j} P_{I\setminus j} = x_j \quad \forall j \in \{1,\ldots, d\}
+% \end{align}
+
+% \subsection{Subgroup Fairness}
+
+% We may not only have one sensitive attribute $A$. Let $\cA$ be a collection of binary attributes. In this case, if we would like to be fair for all groups, simply enforcing the above definitions for each groups would work, but may not necessarily lead to fairness for various \textit{intersections} of subgroups. In this case, what we may be interested in is subgroup fairness. 
+
+% Following traditional definitions, let $G \in \cG$ be a specific subgroup for which we wish to be fair to, identified by a binary variable defined as the intersection over the $A$'s for each larger group. For example, we may have $A_1$ as race and $A_2$ as gender, and we may wish to be fair towards an intersection $G := A_1 \cap A_2$.
+
+% This definition also allows for one-hot encodings of categorical variables, and intersections of different categorical variables.
+
+% It is easy to see that with many different groups and subgroups we may wish to be fair to, the total set size of $\cG$ grows exponentially with the number of sensitive attributes. 
+
+% Following a traditional approach of optimizing each group towards a globally fair model is not feasible for existing Wasserstein-style approaches.
+
+% Entropic regularization approaches with Sinkhorn iterations grow with the number of distributions, and computing Wasserstein barycenters for many groups via the above formulations requires computing barycenters over all subgroups and estimation of these centers become worse with more samples. (See below for speed comparisons)

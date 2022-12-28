@@ -1,0 +1,13 @@
+\subsection{Extended Ethics Discussion}
+
+As discussed in the main paper discussion,
+the primary application of our proposed construction is to reduce invariance over a particular set of features. In practice, with respect to typical machine learning models and pipelines, 
+this corresponds to minimizing performance difference as measured across subgroups within the data corresponding to a minority or protected subsets of samples or individuals.
+While the construction can be applied to 
+any existing ML pipeline,
+we do not claim to provide a catch-all solution for group disparity that may be inherent to the data or exacerbated by the choice of the ML model that is being used.
+As always, care needs to be taken when working with sensitive data or models which may have disparate impacts on different groups.
+We point interested readers to the following extensive surveys and references therein regarding various methods and procedures for addressing and dealing with bias and unfairness in ML problems, and the potential danger associated with using models without care: \citep{mehrabi2021survey,leavy2018gender,o2016weapons,d2017conscientious,rakova2021responsible}.
+
+We also note that the final multi-marginal GAN image translation application could be used to generate so-called ``deepfakes." 
+While the results of our algorithm are comparable to existing works, we believe that existing methods of identifying deepfakes would work well, and that the methods provided here and in the original  paper \cite{cao2019multi} would require significant effort to be made practical for much larger scale images.

@@ -1,0 +1,28 @@
+\subsection{Differentiable Histogramming}\label{sec:supphist}
+\iffalse
+\begin{algorithm}
+\caption{Differentiable Histograms}\label{alg:diffhist}
+\begin{algorithmic}[1] \footnotesize
+\Function {Init}{$n$} {\em \hspace*{\fill} // bins, (discretization)}
+    \State $r := 1/n$ {\em \hspace*{\fill} // bin size}
+    \State $locs := arange(0, 1, r)$ {\em \hspace*{\fill} // bin boundaries}
+\EndFunction
+\Function {Forward}{$acts$}
+    \State $cdfs = \sigma(acts)$ {\em \hspace*{\fill} // compute CDFs}
+    \State $counts = []$
+    \For{loc in locs}
+        \State $dist = \lvert cdfs - loc \rvert$ {\em \hspace*{\fill} // dist. to boundary}
+%        \State {\em // soft bucket count}
+        \State $ct = \underset{i\in[nbins]}{\sum} \operatorname{ReLU}(r - dist[i])$ {\em \hspace*{\fill} // soft bucket count}
+        \State $counts.append(ct)$
+    \EndFor
+    \State $out = stack(counts)$
+    \State $out = out/sum(out)$
+    \State \Return $out$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+\fi
+
+While gradients are now readily available, typical ML pipelines do not have distributions or histograms predefined at outputs which can be fed directly into 
+our EMD loss. Applying existing binning procedures over the batch to estimate histograms will break the ability to autodifferentiate: soft thresholds are necessary at bin boundaries such that samples within a bin may move smoothly as needed. Algorithm \ref{alg:diffhist} provides a differentiable histogram implementation. Using a rectified linear relaxation allows for samples to have a continuous gradient towards neighboring bins.

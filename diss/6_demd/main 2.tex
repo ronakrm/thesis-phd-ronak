@@ -1,0 +1,162 @@
+
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2023_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+
+%%% Personal Packages
+
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+% For theorems and such
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+% if you use cleveref..
+\usepackage[capitalize,noabbrev]{cleveref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Todonotes is useful during development; simply uncomment the next line
+%    and comment out the line below the next line to turn off comments
+% \usepackage[disable,textsize=tiny]{todonotes}
+% \usepackage[textsize=tiny]{todonotes}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\algtext*{EndWhile}% Remove "end while" text
+\algtext*{EndFunction}% Remove "end while" text
+\algtext*{EndFor}% Remove "end while" text
+\algtext*{EndIf}% Remove "end if" text
+
+
+\input{mydefs.tex}
+
+% for comments during writing, custom
+\newcommand{\authnote}[3]{\textcolor{#2}{\textbf{#1:} #3}}
+\newcommand{\vikas}[1]{{\authnote{Vikas}{blue}{#1}}}
+\newcommand{\ronak}[1]{{\authnote{Ronak}{blue}{#1}}}
+\newcommand{\vishnu}[1]{{\authnote{Vishnu}{blue}{#1}}}
+\newcommand{\jeff}[1]{{\authnote{Jeff}{blue}{#1}}}
+\newcommand{\glenn}[1]{{\authnote{Glenn}{blue}{#1}}}
+
+\title{Efficient Discrete Multi-Marginal \\ Optimal Transport Regularization}
+
+\author{%
+  David S.~Hippocampus\thanks{Use footnote for providing further information
+    about author (webpage, alternative address)---\emph{not} for acknowledging
+    funding agencies.} \\
+  Department of Computer Science\\
+  Cranberry-Lemon University\\
+  Pittsburgh, PA 15213 \\
+  \texttt{hippo@cs.cranberry-lemon.edu} \\
+  % examples of more authors
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \AND
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+}
+
+\usepackage{lipsum}  
+
+\begin{document}
+
+\maketitle
+\begin{abstract}
+Optimal transport has emerged as a powerful tool for a variety of problems in machine learning, and it is frequently used to enforce distributional constraints.
+In this context, existing methods often use either a Wasserstein metric, or else they apply concurrent barycenter approaches when more than two distributions are considered.
+In this paper, we  leverage multi-marginal optimal transport (MMOT), where we take advantage of a procedure that computes a generalized earth mover's distance as a sub-routine. 
+We show that not only is our algorithm computationally more efficient compared to other barycentric-based distance methods, but it has the additional advantage that gradients used for backpropagation can be efficiently computed during the forward pass computation itself, which leads to substantially faster model training. We provide technical details about this new regularization term and its properties, and we present experimental demonstrations of faster runtimes when compared to standard Wasserstein-style methods. Finally, on a range of experiments designed to assess effectiveness at enforcing fairness, we demonstrate our method  compares well with alternatives.
+
+%\glenn{I massaged the abstract a little}
+%which are effective when distributions are continuous and known, or when measures of interest are discrete.
+% Our formulation allows for a discretization of continuous measures that drop in directly to classical  formulations of the Earth Mover's Distance. 
+% We present an alternative distance measure based on Earth Mover's distance to practically and efficiently optimize with distributional constraints within typical machine learning models. 
+%  {\color{blue}JK: i don't understand this sentence - modify or remove.  We measure these constraints over outputs in neural network pipelines prior to thresholding, allowing for optimization over multiple thresholds, or operating points, chosen a posteriori. }
+% Fairness of predictive models is perhaps the most important problem preventing their widespread adoption in social settings. New ways of addressing fairness have been developed, by identifying and minimizing various metrics between distributions over groups. While these are typically easy to compute for 2 groups, existing methods for computation via Wasserstein barycenters and Sinkhorn regularization scale poorly with many groups. Furthermore, they are limited in working only on binarized outcomes. Using a new algorithm for the computation of Earth Mover's Distance, we instantiate fairness over a discretization of a continuous measure \textit{prior to thresholding}, and compute a fast, differentiable measure of fairness over it. This method allows for fast in the loop regularization, and provides a final model that is fair across all discretizations. We provide technical results defining the measure and its properties, and follow with experimental demonstrations of speedup over existing methods and ability to construct fair models.
+\end{abstract}
+
+% \listoftodos
+
+\input{_intro}
+\input{_related}
+\input{_bknd}
+\input{_alg}
+% \input{_practice}
+\input{_exps}
+% \input{_theory}
+\input{_discuss}
+
+% \begin{ack}
+% Use unnumbered first level headings for the acknowledgments. All acknowledgments
+% go at the end of the paper before the list of references. Moreover, you are required to declare
+% funding (financial activities supporting the submitted work) and competing interests (related financial activities outside the submitted work).
+% More information about this disclosure can be found at: \url{https://neurips.cc/Conferences/2022/PaperInformation/FundingDisclosure}.
+
+
+% Do {\bf not} include this section in the anonymized submission, only in the final paper. You can use the \texttt{ack} environment provided in the style file to autmoatically hide this section in the anonymized submission.
+% \end{ack}
+
+{\small
+\bibliography{refs.bib}
+\bibliographystyle{iclr2023_conference}
+}
+
+\newpage
+% \todo{appendix if needed}
+% \appendix
+\section{Appendix}
+\input{supp/_supp_theory}
+\input{supp/_supp_hist}
+\input{supp/_supp_exps}
+\input{supp/_supp_demd_bknd}
+% \input{supp/_supp_multi}
+\input{supp/_supp_discussion}
+
+
+% \input{__notes}
+% \input{__todos_log}
+
+\end{document}

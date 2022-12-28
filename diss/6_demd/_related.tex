@@ -1,0 +1,126 @@
+\section{Related Work}
+%\jeff{I made pass through section 2}
+%Optimal transport has a very long history.
+%\cite{monge} An early description of the optimal transport problem is traced to~\cite{monge}. 
+Despite originating with \citep{monge},
+%spanning three centuries, 
+optimal transport continues to be an active area of research
+%, 
+%Large strides have been made in the analysis of 
+%on both the theoretical 
+%and 
+%properties as well as for 
+%practical aspects 
+\citep{villani2009optimal}. The literature is vast, but we list a few key developments.
+%Optimal transport is intimately tied to the theory and practice of linear programming, and this connection holds true in our work. 
+
+{\bf Early applications.}
+%The Earth Mover's problem has been applied to machine learning in many domains.
+Starting in~\citep{peleg}, the idea of shifting  ``mass'' around within an image was 
+used 
+%applied to the task of 
+for comparing images to each other
+%. This same idea was 
+and applied to image retrieval  \citep{rubner}, where the term ``Earth Mover's Distance'' (EMD) was introduced. 
+%The Earth Mover's Distance 
+EMD has since been widely used in computer vision: e.g., for image warping \citep{zhang2011discriminative}, in supervised settings \citep{wang2012supervised}, matching point sets \citep{CABELLO2008118} and in scenarios involving histogram comparisons ~\citep{ling2007efficient,wang2012supervised,haker2004optimal}. 
+
+{\bf Modern machine learning.}
+The continuous optimal transport problem (Monge-Kantorovich problem), was originally presented in \citep{,kantorovich1942,kantorovitch1958}.
+%, and the Wasserstein distance form  
+%The Wasserstein distance arises from the idea of optimal transport, and it is being 
+%is now widely used.  
+While the continuous problem has been studied 
+intensively \citep{villani}, uses 
+of optimal transport within machine learning were 
+possible due to \citep{cuturi2013sinkhorn},
+%with developments along this route contributing to continuous versions of the discrete problem, often called the Monge-Kantorovich problem.  
+%Recent work by \cite{cuturi2013sinkhorn}
+which showed that entropic regularization enables fast algorithms for EMD (two distributions with discrete support),   
+%The results therein have 
+and contributed to the success of 
+Wasserstein distances in applications.
+%replacing traditional measures. 
+Consequently, problems including autoencoders \citep{wae}, GANs \citep{wgan}, 
+domain adaptation \citep{courty2016optimal}, word embeddings \citep{huang2016supervised} and 
+ classification tasks \citep{frogner2015learning}
+ have benefited via the use of optimal transport. 
+
+{\bf Multi-marginal optimal transport.}
+Extending optimal transport theory to an {\em arbitrary number} of distributions has been 
+studied on the theoretical side \citep{pass2015multi}, and practical extensions have been proposed \citep{mmotcuturi}. But implementations that integrate directly into machine learning pipelines rely on either heuristics or modifications that result in an approximation of the original MMOT problem \citep{cao2019multi}.
+
+{\bf Wasserstein barycenters.}
+One use case of our algorithms will be in 
+formulations that involve Wasserstein barycenters. 
+Given a set of probability distributions, the Wasserstein barycenter minimizes 
+the {\em mean} of Wasserstein
+distances to {\em each} probability distribution in the set: a practical definition of the mean under the transportation distance  \citep{sinkbaryfw,fastbary,agueh2011barycenters,janati2020debiased}. 
+%This concept is closely related to the key goals of this work.
+Applications of Wasserstein barycenter  
+include texture analysis \citep{rabin2011wasserstein}, sensor data fusion \citep{elvander2020multi}, shape interpolation \citep{solomon2015convolutional}, coupling problems \citep{ruschendorf2002n} and others \citep{ho2017multilevel}. Very recently, polynomial time algorithms have been derived  \citep{altschuler2021wasserstein}. 
+
+{\bf Fairness.}
+%These applications have not been purely on the modeling side.
+%As learning models become larger and more ubiquitous a number of works have aimed to identify and address problems of fairness.
+%The idea of \textit{minimizing} these computed distances between distributions...fairness...
+%Recognizing the impact that a widely-deployed machine learning application can have on both privileged and under-privileged subgroups within a population, the machine learning community has prioritized formalizing principles and practices that lead to fair and ethical machine learning models.
+%An interesting use of the aforementioned ideas -- and a 
+%setting which will inform our experimental evaluations -- 
+%has been in the context of learning for fairness. 
+%Consider groups induced by some criteria. 
+% We can operate on 
+% distributions over disparate groups, and 
+% ask that the distributions are ``pushed" towards 
+% each other through a minimization of a transportation distance. 
+%Optimal transport is a natural fit for this application.
+Proposals such as 
+\citep{jiang2020wasserstein,fairregress,gordaliza2019obtaining} have all 
+%all taken advantage of the ideas above to 
+regularized models towards outcomes which have equal predictive power over subgroups within a population, measured using optimal transport distance.  
+Informally, the idea is to operate on 
+distributions that are supported on disparate groups, and 
+ask that the distributions get ``pushed" towards 
+a common central distribution. This requires solving an optimal transport problem.
+
+% Recent advances in computational algorithms have allowed the  application of the Earth Mover's problem and more general transportation problems to expand their applicability. In~\cite{cuturi2013sinkhorn}, the idea of entropic relaxations was introduced. This relaxation allows for rapid optimization of Earth Mover's distances for two dimensional problems with arbitrary discrete support. This work and others have spurred applications and analysis of Wasserstein metrics and their optimization as learning problems, leading to reframing of a number of classical learning methods under the transportation lens \cite{wae,wgan}.
+
+{\bf Greedy algorithms and extensions.}
+% Alternative to the barycentric approach, \cite{BEIN199597} first was able to extend the results of \cite{hoffman1963simple} to $d$-dimensional problems, suggesting that linear-time, greedy methods may have some value.
+\cite{hoffman1963simple} observed that there exists a family of linear-time greedy algorithms that solve the classical two-dimensional transportation problem. % with $m$ sources and $n$ sinks.   
+Later,~\cite{BEIN199597} extended
+the relevant definitions and the greedy algorithm to $d$-dimensional transportation problems.
+More recently, the results in \cite{kline2019properties}, 
+which we will use here, further extended this result to the dual program,  
+%The author also derived 
+and several theoretical properties of the generalized Earth Mover's problem were shown. 
+A slightly different generalized 
+$d$-dimensional Earth Mover's problem is explored in~\cite{erickson2020generalization}, 
+with a focus on statistical generalization properties.
+
+% In~\cite{kline2019properties}, solutions to the dual program and other properties of the generalized Earth Mover's problem are presented. The results and  algorithms presented in that paper are used in this one. A sightly different generalized $d$-dimensional Earth Mover's problem is explored in~\cite{erickson2020generalization}, where statistical properties of the generalization are explored.
+
+% Another method of handling situations with multiple distributions is based on Wasserstein barycenters. These have been used with the goal of identifying and computing a useful mean of multiple objects under a transportation distance \cite{sinkbaryfw,fastbary,agueh2011barycenters,janati2020debiased}.  
+
+% A recent result in~\cite{de2006all} demonstrates that {\em all} linear programs are isomorphic to a subclass of transportation problems.  Comprehensive overviews of optimal transport are available in \cite{burkard} and \cite{villani}.
+
+
+
+% {\bf Tools.} Excellent libraries such as the Python Optimal Transport Library \citep{flamary2021pot} are now available. These implementations  take advantage of the algorithms described in \citep{benamou2015iterative} and others. \jeff{any other libraries or just this one?}
+
+
+
+
+
+% \cite{erickson2020generalization}: probabilistic/expected value of d-EMD, recursive formulation. Creates generating function for dEMD, could be interesting to look at hyp. testing if the distribution over all possible dists. can be characterized. (They have expectation, variance not discussed).
+
+% \cite{kearns2018preventing} subgroup fairness, main motivation. They have a linear optimization formulation, still depends heavily on number of dists.
+% \cite{Zhao2020Conditional}  TBD.
+% \cite{kim2019multiaccuracy} postprocessing with a slightly different fairness definition.
+% \cite{du2020fairness} fairness overview, more focused on methods of mitigation, less on definitions.
+% \cite{hardt2016equality} Hardt's original equalized odds paper, a definition of fairness that's somewhat nicer than demographic parity.
+% \cite{polania2019ordinal} potential application/dataset for evaluating fairness/bias. BMI dataset used here.
+% \cite{yoon2020joint} fainess domain transfer, TBD.
+% Inverse contrastive loss, TBD.
+% \cite{chzhen2020fair} regression setting contrasting \cite{jiang2020wasserstein}, uses $W_2$.
+% Other fairness constructions, like closeness (differential privacy). \cite{kim2018fairness}

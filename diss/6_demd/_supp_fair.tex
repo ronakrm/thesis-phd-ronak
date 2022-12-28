@@ -1,0 +1,97 @@
+\subsubsection{Fairness Experiment Details}
+All experiments related to fairness use a three-layer fully-connected neural network classifier with a hidden layer size of 100. Numbers reported in Table 1 in the main paper are means and standard deviations over three replicate runs with different seeds.
+Hyperparameters were selected as described in the main paper,
+by taking the best result for each dataset over the parameter range $\lambda \in [1.0, 0.1, 10, 0.01, 100, 0.001]$. The full results of this sweep are presented in Table~\ref{tab:fair_reg_results_1} and Table~\ref{tab:fair_reg_results_2}.
+
+The $|DP|$ and $|EO|$ measures are the gap between the corresponding conditional probability distributions when there is a single binary group attribute, and the largest gap ($max - min$) when there are more than 2 groups. The DEMD loss is computed as described in the main paper with a discretization/bin level of 10.
+
+
+
+\begin{table*}
+	\scriptsize
+	\setlength\tabcolsep{10pt} % make LaTeX figure out width of inter-column spaces
+	\caption{\footnotesize \textbf{Fairness Experiments.} Measures evaluated using standard metrics: maximum Demographic Parity Gap \textbf{(|DP|)},  maximum Equalized Odds Gap \textbf{(|EO|)}, and \textbf{(DEMD)}. For all measures, lower values are preferred.  With comparable accuracy, DEMD regularization leads to fairer representations as measured by common metrics. DP and EO measures are scaled by 100 for ease of presentation. Best results shown in bold.}
+	\begin{tabular*}{\linewidth}{ll| *{3}{c}|*{3}{c}}
+		\midrule%\midrule
+		& & \multicolumn{3}{c}{German} & \multicolumn{3}{c}{Adult} \\
+		\cmidrule{3-5} \cmidrule{6-8}
+		Reg. Type & $\lambda$ & |DP| & |EO| & DEMD & |DP| & |EO| & DEMD \\ 
+		\midrule
+		None & 0 & $0.17\scriptscriptstyle(0.05)$ & $0.11\scriptscriptstyle(0.02)$ & $1.69\scriptscriptstyle(0.32)$ & $0.18\scriptscriptstyle(0.01)$ & $0.13\scriptscriptstyle(0.01)$ & $1.69\scriptscriptstyle(0.07)$ \\
+\midrule
+DP-Reg. & 0.001 & $0.19\scriptscriptstyle(0.03)$ & $0.12\scriptscriptstyle(0.0)$ & $1.79\scriptscriptstyle(0.27)$ & $0.18\scriptscriptstyle(0.01)$ & $0.13\scriptscriptstyle(0.0)$ & $1.64\scriptscriptstyle(0.07)$ \\
+	 & 0.01 & $0.27\scriptscriptstyle(0.05)$ & $0.17\scriptscriptstyle(0.01)$ & $1.5\scriptscriptstyle(0.21)$ & $0.13\scriptscriptstyle(0.01)$ & $0.14\scriptscriptstyle(0.01)$ & $0.99\scriptscriptstyle(0.09)$ \\
+	 & 0.1 & $0.23\scriptscriptstyle(0.2)$ & $0.12\scriptscriptstyle(0.1)$ & $0.99\scriptscriptstyle(0.86)$ & $0.02\scriptscriptstyle(0.03)$ & $0.15\scriptscriptstyle(0.02)$ & $0.28\scriptscriptstyle(0.09)$ \\
+	 & 1.0 & $0.0\scriptscriptstyle(0.0)$ & $0.19\scriptscriptstyle(0.17)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.2\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ \\
+	 & 10.0 & $0.0\scriptscriptstyle(0.0)$ & $0.1\scriptscriptstyle(0.17)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.2\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ \\
+	 & 100.0 & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.2\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ \\
+\midrule
+EO-Reg. & 0.001 & $0.17\scriptscriptstyle(0.05)$ & $0.1\scriptscriptstyle(0.02)$ & $1.51\scriptscriptstyle(0.34)$ & $0.18\scriptscriptstyle(0.01)$ & $0.13\scriptscriptstyle(0.01)$ & $1.67\scriptscriptstyle(0.07)$ \\
+	 & 0.01 & $0.14\scriptscriptstyle(0.07)$ & $0.09\scriptscriptstyle(0.04)$ & $1.41\scriptscriptstyle(0.35)$ & $0.15\scriptscriptstyle(0.01)$ & $0.12\scriptscriptstyle(0.01)$ & $1.44\scriptscriptstyle(0.08)$ \\
+	 & 0.1 & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.47\scriptscriptstyle(0.21)$ & $0.03\scriptscriptstyle(0.01)$ & $0.06\scriptscriptstyle(0.01)$ & $0.29\scriptscriptstyle(0.02)$ \\
+	 & 1.0 & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.08\scriptscriptstyle(0.14)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ \\
+	 & 10.0 & $0.0\scriptscriptstyle(0.0)$ & $0.19\scriptscriptstyle(0.17)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ \\
+	 & 100.0 & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.2\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ \\
+\midrule
+Bary & 0.001 & $0.17\scriptscriptstyle(0.05)$ & $0.11\scriptscriptstyle(0.02)$ & $1.69\scriptscriptstyle(0.32)$ & $0.18\scriptscriptstyle(0.01)$ & $0.13\scriptscriptstyle(0.01)$ & $1.69\scriptscriptstyle(0.07)$ \\
+	 & 0.01 & $0.17\scriptscriptstyle(0.05)$ & $0.11\scriptscriptstyle(0.02)$ & $1.68\scriptscriptstyle(0.31)$ & $0.18\scriptscriptstyle(0.01)$ & $0.13\scriptscriptstyle(0.01)$ & $1.69\scriptscriptstyle(0.07)$ \\
+	 & 0.1 & $0.17\scriptscriptstyle(0.05)$ & $0.1\scriptscriptstyle(0.02)$ & $1.51\scriptscriptstyle(0.35)$ & $0.18\scriptscriptstyle(0.01)$ & $0.13\scriptscriptstyle(0.01)$ & $1.68\scriptscriptstyle(0.07)$ \\
+	 & 1.0 & $0.16\scriptscriptstyle(0.06)$ & $0.1\scriptscriptstyle(0.03)$ & $1.5\scriptscriptstyle(0.26)$ & $0.17\scriptscriptstyle(0.01)$ & $0.13\scriptscriptstyle(0.01)$ & $1.6\scriptscriptstyle(0.07)$ \\
+	 & 10.0 & $0.06\scriptscriptstyle(0.07)$ & $0.04\scriptscriptstyle(0.05)$ & $0.58\scriptscriptstyle(0.37)$ & $0.09\scriptscriptstyle(0.01)$ & $0.09\scriptscriptstyle(0.01)$ & $1.02\scriptscriptstyle(0.08)$ \\
+	 & 100.0 & $0.06\scriptscriptstyle(0.11)$ & $0.03\scriptscriptstyle(0.06)$ & $0.06\scriptscriptstyle(0.11)$ & $0.0\scriptscriptstyle(0.0)$ & $0.04\scriptscriptstyle(0.0)$ & $0.39\scriptscriptstyle(0.05)$ \\
+\midrule
+DEMD & 0.001 & $0.17\scriptscriptstyle(0.05)$ & $0.11\scriptscriptstyle(0.02)$ & $1.69\scriptscriptstyle(0.32)$ & $0.18\scriptscriptstyle(0.01)$ & $0.13\scriptscriptstyle(0.01)$ & $1.69\scriptscriptstyle(0.07)$ \\
+	 & 0.01 & $0.17\scriptscriptstyle(0.05)$ & $0.11\scriptscriptstyle(0.02)$ & $1.69\scriptscriptstyle(0.32)$ & $0.18\scriptscriptstyle(0.01)$ & $0.13\scriptscriptstyle(0.01)$ & $1.69\scriptscriptstyle(0.07)$ \\
+	 & 0.1 & $0.19\scriptscriptstyle(0.05)$ & $0.11\scriptscriptstyle(0.02)$ & $1.32\scriptscriptstyle(0.18)$ & $0.18\scriptscriptstyle(0.01)$ & $0.13\scriptscriptstyle(0.01)$ & $1.66\scriptscriptstyle(0.07)$ \\
+	 & 1.0 & $0.2\scriptscriptstyle(0.09)$ & $0.11\scriptscriptstyle(0.05)$ & $1.59\scriptscriptstyle(0.46)$ & $0.14\scriptscriptstyle(0.01)$ & $0.12\scriptscriptstyle(0.01)$ & $1.43\scriptscriptstyle(0.07)$ \\
+	 & 10.0 & $0.16\scriptscriptstyle(0.13)$ & $0.09\scriptscriptstyle(0.07)$ & $0.5\scriptscriptstyle(0.12)$ & $0.07\scriptscriptstyle(0.02)$ & $0.08\scriptscriptstyle(0.01)$ & $0.94\scriptscriptstyle(0.17)$ \\
+	 & 100.0 & $0.06\scriptscriptstyle(0.08)$ & $0.18\scriptscriptstyle(0.16)$ & $0.06\scriptscriptstyle(0.08)$ & $0.01\scriptscriptstyle(0.01)$ & $0.01\scriptscriptstyle(0.01)$ & $0.41\scriptscriptstyle(0.05)$ \\
+		\midrule%\midrule
+	\end{tabular*}
+	\label{tab:fair_reg_results_1}
+\end{table*} 
+
+\begin{table*}
+	\scriptsize
+	\setlength\tabcolsep{10pt} % make LaTeX figure out width of inter-column spaces
+	\caption{\footnotesize \textbf{Fairness Experiments.} Measures evaluated using standard metrics: maximum Demographic Parity Gap \textbf{(|DP|)},  maximum Equalized Odds Gap \textbf{(|EO|)}, and \textbf{(DEMD)}. For all measures, lower values are preferred.  With comparable accuracy, DEMD regularization leads to fairer representations as measured by common metrics. DP and EO measures are scaled by 100 for ease of presentation. Best results shown in bold.}
+	\begin{tabular*}{\linewidth}{ll| *{3}{c}|*{3}{c}}
+		\midrule%\midrule
+		& & \multicolumn{3}{c}{Crime} & \multicolumn{3}{c}{ACS-Income} \\
+		\cmidrule{3-5} \cmidrule{6-8}
+		Reg. Type & $\lambda$ & |DP| & |EO| & DEMD & |DP| & |EO| & DEMD \\ 
+		\midrule
+		None & 0 & $0.38\scriptscriptstyle(0.06)$ & $0.45\scriptscriptstyle(0.03)$ & $2.86\scriptscriptstyle(0.38)$ & $0.37\scriptscriptstyle(0.01)$ & $0.25\scriptscriptstyle(0.0)$ & $4.78\scriptscriptstyle(0.32)$ \\
+\midrule
+DP-Reg. & 0.001 & $0.36\scriptscriptstyle(0.05)$ & $0.44\scriptscriptstyle(0.04)$ & $2.81\scriptscriptstyle(0.3)$ & $0.57\scriptscriptstyle(0.37)$ & $0.5\scriptscriptstyle(0.44)$ & $4.38\scriptscriptstyle(0.16)$ \\
+	 & 0.01 & $0.35\scriptscriptstyle(0.02)$ & $0.44\scriptscriptstyle(0.03)$ & $2.61\scriptscriptstyle(0.17)$ & $0.81\scriptscriptstyle(0.33)$ & $0.76\scriptscriptstyle(0.42)$ & $3.45\scriptscriptstyle(0.71)$ \\
+	 & 0.1 & $0.22\scriptscriptstyle(0.07)$ & $0.29\scriptscriptstyle(0.12)$ & $1.58\scriptscriptstyle(0.28)$ & $0.62\scriptscriptstyle(0.33)$ & $0.51\scriptscriptstyle(0.42)$ & $2.67\scriptscriptstyle(0.63)$ \\
+	 & 1.0 & $0.0\scriptscriptstyle(0.0)$ & $0.41\scriptscriptstyle(0.03)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.67\scriptscriptstyle(0.58)$ & $0.0\scriptscriptstyle(0.0)$ \\
+	 & 10.0 & $0.0\scriptscriptstyle(0.0)$ & $0.26\scriptscriptstyle(0.23)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.33\scriptscriptstyle(0.58)$ & $0.0\scriptscriptstyle(0.0)$ \\
+	 & 100.0 & $0.0\scriptscriptstyle(0.0)$ & $0.26\scriptscriptstyle(0.23)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.33\scriptscriptstyle(0.58)$ & $0.0\scriptscriptstyle(0.0)$ \\
+\midrule
+EO-Reg. & 0.001 & $0.38\scriptscriptstyle(0.05)$ & $0.45\scriptscriptstyle(0.03)$ & $2.85\scriptscriptstyle(0.38)$ & $0.36\scriptscriptstyle(0.01)$ & $0.25\scriptscriptstyle(0.0)$ & $4.77\scriptscriptstyle(0.32)$ \\
+	 & 0.01 & $0.36\scriptscriptstyle(0.06)$ & $0.44\scriptscriptstyle(0.03)$ & $2.69\scriptscriptstyle(0.44)$ & $0.33\scriptscriptstyle(0.0)$ & $0.24\scriptscriptstyle(0.0)$ & $3.6\scriptscriptstyle(0.29)$ \\
+	 & 0.1 & $0.11\scriptscriptstyle(0.07)$ & $0.39\scriptscriptstyle(0.03)$ & $0.61\scriptscriptstyle(0.23)$ & $0.03\scriptscriptstyle(0.0)$ & $0.03\scriptscriptstyle(0.0)$ & $0.53\scriptscriptstyle(0.01)$ \\
+	 & 1.0 & $0.0\scriptscriptstyle(0.0)$ & $0.41\scriptscriptstyle(0.03)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ \\
+	 & 10.0 & $0.0\scriptscriptstyle(0.0)$ & $0.41\scriptscriptstyle(0.03)$ & $0.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ & $0.33\scriptscriptstyle(0.58)$ & $0.0\scriptscriptstyle(0.0)$ \\
+	 & 100.0 & $0.06\scriptscriptstyle(0.1)$ & $0.09\scriptscriptstyle(0.15)$ & $0.5\scriptscriptstyle(0.87)$ & $0.0\scriptscriptstyle(0.0)$ & $0.33\scriptscriptstyle(0.58)$ & $0.0\scriptscriptstyle(0.0)$ \\
+\midrule
+Bary & 0.001 & $0.38\scriptscriptstyle(0.05)$ & $0.45\scriptscriptstyle(0.03)$ & $2.86\scriptscriptstyle(0.38)$ & $0.37\scriptscriptstyle(0.01)$ & $0.25\scriptscriptstyle(0.0)$ & $4.78\scriptscriptstyle(0.32)$ \\
+	 & 0.01 & $0.38\scriptscriptstyle(0.06)$ & $0.45\scriptscriptstyle(0.03)$ & $2.86\scriptscriptstyle(0.39)$ & $0.37\scriptscriptstyle(0.01)$ & $0.25\scriptscriptstyle(0.0)$ & $4.8\scriptscriptstyle(0.32)$ \\
+	 & 0.1 & $0.38\scriptscriptstyle(0.06)$ & $0.45\scriptscriptstyle(0.03)$ & $2.83\scriptscriptstyle(0.39)$ & $0.48\scriptscriptstyle(0.04)$ & $0.28\scriptscriptstyle(0.01)$ & $5.02\scriptscriptstyle(0.31)$ \\
+	 & 1.0 & $0.37\scriptscriptstyle(0.06)$ & $0.44\scriptscriptstyle(0.03)$ & $2.65\scriptscriptstyle(0.45)$ & $1.0\scriptscriptstyle(0.0)$ & $1.0\scriptscriptstyle(0.0)$ & $5.66\scriptscriptstyle(0.3)$ \\
+	 & 10.0 & $0.21\scriptscriptstyle(0.1)$ & $0.41\scriptscriptstyle(0.04)$ & $1.36\scriptscriptstyle(0.32)$ & $1.0\scriptscriptstyle(0.0)$ & $1.0\scriptscriptstyle(0.0)$ & $4.5\scriptscriptstyle(0.57)$ \\
+	 & 100.0 & $0.01\scriptscriptstyle(0.01)$ & $0.41\scriptscriptstyle(0.03)$ & $0.19\scriptscriptstyle(0.1)$ & $0.0\scriptscriptstyle(0.0)$ & $0.33\scriptscriptstyle(0.58)$ & $0.0\scriptscriptstyle(0.0)$ \\
+\midrule
+DEMD & 0.001 & $0.38\scriptscriptstyle(0.05)$ & $0.44\scriptscriptstyle(0.04)$ & $2.85\scriptscriptstyle(0.39)$ & $0.37\scriptscriptstyle(0.01)$ & $0.25\scriptscriptstyle(0.0)$ & $4.78\scriptscriptstyle(0.32)$ \\
+	 & 0.01 & $0.38\scriptscriptstyle(0.05)$ & $0.45\scriptscriptstyle(0.03)$ & $2.85\scriptscriptstyle(0.38)$ & $0.38\scriptscriptstyle(0.01)$ & $0.26\scriptscriptstyle(0.0)$ & $4.82\scriptscriptstyle(0.32)$ \\
+	 & 0.1 & $0.38\scriptscriptstyle(0.05)$ & $0.44\scriptscriptstyle(0.03)$ & $2.83\scriptscriptstyle(0.39)$ & $1.0\scriptscriptstyle(0.0)$ & $1.0\scriptscriptstyle(0.0)$ & $4.33\scriptscriptstyle(0.42)$ \\
+	 & 1.0 & $0.35\scriptscriptstyle(0.05)$ & $0.43\scriptscriptstyle(0.03)$ & $2.54\scriptscriptstyle(0.39)$ & $0.93\scriptscriptstyle(0.12)$ & $1.0\scriptscriptstyle(0.0)$ & $2.67\scriptscriptstyle(0.17)$ \\
+	 & 10.0 & $0.26\scriptscriptstyle(0.05)$ & $0.39\scriptscriptstyle(0.02)$ & $1.35\scriptscriptstyle(0.25)$ & $0.68\scriptscriptstyle(0.28)$ & $1.0\scriptscriptstyle(0.0)$ & $0.9\scriptscriptstyle(0.47)$ \\
+	 & 100.0 & $0.0\scriptscriptstyle(0.0)$ & $0.41\scriptscriptstyle(0.03)$ & $0.26\scriptscriptstyle(0.02)$ & $0.0\scriptscriptstyle(0.0)$ & $1.0\scriptscriptstyle(0.0)$ & $0.0\scriptscriptstyle(0.0)$ \\
+\midrule
+
+	\end{tabular*}
+	\label{tab:fair_reg_results_2}
+\end{table*} 

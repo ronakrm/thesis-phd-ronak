@@ -1,0 +1,23 @@
+\subsubsection{Data and Licenses}
+
+The datasets Adult, Communities and Crime, and German datasets are all available under Creative Commons Attribution 4.0 International (CC BY 4.0) licenses via the UCI Machine Learning Dataset Repository \url{https://archive.ics.uci.edu/ml/index.php}.
+The CelebA dataset \url{http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html} is available for non-commercial purposes. See the website for more details.\\
+{\bf ACS Data.}
+The American Census Survey (ACS) has recently made available a large set of demographic data. The original UCI Adult dataset \cite{uci} was curated from this data, however recent work by \cite{ding2021retiring} has identified temporal shifts in demographic data, and recommends using a more recent collection as a baseline when evaluating biases and adjusting for fairness.
+Part of their contribution includes APIs to directly interface with the data provided by the ACS, and the ability to identify and construct similar problems associated with the original UCI-provided dataset, albeit with updated data. Data for the income prediction task was downloaded from 2018, localized to Louisiana. 
+% After preprocessing, 195665 samples were split: 75\% training and 25\% validation. 
+Race is the provided group label, which we wish to be agnostic towards, over some measure of our output.
+Data was accessed using the folktables codebase \url{https://github.com/zykls/folktables} with MIT License. The US Census data accessed is available for use so long as it is not used in combination with other data ``to identify any particular respondent to a Census Bureau survey." See \url{https://www.census.gov/data/developers/about/terms-of-service.html} for more details.\\
+{\bf German Data.}
+ The German dataset classifies people as good or bad credit risks. There are about $20$ features ($7$ numerical and $13$ categorical). These features represent the economic status of the person, such as, credit history, savings account, year of present employment, property and others. \\
+{\bf Adult Data.}
+The Adult dataset is comprised of demographic characteristics  from the UCI repository \cite{uci}. The protected attribute here is gender. It contains $44,842$ samples. The features that were used in the experiments include ``age", ``workclass", ``fnlwgt", ``education",                           ``education-num", ``marital-status", ``occupation",
+                          ``relationship", ``race", ``sex", ``capital-gain",
+                           ``capital-loss", ``hours-per-week", ``native-country",
+                           ``income". A positve target label in this dataset is indicated by the attribute ``income-bracket" being above \$50K.\\
+{\bf Communities and Crime Data.}
+The Communities and Crime dataset consists of summary statistics of per-capita measures from a wide variety of communities across the United States, measured from a number of US census and surveys from the 1990's. The original goal of the dataset was to predict crime rates in communities as a function of various demographic, socioeconomic, and other features. The dataset has widely become known as the prototypical example in which using racial population distributions can be extremely harmful in perpetuating stereotypes and lead to models that continue to exacerbate inequity that may exist within the data.
+As such, the dataset has become a de facto tool in evaluating fairness metrics and methods that attempt to account for these inequities and biases. The preprocessed data contains 1994 samples, and we attempt to predict the violent crime rate (binarized at 0.3 after normalization between 0 and 1), and the sensitive attribute is a similarly binarized version of the percentage black population variable.
+
+{\bf CelebA Data.}
+CelebA \citep{liu2015faceattributes} consists of $200$K celebrity face images from the internet annotated by a group of paid adult participants. There are up to $40$ labels available in the dataset, each of which is binary-valued.

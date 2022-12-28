@@ -1,0 +1,167 @@
+\subsection{Proof of Theorem 4.2}\label{sec:app-proof}
+% Let $e\coloneqq (1,1,1,\ldots,1)\in\RR^{n}$ denote the vector of all $1$s.
+% Given $x_{0}, \ldots x_{d-1}\in\RR^{n}$, normalized so that $e'x_j=1$ for $0\leq j<d$,
+% consider the linear program,
+% \begin{align*}
+% \max_{z_j\in\RR^n, 0\leq j<d}&\sum_{j} x_j'z_j\\
+% \textrm{subject to} \quad&z_{0}(i_0)+\cdots+z_{d-1}(i_{d-1})\leq c(i_0,\ldots,i_{d-1})
+% \end{align*}
+% Let $z_j^*\in\RR^{n}$ ($0\leq j<d$) represent an optimal solution to this program,
+% and denote by $\phi(x_0,x_1,\ldots,x_{d-1})$ the optimal objective value.
+\label{sec:proofthm}
+
+Here, we present the proof of Theorem 4.2.  The main observation in the proof invokes perturbation analysis \cite{mangasarian1979nonlinear,ferris1991finite} of linear programs to assert that, under mild uniqueness conditions, small changes to a linear program's data does not change the linear program's optimal solution. The informal reason why such a result is possible can be explained using a  short,  geometric argument as follows. 
+
+The feasible set of a nontrivial linear program is a polytope, and, as a rule, an optimal solution to a linear program lives at the point where a hyperplane defined by the objective functional intersects a vertex of the polytope. A small perturbation of the hyperplane does not alter the intersecting vertex. The derivative of a linear program's optimal objective value, treated as a function of the data fed to the LP, has been described several times in prior work, and under a variety of conditions~\cite{dewolf,freund1985postoptimal,agueh2011barycenters,Mills19578MV}.
+
+The second claim of Theorem 4.2 is useful because dual solutions to the generalized EMD linear program are not unique.  The claim explains how one can modify a given solution (found by a direct gradient computation or else from an interior point solver, for example) so that it agrees with the solution yielded by the primal/dual greedy algorithm. 
+
+\begin{proof}[Proof of Theorem 4.2]
+Let $z_j^*$, for $j\in[d]$, denote an optimal solution to the dual linear program of equation 5 in the main paper.  Standard sensitivity analysis of linear programs implies that $z_j^*\in\RR^{n}$ ($j\in[d]$) is
+ also optimal for the perturbed linear program,
+% \begin{align*}
+% \max_{z_j\in\RR^n, 0\leq j<d}&\sum_{j} (x_j'+ \varepsilon h_j)'z_j\\
+% \textrm{subject to} \quad&z_{0}(i_0)+\cdots+z_{d-1}(i_{d-1})\leq c(i_0,\ldots,i_{d-1}),
+% \end{align*}
+% where $\varepsilon>0$ is sufficiently small and $h_j\in \RR^{n}$ are held fixed.
+\begin{alignat*}{2}\begin{split}
+&\underset{z_j\in\RR^n, j\in[d]}{\textrm{maximize}}\qquad\sum_{j} (x_j+\varepsilon h_j)'z_j\\
+&\textrm{subject to}\qquad z_{1}(i_1)+\cdots+z_{d}(i_{d})\leq c(i_1,\ldots,i_{d}),\end{split}
+\end{alignat*}
+where the indices in the constraints include all $i_j\in[n]$, $j\in[d]$, $\varepsilon>0$ is sufficiently small and $h_j\in \RR^{n}$ are held fixed.
+
+If $\phi(x_1+\varepsilon h_1,\ldots,x_{d}+\varepsilon h_{d})$ represents the optimal objective value of this program, then by linearity, 
+\begin{align*}
+    \phi(x_1+\varepsilon h_1,\ldots,x_{d}+\varepsilon h_{d}) - \phi(x_1,\ldots,x_{d}) = \sum_{j} h_j'z^*_j.
+\end{align*}
+Thus, we can form the directional derivative of $\phi$ as
+\begin{align*}
+\lim_{\varepsilon\rightarrow 0}\frac{  \phi(x_1+\varepsilon h_1,\ldots,x_{d}+\varepsilon h_{d}) - \phi(x_1,\ldots,x_{d}) }{\varepsilon\norm{h}}
+=\frac{\sum_{j} h_j'z^*_j}{\norm{h}},
+\end{align*}
+where $\norm{h}^2\coloneqq \sum_{j}\norm{h_j}^2$.
+From this, it follows that 
+\begin{align*}
+    \nabla \phi(x_1,\ldots,x_{d}) = (z_1^*, z_2^*,\ldots, z_{d}^*).\end{align*}
+This shows the first claim of the theorem.
+
+To see the second claim, we have from Theorem 3.1 item 2 of~\cite{kline2019properties} that
+\begin{align}
+\sum_{j} z^*_j(i)=0
+\label{eqn:vanish}
+\end{align}
+for all $i\in[n]$. Consequently, if one defines 
+\begin{align*}
+\eta=(z_1^{*}(n) e, z^*_2(n)e,\cdots,z^*_{d}(n)e),
+\end{align*}
+then since we assume that $e'x_j=1$ for all $j\in[d]$,
+\begin{align*}
+\sum_{j}x_j'(z_j^* + t \eta) &= \sum_{j} x_j'z_j^* + t\,x_j'\eta\\
+&= \sum_{j} x_j'z_j^* + t \sum_{j}z_j^{*}(n)\, x_j'e\\
+&=  \sum_{j} x_j'z_j^*,
+\end{align*}
+where the last equality holds by 
+equation (\ref{eqn:vanish}). This shows the second claim.
+\end{proof}
+
+% Let $X$ be a multiset of $d$ vectors in $\RR^n$, i.e., $X:= \{{\bf x}: x\in \RR^n\}$. In typical settings, these vectors represent histograms of different samples $d$, and we wish to minimize the distance between them in the EMD sense.
+% \begin{align}\label{eq:dEMDMin}
+%     \min_X DEMD(X)
+% \end{align}
+
+% \begin{lemma}
+% For admissable $X$, a subgradient with respect to the input histograms $X$ in \eqref{eq:dEMDMin} can be identified as the dual variables at the optimal solution of \eqref{eq:dEMD}.
+% \end{lemma}
+
+% \begin{proof}
+% At the optimum, the primal and dual objectives coincide if $X$ is admissable, and the dual formulation of \eqref{eq:dEMD} can be written as:
+% \begin{align}
+%     &\max_{z_k \in \RR^n, k \in \{1,\ldots,d\}} \sum_k \langle x_k, z_k \rangle \\
+%     &\text{s.t.} \quad z_0(i_0) + \cdots + z_{d-1}(i_{d-1}) \leq C(i_0,\ldots, i_{d-1})
+% \end{align}
+% We can directly read off the gradient of the objective as the dual variables $z_k$.
+% \end{proof}
+
+% Importantly, note that this gradient may not be unique: particularly the solution set of dual variables that satisfy optimality conditions may consist of a number of solutions that satisfy the linear objective and linear constraints of the dual formulation. We identify the set of these subgradients as follows:
+
+% \begin{lemma}
+% Let $\phi(x)$ be the objective as defined in \eqref{eq:dEMDMin} and \eqref{eq:dEMD}, and $z^*$ the values of the dual variables $z$ at optimality of \ref{eq:dEMD}. Then,
+% \begin{equation}
+%     \nabla \phi(x) = z^*.
+% \end{equation}
+% Furthermore, for any $t \in \RR$
+% \begin{equation}
+%     \phi(x) = x^\top (z + t\eta)
+% \end{equation}
+% for $\eta := (z^*_0(n-1)e, \ldots, z^*_{d-1}(n-1)e)$.
+% \end{lemma}
+% \begin{proof}
+% \ronak{Proof Sketch} with reference to olvi's work: \cite{mangasarian1979nonlinear,ferris1991finite}.
+% \end{proof}
+
+%%%%%%%
+% below was commented in a different way in ICML
+%%%%%%%
+
+% \subsection{Convergence}
+% The functional is bounded below by 0, and for any nonzero functional value over some inputs, a small step in the direction of negative gradient will reduce the functional value. 
+% % \begin{proposition}
+% % A straightforward gradient descent procedure using any subgradient at each iterate to solve \eqref{eq:dEMDMin} converges to 0. Moreover, it converges in $T = O(f(n,d,\eta))$ iterations.
+% % \end{proposition}
+% \begin{proposition}
+% The solution to \eqref{eq:dEMDMin}, exists, is unique, is 0.
+% \end{proposition}
+
+% \subsection{Barycenters}
+
+% \begin{theorem}
+% Let the solution of Equation \eqref{eq:dEMD} be $x^*$, and the value of the objective $f(\theta^*)$. If the tensor $C$ is Monge, then
+% \begin{align}\label{eq:baryequal}
+%     f(\theta^*) = \sum_{i \in H} W_1(x_i, x^*),
+% \end{align}
+% where $H$ is the set of groups/points that form the convex hull over $G$, and $x^*$ is the Wasserstein-1 barycenter of the points $x_i \in H$.
+% %In other words, the solution to the $d$-dimensional EMD is equivalent to the sum of the distances from each point to the barycenter.
+% \end{theorem}
+% \begin{proof}
+% The proof follows directly from the Minkowski additivity property of the DEMD. Particularly, any point $\theta_i \in int(hull(G))$ does not contribute to the EMD distance via Theorem 2.2 in \cite{kline2019properties}.
+% \end{proof}
+
+% In the context of group fairness, this directly leads to a coordinate-descent style update. We immediately have the groups that are maximally distant from the rest, and our goal is to reduce the ``area" of the convex hull: bring the furthest groups closer to the center. The solution to Eq.~\eqref{eq:dEMD} via d-EMD yields a sparse solution identifying these groups.
+
+% Via an iterative procedure, we can slowly reduce the ``volume" of the convex hull, by regularizing the parameters towards reducing the gap between the largest group biases.
+
+% \begin{remark}
+% In applications to fairness, this can be viewed as reducing the inequity among the groups that are furthest from what may be the ``center". The active set in this case are those subgroups for which the outcome distributions are furthest in the EMD sense.
+% \end{remark}
+
+% \subsection{Wasserstein}
+% Wasserstein distances, used as a theoretical foundation, are often defined more generally over arbitrary spaces $\Omega$ with some Borel probability measure $P$. 
+% \begin{definition}(Wasserstein Distance)\label{def:wassdist}
+% For any $q \in [1,\infty)$ and Borel probability measures $\mu,\nu \in P(\Omega)$, the q-Wasserstein Distance \cite{villani} is:
+% \begin{align}
+%     W_q(\mu,\nu) = \left(\inf_{\pi \in \prod(\mu,\nu) \int_\Omega^2} D(x,y)^q d\pi(x,y)\right)^{1/q}
+% \end{align}
+% with $\pi$ the set of all probability measures that has marginals $\mu,\nu$.
+% \end{definition}
+% The restriction of this to empirical measures or discrete spaces typically leads to constructions of the classical discrete earth mover's problem in Def. \ref{def:2demd}. Work in this direction typically formulates the EMD problem equivalently as
+% \begin{align}\label{eq:wasstrans}
+% \min_{P\in U(p_1,p_2)} & \langle P, C \rangle
+% \end{align}
+% where $U$ is the linear polytope that defines the marginals and $C$ is a discrete cost matrix defined based on the choice of distance $d(\cdot, \cdot)$ and power $q$ in Definition \ref{def:wassdist}.
+
+
+% \subsection{Wasserstein barycenters -- More than 2 masses}
+% When more than two masses are under consideration, the traditional approach entails estimating a center and measuring distances among all masses to that center. The barycenter is typically defined as
+% \begin{align}\label{eq:bary}
+% p^* := \arg\min_{p^*} \frac{1}{d} \sum_{i=1}^d W_q(p_i,p^*)
+% \end{align}
+% Following related work, a number of algorithms exist for solving this problem generally and when constrained to specific types of costs and distributions. These algorithms have also been deployed in machine learning pipelines, whereby distributions are pushed towards their barycenter through gradient-based updates. These constructions generally amount to the following workflow loop:
+% \begin{enumerate}
+%     \item Compute the barycenter as in Eq. \ref{eq:bary}.
+%     \item Compute couplings as in Eq. \ref{eq:2demd}.
+%     \item Update gradients and parameters using these couplings \cite{jiang2020wasserstein}.
+% \end{enumerate}
+% The couplings in this case are all joint distributions $P_i\in \pi(p^*,p_i)$ among the barycenter and distributions of interest. 
+
+% It is immediately clear that these computations require computations outside of the underlying optimization schemes: computing the barycenter is itself an optimization problem without a closed-form solution, and  the problem is highly dependent on the computational cost of solving the core 2-dimensional distance problem. As such computation is infeasible when the number of distributions or support may be large. Unrolling in the case of Sinkhorn-style approaches require significant changes to be made to existing implementations and workflows.
+% }

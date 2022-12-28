@@ -1,0 +1,3 @@
+\subsection{Multidimensional Extensions via Slicing}
+
+Here we demonstrate the ability to drop-in replace existing schemes for computing Wasserstein-style distances when the distributions of interest exist in $\RR^p, p > 1$. Although this manuscript focuses on analysis in the base case, empirically we find that $d$-EMD is able to outperform existing sinkhorn methods for multiple distributions in higher dimensions. Particularly, when the number of distributions is high and the discretization level or number of bins is reasonable, sliced sinkhorn barycenter approaches fail miserably with any practical setting of the sinkhorn regularizer weight. The parameter-free $d$-EMD is able to more consistently estimate the high-dimensional distance.

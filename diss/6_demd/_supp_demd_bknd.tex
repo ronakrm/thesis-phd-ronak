@@ -1,0 +1,32 @@
+\subsection{d-Dimensional Earth Mover's Distance Background and Algorithm}\label{sec:suppdemd}
+Algorithm~\ref{alg:primaldual} describes the greedy algorithm that solves both primal and dual generalized Earth mover's programs, also see \citep{kline2019properties}. The algorithm accepts $d$ distributions (i.e., histograms) $p_1,\ldots,p_d\in\RR^{n}_+$ with $e'p_j=1$ for all $j\in[d]$. 
+Although the algorithm states that all histograms have the same number of bins, the algorithm can be 
+easily adapted to accept as inputs $p_i\in\RR^{n_i}_+$ with $n_i\not=n_j$.
+\iffalse
+\begin{algorithm}
+\caption{EMD Primal/Dual Algorithm}\label{alg:primaldual}
+\begin{algorithmic}
+\State {\bf input} $p_j\in\RR^{n}_+$ with $e'p_j=1$ , $(\forall j\in[d])$
+% \State {\bf initialize}
+\State {\em //iteration index, active indices, primal variables, dual variables}
+\State  $k \coloneqq 0\in\ZZ$, $I \coloneqq 0\in\ZZ^{d}$, $x \coloneqq 0\in\RR^{n^{d}}$, $z_j\coloneqq 0\in\RR^{n}$, $(\forall j\in [d])$
+% \State  $I \coloneqq 0\in\ZZ^{d}${\em \hspace*{\fill} // track the active indices}
+% \State  $x \coloneqq 0\in\RR^{n^{d}}${\em \hspace*{\fill}  // variable of (\ref{eq:gemd})}
+% \State  $z_j\coloneqq 0\in\RR^{n}$, $(\forall j\in [d])$ {\em \hspace*{\fill}  // variable of (\ref{eq:dualgeneralemd})}
+\While{$I(j) \leq n$, $(\forall j\in[d])$}
+    \State $s_k\coloneqq \min_{j\in[d]} p_j(I(j))$ {\em\hspace*{\fill}  // the mass to move}
+    \State $x(I)\gets s_k$  {\em \hspace*{\fill} // update the EMD solution}
+    \State $p_j(I(j))\gets p_j(I(j))-s_k$, $(\forall j\in d)${\em\hspace*{\fill} // shrink the data}
+    \State $j^*\gets\arg\min_{j\in[d]} p_j(I(j))$
+    \State  $I(j^*)\gets I(j^*)+1$
+    \State $k\gets k+1$
+    \State $t_k\gets c(I)${\em\hspace*{\fill} // cost of this step}
+    \If{ $I(j^*)\leq n$}
+        \State  $z_{j^*}(I(j^*))\gets t_k-t_{k-1} + z_{j^*}(I(j^*)-1)$ {\em\hspace*{\fill} // update the dual solution}
+    \EndIf
+\EndWhile
+\State \Return $x$, $(z_1,\ldots,z_d)$, and the objective value $\sum_k s_k t_k$.
+\end{algorithmic}
+\end{algorithm}
+\fi
+The algorithm has explicit terminal conditions for the main while loop. In the worst case the number of iterations can be $nd$.

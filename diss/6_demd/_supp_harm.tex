@@ -1,0 +1,16 @@
+\subsubsection{Harmonization Experiment Details}
+For all our experiments related to harmonization, we use an encoder-decoder framework comprising of fully-connected layers. The hidden layers comprised of $64$ nodes and the latent space was of dimension $30$. We report the mean and standard deviation on unseen test datasets for three random runs. The hyper-parameter selection has been done on a validation split obtained from the training dataset. The model that achieves the best ADV (the adversarial evaluation measure), with the test set accuracy remains within 5\% of the vanilla (titled ``None'' in the paper) model, is chosen. 
+
+Recall that the harmonization experiments aimed at minimizing the distributional differences of the latent features across the groups. Below, we will provide details on the evaluation metrics, ADV and MMD measures, that aptly assess distributional differences of the latent features. 
+
+{\bf Evaluation Metric: Adversarial Measure (ADV)}
+The ADV measure corresponds to the accuracy obtained by training a separate neural network to predict groups from the latent features. This step is conducted post harmonization. A lower value of the ADV accuracy denotes that the latent features are free of any group related information. This implies successful harmonization and suggests minimal distributional differences of the latent features across groups. We follow \citep{cai} for training the adversary used for reporting ADV measure. We use a three-layered fully-connected network with batch normalization and train it with Adam optimizer for $200$ epochs. The learning rate for the adversary is decreased multiplicatively by a factor of $0.65$ every $10$ epochs for convergence. 
+
+
+{\bf Evaluation Metric: Maximum Mean Discrepancy (MMD)}
+We simply use the following MMD criterion as described in \citep{gretton2006kernel} and evaluate the metric on the latent features obtained from the test set. Each group is considered as a different distribution and a lower value of this metric suggests minimal distributional differences across the groups. For latent feature vector $\ell$ and groups $i/j$, we have 
+\begin{align}
+\label{mmd_eq}
+    \hspace{-0.1in} \mathcal{MMD} = \|\underset{Z_1\sim P\left(\ell)\right)_{\text{group}_i}}{\EE} \mathcal{K}(Z_1, \cdot) - \underset{Z_2\sim P\left(\Phi(\ell)\right)_{\text{group}_j}}{\EE} \mathcal{K}(Z_2, \cdot)\|_{\mathcal{H}}
+\end{align}
+The criterion is defined using a Reproducing Kernel Hilbert Space with norm $\|\cdot\|_{\mathcal{H}}$ and kernel $\mathcal{K}$. 
