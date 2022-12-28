@@ -88,7 +88,7 @@ Our questions above are formally asking to identify \textit{subsets of these obj
 % for questions that run parallel to standard performance and accuracy measures.
 
 Let us step a bit deeper into a basic illustrative example. In order to ease understanding, we can first begin with a basic formulation of learning methods, from which the questions above can take specific forms. 
-Learning methods typically  try to identify a function mapping (model) that is able to complete a specific task at some high level of profficiency.
+Learning methods typically  try to identify a function mapping (model) that is able to complete a specific task at some high level of proficiency. 
 % In Figure~\ref{fig:dl}, a model is trained using examples of classification task (top), in order to accurately predict the class of a newly provided input (bottom).
 % \begin{figure}
 %     \centering
@@ -96,9 +96,9 @@ Learning methods typically  try to identify a function mapping (model) that is a
 %     \caption[Modern machine learning pipelines]{Machine learning training and inference visualization.}
 %     \label{fig:dl}
 % \end{figure}
-Say we have some dataset comprising of sample pairs $(x,y)$, where we wish to predict $y$ from $x$.
+Say we have some dataset comprising of sample pairs $(x,y)$, where we wish to predict $y$ from some number of $d$ features of $x$ represented as a $d$-dimensional vector.
 Our prediction, say $\hat{y}$, might be the output of some unknown function $f$ that we attempt to learn from training data. 
-Let our approximation to this function be $\hat{y}:=\hat{f}(x)$.
+Let our approximation to this function be $\hat{f}$.
 This can take many forms, 
 based on assumptions and prior information we may have on the relationships among the data. 
 Consider the simple \textit{linear} case,
@@ -107,7 +107,7 @@ Given $n$ sample pairs $(x_i,y_i)$ indexed by $i$, traditional statistics and op
 \begin{align}\label{eq:lq}
 \hat{f}:=\hat{w} = \mathop{\arg\min}_{w} \sum_{i=1}^n (y_i - w\cdot x_i)^2
 \end{align}
-This formulation expands without much change to a multi-dimensional form of the input $x$ and respectively, $w$: the canonical case where a number of features, or \textit{covariates} (e.g., symptoms), are used together to predict the outcome (e.g., diagnosis). 
+This formulation extends without much change to a multi-dimensional form of the input $x$ and respectively, $w$: the canonical case where a number of features, or \textit{covariates} (e.g., symptoms), are used together to predict the outcome (e.g., diagnosis). 
 If we are interested in which features of $x$ are important, we can look at the relative values of the learned ``weights'' $w$. In this simple setting, the importance of a feature (say $x^j$) can be exactly determined by the importance of the parameter ($w^j$).
 A weight value far from zero may indicate that corresponding feature is important for diagnosis.
 % If instead we are interested in which samples are most important, we can use existing methods for sample reweighting or methods that use standard assumptions to efficiently identify important subsets.
@@ -123,7 +123,7 @@ have all been analyzed under these lenses.
 % so has a renewed interest in their methods of analysis.
 New research focuses
 particularly on the differences
-associated with moving from classical \textit{under-parametrized} models to
+associated with moving from classical \textit{under-parameterized} models to
 modern (deep) \textbf{over-parameterized} models: where
 the model size vastly outnumbers the number
 of input samples.
@@ -133,28 +133,28 @@ Methods for estimating the number of samples needed,
 the time to learn a particular task,
 and the generalization ability 
 all require new perspectives in this regime.
-While nascent, this research
-attempts to fill the gap between
+While nascent, these high-dimensional approaches
+attempt to fill the gap between
 statistical and deep models to enable similar measures of sample influence, feature importance, and model understanding. 
 
 \paragraph{A full picture.}
 Let us expand our notation from the example above to consider this more general framing.
 Consider a dataset $X:=\{x_i\}_{i=1}^n$ of size $n$ where each data point $x_i$ in the set $X$ is drawn from some underlying distribution over the domain $x_i \sim \cX^d$, 
 with domain dimensionality (number of features) $d$.
-A model $f$ is fit using a parametrization $\theta \in \Theta$,
-with $\Theta$ the space of possible parametrizations (models) with some intrinsic dimension $p$. 
+A model $f$ is fit using a parameterization $\theta \in \Theta$,
+with $\Theta$ the space of possible paramterizations (models) with some intrinsic dimension $p$. 
 %While all three of these problems are closely related, they require different approaches. 
-Generalizing the least squares``error measure'' from Eq.~\eqref{eq:lq} to an arbitrary \textit{loss} $\ell$, we have
+Generalizing the least squares``error measure'' from \eqref{eq:lq} to an arbitrary \textit{loss} $\ell$, we have
 \begin{align}\label{eq:learning}
     \hat{f}:=\hat{\theta} = \mathop{\arg\min}_{\theta\in\Theta} \sum_{x \in X} \ell(f_\theta(x_i))
 \end{align}
 From an analysis perspective, 
 we might be interested in any one of 
-(a) subsets of input features $\cC \subseteq \cX$ that are important for the downstream task,
-(b) associating model subsets $\cP \subseteq \Theta$ with specific inputs or groups of inputs, or 
-(c) subsets or subgroups of samples $S \subseteq \{X\}$ that are sufficient or representative of the entire dataset.
+\textbf{(a)} subsets of input features $\cC \subseteq \cX$ that are important for the downstream task,
+\textbf{(b)} associating model subsets $\cP \subseteq \Theta$ with specific inputs or groups of inputs, or 
+\textbf{(c)} subsets or subgroups of samples $S \subseteq \{X\}$ that are sufficient or representative of the entire dataset.
 
-Crucially, an uninformed search for a subset is computationally infeasible. For a superset of size $n=|X|$, The set of all subsets is the power set, with a size of $2^{n}$! If an identification procedure requires looking over all of these and choosing a ``best'' one by some metric, the procedure will be limited to very small supersets.
+Crucially, an uninformed search for a subset is computationally infeasible. For a superset of size $n=|X|$, the set of all subsets is the power set, with a size of $2^{n}$! If an identification procedure requires looking over all of these and choosing a ``best'' one by some measure, the procedure will be limited to very small supersets.
 Efficient methods have been developed in each of the three contexts above to avoid this exponential search.
 
 \begin{figure}
@@ -164,20 +164,27 @@ Efficient methods have been developed in each of the three contexts above to avo
     \label{fig:feat_select}
 \end{figure}
 \paragraph{Feature Selection.} 
-From the more pure statistics side,
+From the statistics side,
 penalized weighting of parameters in models similar to Equation \eqref{eq:lq} has been
 analyzed thoroughly, proving effective \textit{sparse} recoveries, with
-nonzero elements delineating the selected features.
+nonzero elements identifying the selected features.
 Correlation and other statistical measures such as mutual information can be used to 
 identify features that relate most to the outcome of interest
 based on the chosen measure.
-Scan statistics~\citep{scanstat,scanstatlrt} allow for a structured ``scanning'' over the input space, skipping subsets of features unlikely to provide additional information for the measure of interest.
+Analyses of variance and covariance
+have been widely used to determine 
+if statistically significant relationships
+among variables of interest.
+When the number of variables is large,
+but an assumption can be made about their
+internal structure,
+scan statistics~\citep{scanstat,scanstatlrt} allow for a structured ``scanning'' over the input space, skipping subsets of features unlikely to demonstrate relationships based on the measure of interest.
 Adaptations of sensitivity analysis, via noise addition and perturbations have found success~\citep{yeung2010sensitivity,zhang2015sensitivity}, alongside activation mapping~\citep{cam,selvaraju2017grad}.
 These methods typically generate an analagous ``weighting'' over the input space, identifying features most salient for the specific task (Figure~\ref{fig:feat_select}).
 
 These weighting approaches work well with more complex models $f$ compared to the linear case above: newer ``black-box'' methods have been developed for identifying important features.
 Recent popular methods with broad applicability include SHAP (Shapley Additive Explanations) and LIME (Local Interpretable Model-agnostic Explanations)~\cite{shap,lime}.
-Shapley methods estimate the importance, or weight, of a particular feature for a prediction through an approximate masking.
+Shapley methods estimate the importance, or weight, of a particular feature for a prediction through randomized masking to estimate marginal contributions.
 LIME samples the model space around the input of interest to estimate the decision function locally, penalizing complexity of this estimation to enable interpretability of the explanations.
 Predominantly created and deployed in computer vision and imaging domains, these methods have proven effective in identifying parts of the input that drive the function output.
 In models that generalize well, these features correspond to regions of the image that a human would use in performing the same task.
@@ -193,22 +200,23 @@ In models that generalize well, these features correspond to regions of the imag
 Selection in the model space generally takes two forms. First, as a prior, restriction, or assumption over the model space, and second, as a post-hoc method for an ``explainable'' proxy.
 Regularization, sparsity, and gating methods are often used independent of the type or size of the model, to encourage the solution to fall within a specific region of the model space.
 % In non-deep settings these methods come with strong theoretical guarantees. 
-The theoretical underpinnings of these methods in deep learning are still being actively researched~\citep{hardt2016train,jacot2018neural,neyshabur2014search}, but the methods have nonetheless been effective in practice. 
-On the post-hoc side,
-a number of methods have been proposed for model selection.
+A complete picture of the theoretical underpinnings of these methods in deep learning has not yet been identified, but some progress has nonetheless explained their effectiveness in practice~\citep{hardt2016train,jacot2018neural,neyshabur2014search}.
+Outside of the actual training process,
+a number of methods have been proposed for \textit{model} selection.
 By far the most valuable approach in scalable machine learning has been architecture search, enabling a higher-level identification of \textit{which} parameters should be learned, and what their relationship should be~\citep{elsken2019neural}.
-With a model learned, identifying a simpler, model takes the form of \textit{knowledge distillation}.
-Originally presented in~\cite{gou2021knowledge}, the technique involves training a simpler ``student'' model to mimic the output of the original, complex ``teacher'' model.
+With a model learned, identifying a simpler model takes the form of \textit{knowledge distillation}.
+Originally presented in~\cite{hintondistill} and overviewed for modern DNNs in~\cite{gou2021knowledge}, the technique involves training a simpler ``student'' model to mimic the output of the original, complex ``teacher'' model.
 To aid interpretability, \textit{disentanglement} approaches have been widely successful,
 with the goal of associated specific, distinct, parameters or regions of model space with salient factors of variation within the data~\citep{creager2019flexibly,locatello2019challenging}.
-Generation methods have benefited largely from similar ideas, enabling tunable ``knobs'' corresponding to independent features of interest~\citep{higgins2017betavae,karras2019style,hjelm2018learning}.
+Text and image generation models have benefited largely from similar ideas, enabling tunable ``knobs'' corresponding to independent features of interest~\citep{higgins2017betavae,karras2019style,hjelm2018learning}.
 
-Of particular interest here are the parameters relevant to specific regions of the input space \textit{after} training (Figure~\ref{fig:param_select}). Here, recent analysis of deployed networks has shown that indeed, models tend to learn subsets of parameters corresponding to specific subregions of the input space, or subtasks~\citep{bau2017network,fong2018net2vec}, and current work continues to explore these network regions to aid in interpretability and explainability.
+Of particular interest here are the parameters relevant to specific regions of the input space \textit{after} training (Figure~\ref{fig:param_select}). 
+Here, recent analysis of deployed networks has shown that indeed, models tend to learn subsets of parameters corresponding to specific subregions of the input space, or subtasks~\citep{bau2017network,fong2018net2vec}, and current work continues to explore these network regions to aid in interpretability and explainability~\citep{netdissect,yiyou}.
 
 
 \paragraph{Sample Selection.}
-Identification of a specific sample within the training set, or a sample at test time, 
-requires further new methods.
+Interest in identification of a specific sample within the training set, or a sample at test time, 
+have led to a number of other approaches.
 Identification in the most classical sense takes the form of outlier detection.
 Traditional statistics would use some form of the largest error to the model fit,
 perhaps after removing that sample and refitting.
@@ -219,7 +227,8 @@ Outliers within the data and embedding space notwithstanding,
 the \textit{influence} of a particular sample on learning is of independent interest:
 are some samples particularly valuable or detrimental to training?
 Is there a minimal set sufficient for learning the task?
-Post-training methods have been effective in understanding
+Building on ideas in archetypal analysis~\citep{cutler1994archetypal} and coreset identification~\citep{agarwal2005geometric,ravi2019deterministic},
+post-training methods have also been effective in understanding
 sample influence~\citep{koh2017understanding,golatkar2020eternal,huang2020feature}.
 
 Additionally, once a sample or set of samples has been identified,
@@ -256,7 +265,7 @@ Our outcome variable $y$ may simply be a binary label of whether the input scan 
 Using an off the shelf 3D convolutional neural network with adjustments to match our input size, we can very quickly set up and train a system to predict disease presence with a high degree of accuracy.
 
 \paragraph{Example 1.}
-With a prediction for a specific scan, or predictions over a number of scans, we might be interested in identifying which regions of the brain are most important for diagnosis. These regions, $R \subset \cR:=\RR^{x\times y\times z}$, can be specific groups of pixels in the image that may correspond to known functional networks. Methods such as attention and class activation maps may work here, but there are a few issues. The number of samples available to learn a model is very small compared to the both the dimension of the input and the number of parameters in the model, i.e., $n \ll p$ and $n \ll d$. Thus it is very easy to overfit, and for areas of interest to be associated with intricacies of particular input data rather than true, real differences defined by the disease.
+With a prediction for a specific scan, or predictions over a number of scans, we might be interested in identifying which regions of the brain are most important for diagnosis. These regions, $R \subset \cR:=\RR^{\cI\times \cJ\times \cK}$, can be specific groups of pixels in the image that may correspond to known functional networks. Methods such as attention and class activation maps may work here, but there are a few issues. The number of samples available to learn a model is very small compared to the both the dimension of the input and the number of parameters in the model, i.e., $n \ll p$ and $n \ll d$. Thus it is very easy to overfit, and for areas of interest to be associated with intricacies of particular input data rather than true, real differences defined by the disease.
 
 Furthermore, recent medical imaging studies have moved past simple difference detection: trends over time, and the ability to predict {\em future} disease development have by far become the setting of most interest.
 Given an image of a healthy individual, is it possible to predict what their scan, or their future disease diagnosis, may be up to 10, 20, or more years in the future?
@@ -303,7 +312,7 @@ from the scans of predominantly right-handed middle-aged adults~\citep{FONOV2009
 Resulting downstream analysis may be significantly worse
 for people outside that age range or those who are left-handed.
 These types of biases can directly lead to disparate performance and results on \textit{all} individuals outside of that group.
-Optimization and regularization methods with this focus come under the umbrella term of model fairness.
+Optimization and regularization methods with this focus come under the umbrellas of model fairness, enforcing invariance, and spurious feature regularization among others.
 However, many existing methods do not scale well to larger models or as the number of subgroups grows,
 as is often the case when intersections of protected classes must be considered.
 Here we identify and construct a particular solution for \textbf{groupwise fairness that enables efficient in the loop fairness regularization}.
@@ -389,7 +398,7 @@ Below we briefly introduce the main problems studied in this thesis.
     \label{fig:scope}
 \end{figure}
 
-\subsection{Second-Order Modeling and Group Difference Analysis over Time}
+\subsection{Chapter 3: Second-Order Modeling and Group Difference Analysis over Time}
 
 Results in coupled or temporal graphical models offer schemes for estimating the relationship structure 
 between features when the data come from
@@ -402,7 +411,12 @@ dependencies between only a {\em subset of features} may manifest differently ac
 We first suggest
 a parametric model 
 for estimating trends in the space of $\SPD$ matrices as a function of one or more covariates.
-We will then generalize scan statistics to graph structures, 
+With this in hand,
+we move on to using 
+graphical model approaches to determine
+on which covariates sets it is most meaningful to 
+fit these trends.
+Generalize scan statistics to graph structures, 
 to search over distinct \textbf{subsets of features} (graph partitions) whose temporal dependency structure may show statistically 
 significant group-wise differences.
 We will theoretically analyze the Family Wise Error Rate (FWER) and bounds on Type 1 and Type 2 error. 
@@ -415,26 +429,28 @@ significance thresholds.
 % Preliminary work on this was published in \citep{covtraj}.
 
 
-\subsection{Efficient Tensor Representations for Feasible Temporal Deep Learning}
+\subsection{Chapter 4: Efficient Tensor Representations for Feasible Temporal Deep Learning}
 
 Modern deep networks have proven to be very effective for analyzing real world images.
-However, their application in medical imaging has required additional and unique machinery,
+However, their application in medical imaging has required additional and specific machinery,
 primarily due to the large dimension of three-dimensional images,
-requiring enormous convolutional or fully connected layers --
+requiring enormous network architectures --
 if we treat an image (and not image patches) as a sample. 
 These issues only compound when the focus moves towards longitudinal analysis
 through recurrent structures, and when a point estimate of model parameters is insufficient 
 in scientific applications where a reliability measure is necessary.
 Building upon the differential geometry insights from the previous chapter, 
 we will adapt 
-the tensor train decomposition to construct networks
-with significantly fewer parameters,
-allowing us to train powerful recurrent networks on whole brain image volumes. 
-Resembling \textbf{model selection} methods
+a particular tensor decomposition, the tensor train, to construct networks
+with significantly fewer parameters.
+Using the theoretical guarantees afforded by its 
+geometry,
+it enables us to train powerful recurrent networks on whole brain image volumes. 
+Resembling \textbf{model and parameter selection} methods
 such as compression and distillation,
 we analyze 
 the \textit{orthogonal tensor train},
-and demonstrate its ability to express a standard network layer both theoretically and empirically.
+and demonstrate its ability to represent a standard network layer both theoretically and empirically.
 We 
 demonstrate its ability to 
 effectively reconstruct whole brain volumes
@@ -444,7 +460,7 @@ We provide code and show experiments on the ADNI dataset
 using image sequences to regress on a cognition related outcome.
 % Preliminary work on this was published in \citep{ott}.
 
-\subsection{Practical Unlearning via Large-Scale Conditional Independence Testing}
+\subsection{Chapter 5: Practical Unlearning via Large-Scale Conditional Independence Testing}
 
 %With AI systems extensively using personal %data for model training, 
 Recent legislation has
@@ -479,7 +495,7 @@ and NLP models that may require unlearning samples identified for exclusion.
 % Preliminary work on this will appear in \citep{lcodec}.
 
 
-\subsection{Reducing Subgroup Fairness via High Dimensional Earth Mover's Distances}
+\subsection{Chapter 6: Reducing Subgroup Fairness via High Dimensional Earth Mover's Distances}
 
 Optimal transport has recently emerged as a useful tool 
 for machine learning through its connections with geometry,
@@ -500,8 +516,13 @@ We provide technical details about this new regularization term and its properti
 and 
 experimental demonstrations of improved training speed over existing Wasserstein-style methods.
 
-\subsection{Understanding Latent Spaces via Conditional Independences}
-The final chapter of this thesis applies some of the tools
+\subsection{Chapter 7: Conclusions and Future Work: Understanding Latent Spaces via Conditional Independences}
+The final chapter of this thesis will
+present a 
+vision of how these methods may be more broadly applicable,
+and present
+some extensions of the 
+conditional dependence tools
 developed above in the analysis of latent spaces in recent large scale models.
 Through large language models like GPT
 and high-fidelity
@@ -549,7 +570,10 @@ Chapter 6 ends with a unique solution to subgroup fairness,
 where we take advantage of an efficient solution to
 the $d$-dimensional earth mover's problem
 to regularize large models when the number of subgroups can be large.
-Chapter 7 describes ongoing and future work, focused on applying a particular solution from Chapter 5 to understanding relationships among features in latent spaces learned by large generative models.
+We conclude in Chapter 7 with ongoing and future work, 
+focused on applying a particular solution from Chapter 5
+to understanding relationships among features
+in latent spaces learned by large generative models.
 
 
 %%%%%%%%%%%%% 
