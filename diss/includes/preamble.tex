@@ -55,9 +55,15 @@
 \usepackage{amsthm}
 \usepackage{mathtools}
 \usepackage{hyperref}
-\usepackage{algorithm}
-% \usepackage{algpseudocode}
-\usepackage{algorithmic}
+
+\usepackage{multicol}
+\usepackage{multirow}
+
+\usepackage[ruled,vlined]{algorithm2e}
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+
+\usepackage{bm}
 
 \IfFileExists{mathpartir.sty}{%
 \usepackage{mathpartir}%
@@ -109,6 +115,8 @@
 \else
 \usepackage{graphicx}
 \fi
+\usepackage{caption}
+\usepackage{subcaption}
 
 \usepackage{makeidx}
 \makeindex

@@ -50,7 +50,7 @@
 
 
 \gdef\@department{(Computer Sciences)} % Default is Electical Engineering
-\gdef\@defensedate{\color{red} 2022-05-12}% Default is a long time from now.
+\gdef\@defensedate{\color{red} 2023-01-16}% Default is a long time from now.
 \gdef\@committee{
   Frederic Sala, Assistant Professor, Computer Sciences Department\\ 
   Yong Jae Lee, Associate Professor, Computer Sciences Department \\  
@@ -318,15 +318,18 @@
 
 % Single counter for theorems and theorem-like environments:
 \newtheorem{theorem}{Theorem}[chapter]
+
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
 \newtheorem{assertion}[theorem]{Assertion}
+\newtheorem{assumption}[theorem]{Assumption}
 \newtheorem{claim}[theorem]{Claim}
 \newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{definition}[theorem]{Definition}
+
 \newtheorem{example}[theorem]{Example}
-% \newtheorem{figger}[theorem]{Figure}
 \newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{prop}[theorem]{Proposition}
 \newtheorem{remark}[theorem]{Remark}
 
 %=============================================================================

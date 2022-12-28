@@ -8,10 +8,26 @@
 % \newtheorem{remark}{Remark}
 % \newtheorem{assumption}{Assumption}
 
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\triu}{triu}
+
+
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\normlzero}{L^0}
+\newcommand{\normlone}{L^1}
+\newcommand{\normltwo}{L^2}
+\newcommand{\normlp}{L^p}
+\newcommand{\normmax}{L^\infty}
+
+\newcommand\myas{\stackrel{\mathclap{\normalfont\mbox{a.s.}}}{=}}
+
 \def\EE{\mathbb{E}}
 \def\II{\mathbb{I}}
 \def\PP{\mathbb{P}}
 \def\RR{\mathbb{R}}
+\def\NN{\mathbb{N}}
+\def\CC{\mathbb{C}}
 
 \def\Exp{\text{Exp}}
 \def\ST{\text{St}}
@@ -20,7 +36,10 @@
 \def\cA{\mathcal{A}}
 \def\cC{\mathcal{C}}
 \def\cD{\mathcal{D}}
+
 \def\cG{\mathcal{G}}
+\def\tG{\mathcal{G}}
+
 \def\cH{\mathcal{H}}
 \def\cI{\mathcal{I}}
 \def\cJ{\mathcal{J}}
@@ -35,10 +54,20 @@
 \def\cS{\mathcal{S}}
 \def\cT{\mathcal{T}}
 \def\cU{\mathcal{U}}
+\def\cV{\mathcal{V}}
 \def\cW{\mathcal{W}}
+
 \def\cX{\mathcal{X}}
+\def\tX{\mathcal{X}}
+
 \def\cY{\mathcal{Y}}
 \def\cZ{\mathcal{Z}}
+
+%\newcommand{\BV}{\bm{V}}
+\def\BV{\bm{V}}
+%\newcommand{\Bbeta}{\bm{\beta}}
+\def\Bbeta{\bm{\beta}}
+\newcommand{\defeq}{\mathrel{\mathop:}=}
 
 \DeclareMathOperator*{\SPD}{SPD}
 \DeclareMathOperator*{\VAR}{VAR}
