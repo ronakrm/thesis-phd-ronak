@@ -1,0 +1,17 @@
+\section{Related Work}
+%While machine unlearning has been studied by many in the field, to the best of our knowledge we are the first to propose 
+To contextualize our contributions, 
+we briefly review existing proposals for machine unlearning. 
+
+\noindent\textbf{Na\"ive, Exact Unlearning.}
+A number of authors have proposed methods for exact unlearning, in the case where $(\epsilon=0, \delta=0)$. SVMs by \cite{romero2007incremental,karasuyama2009multiple}, Na\"ive Bayes Classifiers by \cite{cao2015towards}, and $k$-means methods by \cite{ginart2019making} have all been studied. 
+%More recently, \cite{} develop methods for Random Forests.
+But these algorithms do not translate to stochastic models with millions of parameters.
+
+\noindent\textbf{Approximate Unlearning.} 
+With links to fields such as robustness and privacy, we see more developments in approximate unlearning under Definition~\ref{def:forget}. 
+The so-called $\epsilon$-certified removal by \cite{guo2019certified} puts forth similar procedures when $\delta=0$, and the model has been trained in a specific manner.
+\cite{guo2019certified,izzo2020approximate} provide updates to linear models and the last layers of networks, and 
+\cite{golatkar2020forgetting,golatkar2020eternal} provide updates based on linearizations that work over the full network, and follow-up work by \cite{Golatkar_2021_CVPR} presents a scheme to unlearn under an assumption that some samples will not need to be removed.
+
+Other recent work has taken alternative views of unlearning, which do not require/operate under probabilistic frameworks, see \cite{bourtoule2021machine,neel2021descent}. These schemes present good guarantees in the absolute privacy setting, but they require more changes to  pipelines (sharding/aggregating weaker models) and scale unsatisfactorily in large deep learning settings.

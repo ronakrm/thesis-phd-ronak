@@ -1,0 +1,33 @@
+
+\ronak{maybe leave this out?}
+\subsection{On the Conditioning of the Hessian}
+\begin{proposition}
+Let $X \in \RR^d$ and $Y \in \RR$ be random variables. The feature subset selected by FOCI(X,Y), $s \subseteq [d]$ are also conditionally linearly independent.
+\end{proposition}
+\begin{proof}
+If there does not exist any measure function between $Y$ and $X\setminus Z$ given $Z$, then clearly there also does not exist any linear function.
+%Global conditional independence implies conditional linear independence, and linear dependence generally cannot be changed by a linear condition. In other words, 
+%Suppose there is some set $Z \subset X$ such that $Y$ is linearly independent of $X\setminus Z$ given $Z$. Then there exists no function $f(Y,Z)$ such that 
+%\begin{align}
+%f(Y,Z) = \sum_{i\in [|X\setminus Z|\} a_i X_i
+%\end{align}
+%for nonzero $a_i$.
+
+%If there do not exist nonzero coefficients $a_i$ such that $Y = \sum a_i X_i$ ($Y$ linearly independent of  $X$), then no subset of  
+%Conditional linear independence for a subset of features $Z$ that there are no such coefficients 
+%$Y = \sum_{i=1}^d a_i X$
+%Conditional linear independence:
+%X indep Y | Z =>
+%there are no coeffs such that ax + by 
+%Let $X \in \RR^{n \times d}$ be a sample of $d$ features with size $n$. 
+%FOCI chooses elements to add to the sufficient set that maximally reduce any measurable dependence between those left over and the output $Y$. 
+\end{proof}
+\begin{proposition}
+The condition number of the covariance matrix computed over the FOCI-selected ordering of features is monotonically increasing (generally).
+\end{proposition}
+If features are selected to be added to the subset, then they must have some measurable effect on our understanding of $Y$. Each additional feature selected must also increase our understanding of $Y$. If there were a strong linear dependence among features $Z_i$ and $Z_j$ in the selected set, then the collective effect on $Y$ could be written as $a Z_i + b Z_j$ for some nonzero $a,b$. Because FOCI selection is not dependent on linearity, the measurable effect on $Y$ must be equal or similar. In this case, only one of the two features would be chosen, and others in the set would have to contribute to $Y$ through an independent path.
+
+This result first seems counterintuitive; large condition numbers at optimality are bad. However, if our goal is to remove as much information related to a specific input as possible, it is \textit{in our interest} to identify the parameters with the largest impact. If FOCI is identifying parameters in order of their eigenvalue, then we know that each additional element added to the conditioning set can only decrease the minimum eigenvalue.
+This has an additional benefit of keeping the condition number small and making the matrix inverse computation more ``nice".
+
+Using these results, we can see that the unlearning algorithm \ref{alg:blockunlearn} is well-behaved. The quality of the inverse Hessian estimation is by definition controlled by the matrix condition number, and as such selecting only the subset of parameters that are linearly independent lead to parameter updates that will not be problematic due to practical problems with highly dependent features. Additionally, the selected descent directions will naturally be orthogonal, ensuring that even though a smaller subset of parameters are updated, those parameters represent diverse and complete information with respect to the sample of interest. 

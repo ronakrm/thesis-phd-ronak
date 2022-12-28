@@ -1,0 +1,68 @@
+{\bf Functional Leverage Score Estimation for Sublinear Unlearning.}
+\sathya{Use leverage scores instead of Fischer information matrix to motivate this section. }
+While the above assumes a sample to be scrubbed is provided, in other situations a user may require a set of samples $T$ to be unlearned. In this case the above procedure needs to be run over all elements in the set. 
+However, we can take advantage of linearized approximations to enable yet another one-shot procedure.
+%given that our approach is explicitly evaluating where in the parameter space a sample needs to update, 
+%we can apply this approach to selecting samples to unlearn through their overall \textit{influence}.
+%If only a subset of samples have a high influence, it may only be necessary to unlearn a smaller set $<<|T|$.
+Under some assumptions, we can describe the parameters of a model as a linear combination of the input data,
+\begin{align}
+    w(s) = \sum_{i=1}^{|S|} s_i f(z_i, w)
+\end{align}
+Using a linearization about the point where $s_i = 1 \forall i$, we can estimate the parameters where $s_i = 0$ for some samples, as in \cite{koh2017understanding},
+\begin{align}
+    \bar{w} = \hat{w} - [\nabla^2 F(\hat{w})]^{-1|}] \nabla F_T (\hat{w}) 
+\end{align}
+This result can be applied directly to a set of candidate deletions $T$: if we know the influence of a set of samples in $T$ is low (where $s_i=0$, then we can ignore them in our update procedure. Using other existing methods that take advantage of this linearization to estimate influence \cite{harutyunyan2021estimating}, we can select the samples in $T$ that have a large influence and remove them.
+Using a linearized version to compute an approximate function sample (mutual) information as 
+\begin{align}
+    F-SI \approx \frac{1}{2\sigma^2 n_{val}} (w - w_{\setminus i})^T (H_{val} - \lambda I) (w - w_{\setminus i})
+\end{align}
+Practically, $H$ is difficult to compute even under the linearized setting, and their final score ends up being a simple squared difference between the parameters before and after the rank-1 update to get $w_{\setminus i}$.
+Instead, we can again instantiate the correlation version of L-CODEC, and compute a sample influence measure as $T(w, w_{\setminus i})$, where the individual parameters serve as samples for the random variable representing the network state with and without that sample.
+
+% don't have to unlearn all samples given to unlearn?
+% use sample influence to choose samples to remove
+
+% under linearized, we can compute this 
+
+% %{\color{red} TODO dual formulation of unlearning...}
+
+% (1-codec) for ``informativeness"
+
+% For any problem in which we may want to estimate the impact of a sample on a networks' output, we often approximate via a second order estimation:
+% \begin{align}
+% d(s) :&= \EE_x[||f_w(x) - f_{w_{\setminus s}}(x)||^2] \\
+% &\approx (w - w_{\setminus s})^\top \Sigma^{-1}_w (w - w_{\setminus s})
+% \end{align}
+% where $\Sigma^{-1}$ is approximated via a Hessian or Fisher matrix.
+
+
+% \begin{outline}[enumerate]
+% \1 traditional setups
+%     \2 formalize, difference in model output with and without sample
+%     \2 conditional mutual information setup: 
+%     $w \bot s_i | s_{\setminus i}$
+% \1 strict def requires 
+%     \2 distributional estimation
+%     \2 using upper bound estimate of marginals
+% \1 common to add noise to get distributional, seeds are not sufficient
+%     \2 assume gaussian, get nice dists.
+% \1 instead, we can consider each weight parameter as an example of the networks' output
+%     \2 and compute the correlation between weights with and without
+% \end{outline}
+
+% \begin{align}
+%     f_\theta &\bot s_i | s_{\setminus i} \\
+%     f_\theta &\bot s_i | s_{\setminus i}
+% \end{align}
+
+% \subsubsection{Linearizations}
+% \begin{outline}[enumerate]
+% \1 effect of sample on weights would require retraining in full
+%     \2 not feasible...
+% \1 NTK linear approximation
+%     \2 2 sentence overview
+%     \2 definition a la soatto
+% \1 weights here are directly computed by ntk
+% \end{outline}

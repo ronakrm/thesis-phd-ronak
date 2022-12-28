@@ -1,0 +1,41 @@
+%With AI systems extensively using personal %data for model training, 
+Recent legislation has
+led to interest in {\em machine unlearning}, i.e., removing specific training samples from a {\em predictive} model as if they never existed in the training dataset. 
+Unlearning may also be required due to  corrupted/adversarial data or simply a user's updated privacy requirement.
+For models which require no training ($k$-NN), 
+simply deleting the closest original sample can be effective. 
+%However, it is not clear how such approaches can be used to unlearn 
+%models that contain rich information learned from the original data.
+But this idea is inapplicable to models which learn richer 
+representations.
+%from data. 
+%Recently, optimization-based unlearning estimators have been proposed, but 5their 
+Recent ideas leveraging optimization-based updates
+scale poorly with the model dimension $d$,  
+due to 
+inverting the Hessian of the loss function. %with an overall cost of $O(d^3)$ 
+%is prohibitive.
+We use a variant of a new conditional independence coefficient, 
+L-CODEC, to identify a subset of the model parameters with the most semantic overlap on an individual sample level. 
+Our approach completely avoids the need to invert a (possibly) huge matrix. 
+By utilizing a Markov blanket selection, we premise that L-CODEC is also suitable for deep unlearning,
+as well as other applications in vision.
+Compared to alternatives, L-CODEC makes approximate unlearning possible 
+in settings that would otherwise be infeasible, including vision models used for face recognition, person re-identification and NLP models that may require unlearning samples identified for exclusion.
+Code is available at \url{https://github.com/vsingh-group/LCODEC-deep-unlearning}
+%Finally, we show that the unlearning update can be seen as a sample influence measure, enabling a filtering scheme for robustifying a model {\em without} a need for retraining.
+% The conditional independence framework also enables a number of other applications in machine learning, including spurious feature regularization.
+
+
+%% Old abstract without Unlearning
+
+% A large amount of work in learning and vision has recently been focused on the general problem of \textit{selection}.
+% Determining the contiguous set of pixels where a models' attention lies, finding a set of samples that are highly influential for training, and identifying or localizing features which contribute to a sample's classification all fall within this scope.
+% Statistically, many of these formulations take the form of a conditional independence test: Which elements of the set, when conditioned upon, make the rest independent of my measure of interest?
+% Traditional methods of conducting this test often rely heavily on strong distributional assumptions and approximations to information-theoretic measures.
+% A new measure of conditional dependence by \cite{?} is distribution free, and has a number of nice properties important for many of the problems above. 
+% In this work, we evaluate and demonstrate both the need and the value of this new measure in a number of representative vision selection settings.
+% Compared to existing methods of CI testing, CODEC is faster to compute and performs comparably in feature selection tasks.
+% When identifying sample influence on model parameters, CODEC performs competitively with state-of-the-art methods, avoiding the need to compute large-dimensional Fisher matrices.
+% Selection via FOCI also leads to an interesting and novel interpretation of explainability, where we can track sample dependencies at various points within network architectures.
+%On visual correspondence tasks, CODEC/FOCI serve as a drop-in replacement for dynamic feature composition, removing the need for training without a drop in performance.

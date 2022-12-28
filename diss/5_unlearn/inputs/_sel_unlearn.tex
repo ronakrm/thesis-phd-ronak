@@ -1,0 +1,156 @@
+\subsection{Theoretical Analysis}
+By definition, any neural network as described above is actually a Markov Chain: we know that the output of a layer is conditionally independent of the penultimate one given the previous one, and clearly a change in one layer will propagate forward through the rest of the network.
+However, when trained for a task with a large number of samples, the influence or ``memory" of the network with respect to a specific sample may not be clear.
+%, and when unlearning we would prefer to be liberal in how layers are selected to be scrubbed.
+While the output of the layers may follow a Markov Chain, the parameters in the layers themselves do not, and their influence on a sample through the forward pass may be highly dependent or correlated.
+Practically, we would hope that unlearning samples at convergence does not cause too much damage to the model's performance on the rest of the input samples.
+% through these knock-on effects. 
+Following traditional unlearning analysis, we can bound the \textit{residual gradient norm} to relieve this tension.
+\begin{lemma}
+The gap between the gradient residual norm of the FOCI Unlearning update in Algorithm~\ref{alg:blockunlearn} and a full unlearning update via \eqref{eq:sekhariunlearn},
+\begin{align}
+||\nabla F(w^-_{Foci},D')||_2 - ||\nabla F(w^-_{Full},D')||_2
+\end{align}
+shrinks as $O(1/n^2)$.
+\end{lemma}
+\begin{proof}
+The full proof is in the appendix. Main idea: Because we only update a subset of parameters, the gradients for the remainder should not change too much. Any change to a selected layer only propagates to other layers by $1/n$, and a Taylor expansion about the new activation for that layer gives the result.
+\end{proof}
+
+
+\paragraph{How L-CODEC achieves acceleration for Unlearning?}
+Sampling with weights proportional to the Lipschitz constant of individual filters/layers is an established approach in optimization, see \cite{gorbunov2020unified}. We argue that L-CODEC computes an approximation to optimal sampling probabilities.
+%for updating purposes. 
+Under a mild assumption that the sampling probabilities have \emph{full} support, it turns out that correctness of our approximate (layer/filter selection) procedure can be guaranteed for unlearning purposes using recently developed optimization tools, see \cite{gower2019sgd}. By adapting results from \cite{gorbunov2020unified}, we can show the following, summarizing the main result of our slice-based unlearning procedure.
+\begin{theorem}
+Assume that layer-wise sampling probabilities are nonzero. Given unlearning parameters $\epsilon,\delta$, the unlearning procedure in Alg~ \ref{alg:blockunlearn} is $(\epsilon',\delta')-$forgetting where $\epsilon'>\epsilon,\delta'>\delta$ represent an arbitrary  precision (hyperparameter) required for unlearning. Moreover, iteratively applying our algorithm converges exponentially fast (in expectation) w.r.t. the precision gap, that is, takes (at most) $O(\log\frac{1}{\mathbf{g_{\epsilon}}}\log\frac{1}{\mathbf{g_{\delta}}})$ iterations to output such a solution where  $\mathbf{g_{\epsilon}} = \epsilon'-\epsilon>0,\mathbf{g_{\delta}}=\delta'-\delta>0$ are gap parameters.
+\end{theorem}
+Our result differs from Nesterov's acceleration: we do not use previous iterates in a momentum or ODE-like fashion; rather, here we are closer to primal-dual algorithms where knowing nonzero coordinates at the dual optimal solution  
+%(better duality gap) 
+can be used to accelerate primal convergence, see \cite{diakonikolas2019approximate}. Moreover, since our approach is \textit{randomized}, the dynamics can be better modeled using the SDE framework for unlearning purposes, as in \cite{simsekli2020fractional}. 
+% In our implementation,
+Here, we do not  compute anything extra, although it is feasible for future extensions.
+% And relate to additive error on $(\epsilon,\delta)$ forgetting in the beginning...
+\begin{remark}
+Our approach to estimate the Lipschitz constant is different from \cite{fazlyab2019efficient} where an SDP must be solved -- quite infeasible for unlearning applications. Our approach can be interpreted as solving a simplified form of the SDP proposed there, when appropriate regularity conditions on the feasible set of the SDP are satisfied. %constraint qualification assumptions.
+\end{remark}
+
+\paragraph{A note on convexity.}
+Existing methods for guaranteeing removal and performance depend on models being convex. Practical deep learning applications however involve highly nonconvex functions.
+The intuitions of unlearning for convex problems \textbf{directly apply to nonconvex unlearning} with one more technical assumption: minimizers of the learning problem satisfy Second Order Sufficiency (SOS) conditions. 
+SOS guarantees that $ \nabla^2\hat{F}(\hat{w})$, $\hat{H}$ in eq (7) of [28] are PSD, and that the update (8) is an \textit{ascent} direction w.r.t. the loss function on $U$, making unlearning possible. Guarantees for nonconvex unlearning involve explicitly characterizing a subset of SOS points (so-called  ``basin of attraction" of population loss), i.e., which points gradient descent can converge to, see \S1.3 in \cite{Traonmilin_2020}. 
+%
+%In fact, in some nonconvex signal  processing applications, it is possible to explicitly specify global minima (satisfies SOS) of the population loss by characterizing  ``basin-of-attraction" of the empirical minimizer, see Section 1.3 in \cite{traonmilin2020basins}  i.e., points that gradient descent can converge to. 
+So, will minimizers from first order methods satisfy SOS conditions? Generally, this is not true, e.g., when the Hessian is indefinite, $\hat{H}\not\succeq 0$, the update itself may not be an ascent direction w.r.t. negative of the loss. Here, standard Hessian modification schemes are applicable \cite{wright1999numerical}, subsequently using the Newton's step in \cite{sekhari2021remember} with a diagonally modified Hessian.
+
+
+% While better nonconvex guarantees and algorithms are still open problems for general unlearning, here, 
+We fix weight decay during training, acting as $\ell_2$ regularization and giving us an approximate $\lambda$-strong convexity. We also take advantage of this property to smooth our Hessian prior to inversion, intuitively extending the natural linearization about a strongly-convex function. Interestingly, this exactly matches a key conclusion from \cite{basu2021influence}: weight-decay heavily affects the quality of 
+the measured influence,  
+consistent with our nonconvexity discussion.
+% Also, it {\bf exactly matches} our practical adjustments via adding $\ell_2$ regularization (L563, page 6)!
+% We enables analysis like in Basu et al. for large scale problems. There,
+% using tools from Hessian inverse estimation only allows evaluating metrics on few potentially ``influential" samples. Our scheme within Basu et. al. can enable influence estimation for all samples. 
+
+% All models are trained using a weight decay of $0.01$, corresponding to $l_2$-regularization and $\lambda$-strong convexity as needed by the traditional update in \cite{sekhari2021remember}. 
+% breaking ties randomly, leads to constants,
+% add small noise to break ties, constants go away
+% tie breaking is hard? faster when added noise
+
+
+
+
+
+
+
+
+
+
+%%%%%%%% old
+
+
+
+%\subsection{Efficient Computation via Blockwise Hessian Selection}
+
+% Let the set of layers be $\cL$, whose size is the number of layers in the network of interest, and let a subset of the weights for a set $L \subseteq \cL$ be $w_L$. In this case we use the term layers loosely; a convolutional block may have a number of filters that can be considered separately.
+
+
+
+%These matrices can be quite large, and additionally require updating all weight parameters.
+
+%However, if we can effectively determine the Markov Blanket of the parameters that, when conditioned upon, make the rest irrelevant, we could reduce the number of parameters that need to be updated, and additionally reduce the computation needed for those updates. We can consider the parameters in groups by layers, and potentially attack from a blockwise perspective.
+
+%Let the set of layers be $\cL$, whose size is the number of layers in the network of interest, and let a subset of the weights for a set $L \subseteq \cL$ be $w_L$. 
+
+% Denote the layers of the network that define the conditionally sufficient set as $w_{L^*}$ for a sample $z_i$ where $L^* \subseteq \cL$. Analogous to Eq.~\eqref{eq:paramCI}, we can write
+% \begin{align}\label{eq:layerCI}
+    % z \bot w_l | w_{L^*}, \ \forall l \in \cL\setminus L^*.
+% \end{align}
+
+
+
+% \begin{remark}
+% Directly applying FOCI as above still leads to large computation costs when millions of parameters make up the potential sufficient set. However, we can take advantage of structured observations made by others, analogous to group lasso schemes in linear models. Particularly, recent work has observed networks behave similarly within {\em blocks} \cite{bau2017network,fong2018net2vec}.
+% % Intuitively, we may expect that \textit{blocks} of parameters may demonstrate independence to specific samples together \cite{???}.
+% In a large convolutional neural network, specific filters learned for separating the input space may only be active for specific types of inputs; on others they may be completely ``off". We take advantage of this in the next section.
+% \end{remark}
+% This angle also provides a nice perspective on explainability through independence, which we examine in the experiments.
+
+% \subsection{Identifying CI Layers via Hypercolumn Representations}\label{sec:hyper}
+% Computing the test in \ref{eq:layerCI} is not so straightforward. The parameters themselves are not random variables, and while ``samples" 
+% How can we compute the independence above?
+% We can approximate the independence of the parameters by the independence of the feature activations at that layer.
+
+% Define the activations of a sample $x$ as $H(x)$, defined as the set of activations after each linear parameter layer in the model.
+
+% We estimate the above CI test through the activations:
+% \begin{align}
+%     z \bot h(z)_l | h(z)_{L^*}, \ \forall l \in \cL\setminus L^*
+% \end{align}
+% This formulation is related to a generalized version of the solution presented in Section 3 of \cite{bullseye}, where conditional mutual information is estimated via feature mappings.
+
+% \paragraph{Random variable instances.} Using hypercolumn representations, we can directly instantiate each pixel (or feature) of the layers as an instantiation of that layer. Specifically, the tuples $(z_{ij}, h(z)_{l,ij})$ become our samples for estimating L-CODEC among the random variables $(z,h(z))$. 
+
+% Now have a drastically reduced computation scheme. First, we run FOCI on hypercolumn feature maps to select CI layers (or filters). Next, we Update weights with the traditional Hessian update (now feasible) on only those layers.
+
+% With Hypercolumn interpolation, for deep convolutional layers size expansion may lead to large constant regions in exploded image. Traditional CODEC calls would randomly tie break, causing variance in the measure to be very high, even though we know that taking expectation of this randomness would lead to low/zero CODEC values. This may also be the case when testing data that lies in a set $S \subseteq \RR$, such as binary attributes or other data with some discrete but ordinal structure. For this reason a direct application of the statistic in \cite{codec} is not feasible, and it is necessary to apply our randomized version in Eq.~\eqref{eq:lcodec}.
+
+% This setup also provides some form of model explainability. Identifying the layers (or filters) of the that are conditionally independent also rep
+
+
+%Ablations below show this does not significantly effect identifying dependence via CODEC directly, nor downstream use.
+
+%\subsection{Hessian Estimation}
+%The vanilla unlearning algorithm in \cite{} proceeds as follows. First, the ERM estimate of the parameters are computed in typical fashion over the entire dataset $S := \{z_i\}_{i=1}^n \sim \cD^n$
+%\begin{align}
+%    \hat{w} = \arg\min_w \hat{F}(w) := \frac{1}{n}\sum_{i=1}^n f(w,z_i),
+%\end{align}
+%and the weights $\hat{w}$ and the Hessian at the minimizer $\nabla^2\hat{F}(\hat{w})$ are returned.
+
+%Next, for a set of ``delete requests" $U := \{z_i\}_{i=1}^m \subseteq S$, the unlearning step makes use of an intermediate Hessian in the form of:
+%\begin{align}
+%    \hat{H} = \frac{1}{n-m}\left(n\nabla^2\hat{F}(\hat{w}) - \sum_{z\in U} \nabla^2 f(\hat{w}, z)\right),
+%\end{align}
+%and an update step of 
+%\begin{align}
+    %\bar{w} = \hat{w} + %\frac{1}{n+m}(\hat{H})^{-1} \sum_{z\in U} \nabla f(\hat{w},z)
+%\end{align}
+%With noise sampled from a Normal with variance as a function of the smoothness of the loss $f$ and the number of samples.
+
+% Our final procedure for efficient unlearning works as follows, summarized in Algorithm~\ref{alg:blockunlearn}. First, gradients at the last and penultimate epoch for full training are stored. Given a sample to unlearn, we compute L-FOCI over the hypercolumn generated by the forward pass, and identify which parameter sets will be updated. We compute the approximate Hessian over these parameters via finite differences for both the full model and for the model only over the sample of interest. Finally, we apply the blockwise Newton update to the subsetted parameters as in Eq.~\eqref{eq:unlearn}.
+% \begin{algorithm}
+% \SetAlgoLined
+% \KwData{A trained model $\hat{w}$, gradient vectors $\nabla_1 F(\hat{w}, \nabla_2 F(\hat{w})$, sample $z' \in \cS$ to unlearn.}
+% \KwResult{model $w'$ with $z'$ removed.}
+% 1. Perform a forward pass of the model with $z'$. \\
+% 2. Construct the hypercolumn $h(z')$ of $z'$. \\
+% 3. Compute L-FOCI($z', h(z')$) to identify the filters $L^*$ to update. \\
+% 4. Compute $\nabla^2 F(\hat{w})$ as the finite difference of $\nabla_1 F(\hat{w}), \nabla_2 F(\hat{w})$.\\
+% 5. Update:
+% \begin{align}
+%     H_L' &= \frac{1}{n-1}\left(n \nabla^2_L F(\hat{w}) - \nabla^2_L f(\hat{w}, z')\right) \\
+%     w_L' &= \hat{w}_L + \frac{1}{n-1}H_L'^{-1} \nabla f(\hat{w}, z')_L \\
+%     w'_{\setminus L} &= \hat{w}_{\setminus L}
+% \end{align}
+%  \caption{\label{alg:blockunlearn} Unlearning via Conditional Dependence Block Selection \ronak{switch from hypercol to activation maps}}
+% \end{algorithm}

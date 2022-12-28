@@ -1,0 +1,10 @@
+\paragraph{Implementation Details.}
+As we only need a subset of the Hessian, we compute the finite difference among the parameters within the blocks selected.
+For large models, even subsets of model parameters may lead to large Hessian computations, so we move parameters as needed to the CPU for parameter updates. Pairwise distance computations for CI testing via nearest neighbor are carried out on the GPU \cite{yoso-zhanpeng}.
+Our code although not explicitly optimized achieves reasonable run-time for unlearning for deep models, e.g., one unlearning step for person re-identification task on a ResNet50 model with roughly 24M parameters takes about 3 minutes.  
+
+% compute hessians/gradients as concatenated vectorized versions of gradient lists stored as above.
+
+% gamma-learnability important; if the model is not trained fully (close to optimal) then it doesn't work.
+
+% model size is an important piece

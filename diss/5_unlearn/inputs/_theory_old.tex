@@ -1,0 +1,158 @@
+
+
+\subsection{Analysis}
+
+We make use of the following observation made by many \cite{???}: models trained on complex tasks tend to \textit{delegate} subnetworks to specific regions of the input space. Example: The activation maps for different filters in a trained (converged) CNN model show differences for different classes specifically deeper in the network. 
+
+Based on the above observations we make the following assumption:
+
+\begin{assumption}
+\begin{align}
+    \forall S \sim \mathcal{P}(\mathcal{X}, \mathcal{Y}) \quad \exists T \subset L \\
+    s.t., \quad \mathcal{L}(S) \bot w^{*}_{L\setminus T} | w^{*}_T
+\end{align}
+\end{assumption}
+where, $S$ is the set of data points sampled from the joint training distribution of $\mathcal{P}(\mathcal{X}, \mathcal{Y})$, $w^*$ are the model parameters for a trained converged model, $L$ is the set of all layers (filters), $T$ is the subset of all layers which we will later tie to our selection algorithm. $\mathcal{L}$ is the loss function. 
+Note: $S$ can be a singleton containing only one data point to be removed. It is most beneficial to think of $S$ as a set of data points belonging to a particular class. 
+
+Input perturbation to get samples for FOCI computation: Given a data point $(x_k, y_k)$ from the training set $D$ we want to remove it. So, we perturb the input by adding small amount of Gaussian noise to generate samples for it. We have,
+
+\begin{align}
+    (x_k, y_k) \in D \xrightarrow[\text{perturbation}]{\text{input}} \{(x_k +g_k, y_k) | g_k \sim \mathcal{N}(0,1)\} = S_k
+\end{align}
+So, $S_k$ becomes our set S in \textbf{Assumption 1}. We generate sample for FOCI of the form $(\mathcal{L}(S_{k_i}), w^*(S_{k_i}))$; where $S_{k_i}$ is the $i$th perturbation of $x_k$ from set $S_k$ and $\mathcal{L}(S_{k_i})$ is the loss for the corresponding perturbation. 
+After this $FOCI({(\mathcal{L}(S_{k_i}), w^*(S_{k_i})) | S_{k_i} \in S_k})$ gives us the required $T \subset L$ selection; i.e. selects $T$ out of $L$ layers in the model following \textbf{Assumption 1}. 
+
+Now, we derive a bound on the residual gradient norm after removal. Residual gradient is defined as the gradient for the data points that are not being removed. Let us take $D$ to be the training set; w.l.o.g. $(x_k, y_k)$ is the point being removed. We have residual data $D' = D - {(x_k, y_k)}$.
+
+Let use denote $w^-_{Full}$ as the weight parameters after doing a full Hessian update and $w^-_{Foci}$ as the weight parameters after doing a FOCI selected Hessian update. In an ideal case, we want $(w^-_{Foci}, D')$/$(w^-_{Full}, D')$ to be as close as possible to $(w^*, D')$. Note that we consider both $(w^*, D)$ and $(w^*, D')$ to be $0$ as we don't expect model parameters to change drastically for one sample once trained to convergence. 
+
+Next, we define the residual gradient norm. Considering simplistic case for now, we think of $w$ to be a network of many linear layers with possible activation functions; we can think of the above norm as the sum of norm of gradients for each layer. Hence, for any model parameters $w$ and dataset $D$, we have:
+% strong assumption here, tbd add details
+
+\begin{align}
+    \label{eq:res_norm}
+    ||\nabla \mathcal{L}(w,D)||_2 \coloneqq \sum_{l \in L} ||\nabla \mathcal{L}(w_l, D) ||_2
+\end{align}
+
+As mentioned before, we have this selection from FOCI which based on what sample to remove gives us a subset $T$ of $L$ (set of all layers in the model). Let $R = L \setminus T$. So, $R$ is the remainder of the network which is not updated when doing a FOCI selected updated. Hence, \ref{eq:res_norm} for $(w^-_{Foci}, D')$ can be written as:
+
+\begin{align}
+    \label{eq:foci_res_norm}
+    ||\nabla \mathcal{L}(w^-_{Foci},D')||_2 \coloneqq \sum_{l \in L} ||\nabla \mathcal{L}(w^-_{Foci_l}, D') ||_2 \\
+    = \sum_{l \in T} ||\nabla \mathcal{L}(w^-_{Foci_l}, D') ||_2 + \sum_{l \in R} ||\nabla \mathcal{L}(w^-_{Foci_l}, D') ||_2 \\
+    = \sum_{l \in T} ||\nabla \mathcal{L}(w^-_{Foci_l}, D') ||_2 + \sum_{l \in R} ||\nabla \mathcal{L}(w^*_{l}, D') ||_2
+\end{align}
+The last line follows from the fact for layers in $R$, they are not updated.
+
+Now, although for certain layers weights haven't been updated, but the inputs to these layers may change due to updates in the lower layers. We will next show how for the remainder of the dataset $D'$ these changes propagate minimally when there are a large number of data points, $n$ in the training set.
+
+W.L.O.G. assume that we have a $4$ layer network and the output is seen as:
+\begin{align}
+    L_4(L_3(L_2(L_1(x))))
+\end{align}
+For the point being removed $x \in D$; let $L_2$ be the intermediate layer which is selected for update by FOCI. Note: $a$'s below refer to activation form respective layers. 
+
+Before update, activations out of $L_2$:
+\begin{align}
+    a_2 = L_2(L_1(x)) = L_2(a_1)
+\end{align}
+After update, activations out of $L_2$:
+\begin{align}
+    a_2' & = L_2'(L_1(x)) \\
+    & = L_2'(a_1) \\
+    & = w_2' \times a_1 \\
+    & = (w_2 + \delta_{w_2}) \times a_1 \\
+    & = w_2 \times a_1 + \delta_{w_2} \times a_1 \\
+    & = a_2 + \delta_{w_2} \times a_1
+\end{align}
+Second line follows since $L_1$ isn't updated. Also, we have considered simple linear layers now. 
+
+Let's next see how these effect activations out of $L_3$
+Before, update:
+\begin{align}
+    a_3 = L_3(a_2)
+\end{align}
+After update:
+\begin{align}
+    a_3' &= L_3(a_2') \\
+    &= L_3(a_2 + \delta_{w_2} \times a_1) \\
+    &= L_3(a_2) + \nabla L_3 (a_2) \delta_w_2 \times a_1 + \mathcal{O}((\delta_{w_2} \times a_1)^2) \\
+    &= L_3(a_2) + 0 + \mathcal{O}((\delta_{w_2} \times a_1)^2) 
+\end{align}
+Note, $L_3$ wasn't selected for update. Since, $L_3$ wasn't updated activations remain same as before and we have already assumed that model was trained to convergence, so the second terms is zeroed out. 
+
+Now, we look at what $\delta_{w_2}$ looks like for the \cite{sekhari2021remember} update.
+\begin{align}
+    \delta_{w_2} = \frac{1}{(n-1)}(\hat{H}^{-1})\sum_{z \in \{(x_k, y_k)\}} \nabla f(\hat{w}, z)
+\end{align}
+Hence, $\delta_{w_2}^2 \propto \frac{1}{n^2}$. Therefore, for large values of $n$, the third term in the equation above approaches $0$. So, $a_3' = L_3(a_2)$. This shows that propagation is minimal. Similar arguments regarding null space for over-parameterized deep networks have been mentioned in \cite{golatkar2020forgetting}. 
+
+Now, looking back at the residual gradient norm, we have:
+\begin{align}
+    \label{eq:foci_res_norm_simplified}
+    ||\nabla \mathcal{L}(w^-_{Foci},D')||_2 = \sum_{l \in T} ||\nabla \mathcal{L}(w^-_{Foci_l}, D') ||_2 + \\
+    \sum_{l \in R} ||\nabla \mathcal{L}(w^*_{l}, D') ||_2
+\end{align}
+Based on the above argument of minimal propagation, the second term above is $0$ as for layers in $R$, the weights haven't changed as well.
+Therefore,
+\begin{align}
+    \label{eq:foci_res}
+    ||\nabla \mathcal{L}(w^-_{Foci},D')||_2 = \sum_{l \in T} ||\nabla \mathcal{L}(w^-_{l}, D') ||_2 
+\end{align}
+and 
+\begin{align}
+    \label{eq:full_res}
+    ||\nabla \mathcal{L}(w^-_{Full},D')||_2 = \sum_{l \in L} ||\nabla \mathcal{L}(w^-_{l}, D') ||_2 
+\end{align}
+Since, FOCI selects sufficient sets, we have $T \subset L$. Hence, 
+\begin{align}
+    ||\nabla \mathcal{L}(w^-_{Foci},D')||_2 < ||\nabla \mathcal{L}(w^-_{Full},D')||_2 
+\end{align}
+Therefore, the residual gradient norm is bounded lower for Foci selective update as compared to a Full update, for the same update rules. 
+
+
+
+
+% For the samples in the training set:
+% \begin{assumption}
+% For all subsets of samples $S \subset D$, there exists a subset of the model parameters $P \subset \Theta$ such that 
+% \begin{align}
+%     L(S) \bot w_{\Theta\setminus P}^* | w_{P}^*
+% \end{align}
+% \end{assumption}
+
+
+
+% \begin{theorem}
+% The change in the activation of a layer $l_{i+1}$ after an update to a previous one is bounded as:
+% \begin{align}
+%     |l_{i+1}(\tilde{a}_i) - l_{i+1}(a_i)| \leq \frac{2ML^2m^2}{\lambda^3 n^2}
+% \end{align}
+% \end{theorem}
+% \begin{proof}
+% Let the output of the previous layer be given as $w_l * a_{l-1}$, and the scrubbed output be $\tilde{w}_l * a_{l-1}$. Then we can Taylor expand around the output of the next layer for the previous  $l_{i+1}(\tilde{w}_l a_{l-1})$:
+% \begin{align}
+%     l_{i+1}(\tilde{w}_l a_{l-1}) &= l_{i+1}((w_l + \Delta) a_{l-1}) \\
+%     &= l_{i+1}(w_l a_{l-1}) + \nabla l_{i+1}(w_l a_{l-1}) \Delta + O(\Delta^2)
+% \end{align}
+% where $\Delta = \tilde{w}_l - w^*_l$, or the Sekhari update:
+% \begin{align}
+%     \Delta = \frac{1}{n+1}H^{-1} \nabla f(x_r).
+% \end{align}
+% The first-order term vanishes, because the gradient at the original point $w_l$ is 0 given that we've trained
+
+% %For a specific parameter layer, the linear assumption allows us to use a form of convexity (?). 
+% From Lemma 6 in Appendix C.1 of  \cite{sekhari2021remember}, we have that 
+% \begin{align}
+%     |w^* - \tilde{w}| \leq \frac{2mL}{\lambda n},
+% \end{align}
+% so 
+% \end{proof}
+
+% \begin{theorem}
+% Residual Gradient norm
+% \end{theorem}
+% \begin{proof}
+
+% \end{proof}

@@ -1,0 +1,15 @@
+\section{Discussion and Broader Impacts}
+\ronak{should this be intro or discussion?}
+With personal data becoming one of the most valuable commodities, legislative effort has begun to push back on widespread and unilateral collection.
+Particular focus has been put towards the ``right to be forgotten" (RTBF), establishing the right of an individual's data to be deleted such that no other party may access it.
+Even among existing legal frameworks on copyright and fair use, industry scraping has led to large numbers of personal images being used without proper consent from subjects \cite{Exposing}.
+Large amounts of this data collection are not only stored for descriptive statistics, but now commonly used in training complex models.
+While recent regulation (GDPR, CCPA) has not always specified the extent to which data must be forgotten, this poses a clear question: is simple deletion of the original data enough, or does any model built on that data need to be updated as well?
+
+Recent work has identified situations in which trained models are vulnerable to attacks that can reconstruct input training data \cite{carlini2019secret,carlini2020attack}. More directly, a recent ruling by the Federal Trade Commission ordered a California company to delete any model or algorithm ``using the photos and videos uploaded by its users" \cite{ftc}.
+While full model deletion and retraining without the users' data is possible, many models deployed require several weeks of training, with up to millions of dollars in computational resource allocation. With additional deletions, it is infeasible to retrain each time a request to delete is made. This begs the question: Are there updates to the model that ensure the data has been deleted, but do not require full retraining?
+Existing work has answered this in the affirmative as noted above, computational burden has limited their more broad use and application.
+% . Recent results under a theoretical framework of forgetting have established models and criteria that provide updates to models with guarantees that data has been effectively removed. Many of these updates require full computations of the Hessian at the point of removal, which is infeasible in large neural networks typically used in the industry for high-dimensional vision recognition tasks.
+
+Here we provide a more efficient procedure, taking advantage of a block-coordinate update informed by conditional independence. Using a simple adaptation of a new measure for CI, we are able to effectively identify the most important set of parameters to update, to ensure a sample's influence is properly scrubbed from a model.
+Future work could involve a complete evaluation of our method in specific, real-world applications such as person-identification. There is room for interesting theoretical insights as well, with potentially strong connections to both differential privacy and sample influence.

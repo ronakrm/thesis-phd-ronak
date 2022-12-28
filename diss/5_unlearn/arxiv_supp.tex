@@ -1,0 +1,122 @@
+% \def\year{2022}\relax
+% %File: formatting-instructions-latex-2022.tex
+% %release 2022.1
+% % \documentclass[letterpaper]{article} % DO NOT CHANGE THIS
+% \documentclass[10pt,twocolumn,letterpaper]{article}
+
+% \usepackage[pagenumbers]{cvpr}
+
+% \usepackage{times}  % DO NOT CHANGE THIS
+% \usepackage{helvet}  % DO NOT CHANGE THIS
+% \usepackage{courier}  % DO NOT CHANGE THIS
+% \usepackage[hyphens]{url}  % DO NOT CHANGE THIS
+% \usepackage{graphicx} % DO NOT CHANGE THIS
+% \urlstyle{rm} % DO NOT CHANGE THIS
+% \def\UrlFont{\rm}  % DO NOT CHANGE THIS
+% \usepackage{natbib}  % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+% \usepackage{caption} % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+% \DeclareCaptionStyle{ruled}{labelfont=normalfont,labelsep=colon,strut=off} % DO NOT CHANGE THIS
+
+% \frenchspacing  % DO NOT CHANGE THIS
+% \setlength{\pdfpagewidth}{8.5in}  % DO NOT CHANGE THIS
+% \setlength{\pdfpageheight}{11in}  % DO NOT CHANGE THIS
+
+% \usepackage{geometry}[margin=1.0in]
+% \date{}
+
+% \pdfinfo{
+% /Title (Deep Unlearning via Randomized Conditionally Independent Hessians)
+% /Author (Ronak Mehta, Sourav Pal, Vikas Singh, Sathya N. Ravi)
+% /TemplateVersion (2022.1)
+% }
+
+
+% \setcounter{secnumdepth}{0} %May be changed to 1 or 2 if section numbers are desired.
+
+
+% %%%%%%%% ADDED PERSONAL IMPORTS
+% \usepackage{epsfig}
+% \usepackage{caption}
+% \usepackage{subcaption}
+% \usepackage{amsmath}
+% \usepackage{amssymb,comment}
+% \usepackage{mathtools}
+% \usepackage{amsthm,color,pstricks}
+% \usepackage[ruled,vlined]{algorithm2e}
+
+% \usepackage{subcaption}
+
+% \usepackage{outlines}
+
+% \usepackage[switch]{lineno}
+% % \linenumbers
+
+% \usepackage{hyperref}
+% \hypersetup{
+%      breaklinks=true,
+%      colorlinks=true,
+%      linkcolor=blue,
+%      filecolor=blue,
+%      citecolor=green,      
+%      urlcolor=cyan,
+%      }
+% % \renewcommand{\cite}[1]{{\citet}{#1}}
+
+
+% \input{mydefs.tex}
+% \newcommand{\authnote}[3]{\textcolor{#2}{\textbf{#1:} #3}}
+% \newcommand{\sathya}[1]{{\authnote{Sathya}{red}{#1}}}
+% \newcommand{\ronak}[1]{{\authnote{Ronak}{blue}{#1}}}
+% \newcommand{\sourav}[1]{{\authnote{Sourav}{green}{#1}}}
+
+
+% \setcounter{secnumdepth}{2} %May be changed to 1 or 2 if section numbers are desired.
+
+
+% \begin{document}
+
+% \title{Deep Unlearning via Randomized Conditionally Independent Hessians \\ 
+% %CVPR 2022 Submission ID 11713 \\ 
+% Supplementary Material}
+% \author{Ronak Mehta\thanks{Joint First Authors.} \textsuperscript{\rm 1}\\
+% {\tt\small ronakrm@cs.wisc.edu}
+% \and
+% Sourav Pal\textsuperscript{*\rm 1}\\
+% {\tt\small spal9@wisc.edu}
+% \and
+% Vikas Singh\textsuperscript{\rm 1} \\
+% {\tt\small vsingh@biostat.wisc.edu}
+% \and
+% Sathya N. Ravi\textsuperscript{\rm 2} \\
+% {\tt\small sathya@uic.edu}
+% \and
+% {\textsuperscript{\rm 1}University of Wisconsin-Madison $\quad$
+% \textsuperscript{\rm 2}University of Illinois at Chicago} \\
+% \mbox{\url{https://github.com/vsingh-group/LCODEC-deep-unlearning/}}
+% }
+
+% \maketitle
+
+% \tableofcontents
+\appendix
+\renewcommand{\thesection}{\Alph{section}.\arabic{section}}
+\setcounter{section}{0}
+
+% \begin{appendices}
+
+\input{supplement/_supp_theory}
+\input{supplement/_supp_exps}
+\input{supplement/_ci_summary}
+\input{supplement/kfac}
+
+% \end{appendices}
+% \clearpage
+
+% {
+% \bibliography{refs}
+% \bibliographystyle{plain}
+% }
+
+
+% \end{document}
+

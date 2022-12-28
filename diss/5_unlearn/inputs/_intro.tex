@@ -1,0 +1,113 @@
+\section{Introduction}
+As personal data becomes a valuable commodity, legislative efforts have begun to push back on its widespread collection/use particularly for training ML models. Recently, a focus is the ``right to be forgotten" (RTBF), i.e., the right of an individual's data to be deleted from a database (and derived products).
+Despite existing legal frameworks on fair use, industry scraping has led to personal images being used without consent, e.g. \cite{Exposing}.
+Large datasets are not only stored for descriptive statistics, but used in training large models.
+While regulation (GDPR, CCPA) has not specified the extent to which data must be forgotten, it poses a clear question: is  deletion of the data enough, or does a model trained on that data also needs to be updated?
+
+Recent work by \cite{carlini2019secret,carlini2020attack} has identified scenarios where trained models are vulnerable to attacks that can reconstruct input training data. More directly, recent rulings by the Federal Trade Commission \cite{ftc,ftc2} have ordered companies to fully delete and destroy not only data, but also any model trained using those data.
+While deletion and (subsequent) full model retraining without the deleted samples is possible, most in-production models require weeks of 
+training and review, with extensive computational/human resource cost. With additional deletions, it is infeasible to retrain each time a new delete request comes in. 
+% So, are there updates to the model that ensure the data has been deleted (or at least approximately deleted), and full retraining can be postponed?
+% Existing works have answered this question in the affirmative, but the computational burden has limited their broad use.
+So, how to update a model ensuring the data is deleted without retraining?
+
+\paragraph{Task.} Given a set of input data $\cS: \{z_i\}_{i=1}^n \sim \cD$ of size $n$, training simply identifies a hypothesis $\hat{w} \in \cW$  via an iterative scheme $w_{t+1} = w_t - g(\hat{w},z')$ until convergence, where $g(\cdot,z')$ is  a stochastic gradient of a fixed loss function. Once a model at convergence is found, \textit{machine unlearning} aims to identify an update to $\hat{w}$ through an analogous {\em one-shot unlearning update}:
+\begin{align}\label{eq:unlearn}
+    w' = \hat{w} + g_{\hat{w}}\left(z'\right),
+\end{align}
+for a \textit{given} sample $z' \in \cS$ that is to be \textbf{unlearned}.
+%While forms of $g(z')$ have {\color{red}been recently been identified \cite{abc}}, practically they remain infeasible because a complete Hessian computation and inversion is needed. 
+
+\noindent\textbf{Contributions.} We address several computational issues with existing approximate formulations for unlearning by taking advantage of a new statistical scheme for sufficient parameter selection. 
+First, in order to ensure that a sample's impact on the model predictions is minimized, we propose a measure for computing conditional independence called L-CODEC which  identifies the Markov Blanket of parameters to be  updated. 
+% Extending hypercolumn activations, we identify neural network parameter subsets that are sufficient for model scrubbing.
+Second, we show that the L-CODEC identified Markov Blanket enables unlearning in previously infeasible deep models, scaling to networks with hundreds of millions of parameters. 
+%{\color{red} with graceful performance degradation}.
+Finally, we demonstrate the ability of L-CODEC to unlearn samples and entire classes on networks, from CNNs/ResNets to transformers, including face recognition and person re-identification models.
+
+%%%%% Old Introduction %%%%%%
+% With personal data becoming one of the most valuable commodities, legislative effort has begun to push back on widespread and unilateral collection.
+% Particular focus has been put towards the ``right to be forgotten" (RTBF), establishing the right of an individual's data to be deleted such that no other party may access it.
+% Large amounts of this data collection are not only stored for descriptive statistics, but now commonly used in training complex models.
+% While recent regulation (GDPR, CCPA) has not always specified the extent to which data must be forgotten, this poses a clear question: is simple deletion of the original data enough, or does any model built on that data need to be updated as well?
+
+% Recent work has identified situations in which trained models are vulnerable to attacks that can reconstruct input training data \cite{}. More directly, a recent ruling by the Federal Trade Commission ordered a California company to delete any model or algorithm ``using the photos and videos uploaded by its users" \cite{ftc}.
+% While full model deletion and retraining without the users' data is possible, many models deployed require several weeks of training, with up to millions of dollars in computational resource allocation. With additional deletions, it is infeasible to retrain each time a request to delete is made. This begs the question: Are there updates to the model that ensure the data has been deleted, but do not require full retraining?
+
+% New advances in \textit{machine unlearning} have answered this in the affirmative. Recent results under a theoretical framework of forgetting have established models and criteria that provide updates to models with guarantees that data has been effectively removed. Many of these updates require full computations of the Hessian at the point of removal, which is infeasible in large neural networks typically used in the industry for high-dimensional vision recognition tasks.
+
+% \noindent\textbf{Contributions.} Here, we address these computational issues with approximate formulations for unlearning.
+% We reduce computational cost by taking advantage of a new scheme for sufficient parameter selection.
+% Using our proposed measure for computing conditional independence, L-CODEC, we identify the Markov Blanket of parameters necessary to update to ensure a sample's model impact is removed.
+% Extending hypercolumn activations, we identify neural network parameter subsets that are sufficient for model scrubbing.
+% The proposed framework allows for effective unlearning in previously infeasible deep models, and also enables a number of related problems in sample influence and spurious feature regularization.
+    
+    
+    
+    
+%%%%%% old intro outline for CMI/CODEC direction w/o unlearning focus
+%     \2 depend on -measures- between distributions
+%     \2 understanding how similar or different distributions are
+%     \2 under different conditions, how do functions and distributions change (as a function of abc
+    
+% \1 most of these ideas reduce down to a measure of mutual information.
+%     \2 equation I(X,Y)
+%     \2 explanation of terms
+%     \2 difference between product of marginals and joint
+%     \2 introduce mutual information > 0 as measure discrepency/distance 
+    
+% \1 MI is fundamental to a broad range of ml/vision tasks.
+%     \2 decision trees
+%     \2 fairness measures definied by MI
+%     \2 compression ideas determined by information theoretic measures
+%     \2 optimal transport
+%     \2 similarity measures
+    
+% \1 Fundamental problem with MI
+%     \2 hard to compute in any cases besides gaussian or fully discrete setting
+%     \2 recent algorithmic developments exist, but can be computationally intensive
+%     \2 conditional versions only complicate algorithms and runtime
+        
+% \1 Motivated by this,
+%     \2 MI is actually being used to answer a slightly more general question in each of the applications above
+%     \2 not just "difference in distributions"
+%     \2 but is there a relationship/influence, or DEPENDENCE between the objects of interest
+%     \2 is there a subset, that, when conditioned on, makes the rest unimportant?
+%     \2 this idea of dependence is completely independent of any distributional assumptions on random variables.
+%     \2 can we pose the question as a direct test of dependence/independence?
+    
+% \1 recent work by chatterjee
+%     \2 basic idea of any measureable function
+%     \2 good properties
+%     \2 computable/natural
+        
+% \1 Contributions. we extend their work to the NN/vision setting
+%     \2 instantiation and evaluation of this idea in practice
+%     \2 necessary observations/changes necessary to discuss in vision settings
+%     \2 identify key points in feature and sample selection setups where a careful ``analysis" leads to a smooth CODEC ``version"
+%     \2 Experimental results in these setups identify areas where the behavior is favorable and competitive.
+% \end{outline}
+
+
+
+% outline:
+
+% intro
+%     gradient descent -> ascent unlearning
+%     retraining bad
+%     why important
+%     laws/reg whatever
+% prelim
+%     unlearning
+%         forgetting def
+%         hessian update
+%         hard to compute
+%         randomized markovian block
+%     selection
+%         markov blanket
+%             existing CI measure (CMI)
+%             codec
+            
+% Main
+%     why codec inefficient
+%     l-codec

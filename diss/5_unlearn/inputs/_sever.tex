@@ -1,0 +1,59 @@
+\subsection{Approximately Robust Model Selection with SEVER}
+
+Direct application of SEVER does not work in the case when the size of the model $w$ is large. In this case it is not possible to compute the full singular value decomposition of $G$. Instead, we can compute the thin-SVD.
+
+
+Even though we cannot guarantee the smallness of the subset identified by FOCI, in practice it has been observed, and we observe, that selected sets are quite small ($\approx O(log(d)$). 
+
+
+\begin{algorithm}
+\SetAlgoLined
+\KwData{trained model $\hat{w}$, training set used for model $X$, filtering threshold parameter $\sigma$}
+\KwResult{Robust model $\hat{w}$}
+Inlier set $S = \{1,\ldots,|X|\}$ \\
+ \While{stopping condition}{
+  Compute gradients $\nabla f(\hat{w}, x_i)\ \forall i \in S$. \\
+  Compute $\hat{\nabla} = \frac{1}{|S|}\sum \nabla f(\hat{w}, x_i)$. \\
+  
+  $G = [\nabla f(\hat{w},x_i) - \hat{\nabla}]_i$. \tcp*[f]{Compute centered gradients}\\
+  Compute the thin SVD of $G$, and the top right singular vector as $v$. \\
+  
+  $\tau_i = \left((\nabla f(\hat{w},x_i) - \hat{\nabla})\dot v\right)^2$. \tcp*[f]{Compute outlier scores}\\
+  
+   $T^\prime = FILTER(S, \tau, \sigma)$. \tcp*[f]{Identify outliers via filtering} \\
+  
+  $\hat{w} = FOCISCRUB(\hat{w}, T^\prime)$. \tcp*[f]{unlearn outliers}\\
+  $S = S \setminus T^\prime$. 
+ }
+Return robust $\hat{w}$, inlier set $S$.
+ \caption{Unlearning with Outlier Filtering}
+\end{algorithm}
+
+\begin{algorithm}
+\SetAlgoLined
+\KwData{scores $\tau_i$, filtering threshold parameter $\sigma$.}
+\KwResult{Outlier set $T$}
+   $T^\prime = FILTER(S, \tau, \sigma)$. \tcp*[f]{Identify outliers via filtering} \\
+Return outlier set $T^\prime$.
+ \caption{Outlier Selection}
+\end{algorithm}
+
+\begin{algorithm}
+\SetAlgoLined
+\KwData{trained model $\hat{w}$, samples to unlearn $x_i$, $i \in T$}
+
+For each sample $i$ \\
+Run a forward pass for $x_i$ \\
+Construct hypercolumn. \\
+Run FOCI on vectorized hypercolumn, \\ identifying a minimal subset that makes the rest conditionally independent of the input. \\
+Run the unlearning step described in (X), where the parameters updated and the hessians computed are only those of the filters associated with the FOCI selected hypercolumns.
+\caption{FOCI Unlearning}
+\end{algorithm}
+
+Thin SVD is still not good enough for datasets sizes of 10K+.
+
+With this, we need a way of reducing the dimensionality of $G$.
+
+\begin{enumerate}
+    \item Median image through network, FOCI hypercolumn select.
+\end{enumerate}
