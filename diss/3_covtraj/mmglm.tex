@@ -1,4 +1,3 @@
-% Emacs, this is -*-latex-*-
 Our main statistical testing framework, to be described shortly, needs an efficient means for calculating a ``trajectory" of the feature-by-feature interaction graphs over time
 for the given longitudinal data. We now describe a scheme which offers this capability. 
 %Let $t_i$ be the time at which the sample was taken, with $t_i \in \{t^1,\ldots,t^T\}$, where 
@@ -87,7 +86,7 @@ The geodesic distance helps in measuring the error of our trajectory estimation 
 The geodesic curve from $y_i$ to $y_j$  is parameterized by a tangent vector in the tangent space anchored at $y_i$ with an exponential map $\EXP(y_i,\cdot ): T_{y_i}\Mc \rightarrow \Mc$. 
 The inverse of the exponential map is the logarithm map, $\LOG(y_i,\cdot):\Mc \rightarrow T_{y_i}\Mc$. These two operations move us back and forth between 
 the manifold and the tangent space. For completeness, Table \ref{tab:comp1} shows corresponding operations in the Euclidean space and Riemannian manifolds.
-\begin{table}[]
+\begin{table}
 	{
 		\begin{center}
 			\begin{tabular}{| l | l | l | }

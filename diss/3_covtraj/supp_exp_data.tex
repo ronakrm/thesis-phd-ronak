@@ -1,7 +1,7 @@
-\subsection*{Data and Variable Descriptions}
+\subsection{Data and Variable Descriptions}
 In our neuroimaging experiments, a large number of our features describe specific and localized regions of the brain across multiple imaging modalities. Below we list and describe each of regions for each modality, and give a brief background on each of methods used to acquire the data. We also include the list of cognitive scores used in our analysis.
 
-\subsubsection*{PET Imaging}
+\subsubsection{PET Imaging}
 Positron emission tomography has become an increasingly popular method of imaging the brain, specifically in the areas where cognitive decline can be strongly correlated with the specific matter being imaged. Pittsburgh compound B (PiB) was used as the tracer for these images, and the 16 mirrored (Left and Right) regions labeled below were selected as strongly correlated with the development and progression of Alzheimer's Disease.
 {\small
 \begin{enumerate}
@@ -19,15 +19,15 @@ Positron emission tomography has become an increasingly popular method of imagin
 The average of the voxel values in each ROI (region of interest) of the brain are used for imaging features.
 The 16 regions are highlighted in Figure \ref{fig:pibrois}.
 
-\begin{figure*}[h]
+\begin{figure}
 \centering
   \includegraphics[width=0.8\textwidth]{3_covtraj/figs/PiBROIsMontage.png}
   \caption{\label{fig:pibrois}16 Positron Emission Tomography (PET) regions.}
-\end{figure*}
+\end{figure}
 
 \newpage
 
-\subsubsection*{DTI Imaging}
+\subsubsection{DTI Imaging}
 Diffusion tensor imaging is used to measure the restricted diffusion of water through and about regions of the brain. The 48 regions here are the aggregated measurements of total rates of diffusion for each voxel in that region. The two measurements, Fractional Anisotropy (FA) and Mean Diffusivity (MD) collectively well describe the diffusion in a specific region. The following is the full list of regions used in our analysis. Regions that spanned across both the left and right sides of the brain are indicated as such, and were treated as separate and independent in our analyses. 
 {\small
 \begin{multicols}{2}
@@ -62,7 +62,7 @@ Diffusion tensor imaging is used to measure the restricted diffusion of water th
 \end{enumerate}
 \end{multicols}
 }
-\begin{figure*}
+\begin{figure}
 \centering
   \includegraphics[width=0.32\textwidth]{3_covtraj/figs/majorDTI_FA/screenshot0001.png}
   %
@@ -70,11 +70,11 @@ Diffusion tensor imaging is used to measure the restricted diffusion of water th
   %
   \includegraphics[width=0.32\textwidth]{3_covtraj/figs/majorDTI_FA/screenshot0003.png}
   \caption{\label{fig:majorDTI}17 major DTI fiber bundles measured using Fractional Anisotropy (FA). The 48 selected for our analysis include a subset of these, which have been identified as critical regions that signal the beginnings of cognitive impairment.}
-\end{figure*}
+\end{figure}
 
 \newpage
 
-\subsubsection*{Cognitive Evaluations}
+\subsubsection{Cognitive Evaluations}
 The battery of cognitive test scores in our analysis included a breadth of evaluations chosen specifically for their coverage of various measures of cognition. Among all tests given to the cohort, the following 17 were selected by expert clinicians and researchers in the field for their coverage and their potential value in understanding trends across groups.
 {\small
 \begin{multicols}{2}
