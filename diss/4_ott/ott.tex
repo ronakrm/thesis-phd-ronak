@@ -1,5 +1,5 @@
 \section{Orthogonal Tensor Trains}\label{sec:ott}
-As described above, a number of TT operations with respect to approximation and projection require computing the QR decomposition of matricized cores. In the applications for which tensor trains were originally developed, these operations were necessary \cite{oseledets2011tensor,klus2018tensor}. For modern neural network applications, where the tensor operator may be our target of learning, it may be sufficient to treat each matrix product as its own variable, and through the standard TT decomposition learn the cores along the {\bf product of Stiefels}.
+As described in Chapter~\ref{chap:bknd}, a number of TT operations with respect to approximation and projection require computing the QR decomposition of matricized cores. In the applications for which tensor trains were originally developed, these operations were necessary \citep{oseledets2011tensor,klus2018tensor}. For modern neural network applications, where the tensor operator may be our target of learning, it may be sufficient to treat each matrix product as its own variable, and through the standard TT decomposition learn the cores along the \textbf{product of Stiefels}.
 
 A na\"ive approach may orthogonalize the reshaped cores, and progressively push the upper triangular part of the core decomposition into the next core, resulting in the following exact formulation with appropriate reshaping:
 \begin{align}
@@ -35,7 +35,7 @@ The Orthogonal Tensor Train is defined as
 \end{align}
 where each $Q_i(x_i)$ lies on the Stiefel $\ST(m_i, M_i)$, where $m_i = \min(r_{i-1},r_i), \ M_i = \max(r_{i-1},r_i)$.
 \end{definition}
-While in this formulation the total number of components in the product space of Stiefels is $nd$, the dimension of each manifold is {\bf significantly smaller},
+While in this formulation the total number of components in the product space of Stiefels is $nd$, the dimension of each manifold is \textbf{significantly smaller},
 dependent {\em only} on the core rank as opposed to the mode size.
 The total number of parameters, if $n_i =n, r_i = r$, is
 \begin{align}
@@ -54,39 +54,24 @@ This construction can be seen as an approximation to the full tensor train forma
 \end{align}
 
 %\begin{remark}
-{\bf Is this useful?} It is not obvious that this construction is useful at all. How much is lost through this approximation? What is gained by using this construction? In what follows, we demonstrate that we can approximate any tensor with bounded norm using an OTT, and that with a full rank assumption and a trainable constant, our formulation admits a solution with $\epsilon$ error.
-%\end{remark}
-\iffalse
-\addtocounter{figure}{-1}
-\begin{figure*}[ht]
-	%	\captionsetup[subfigure]{labelformat=empty}
-	%	\centering
-	\begin{subfigure}{.49\textwidth}
-		\centering
-		\begin{algorithm}[H]
-			\begin{algorithmic}
-				\For{t=1,\ldots,T}
-				\State $g_t := \frac{df}{d\cW} f(X^{mini-batch})$
-				\For{Core $Q^i_t \in \cW_t$ and Core Gradient $g^i_t \in g_t$}
-				\State $G^i_t = P_{T_{\cW_t}M}(g^i_t)$ \Comment{Projection Step}
-				\State $Q^i_{t+1} \leftarrow \Exp(Q^i_t, G^i_t)$ \Comment{Retraction Step}
-				\EndFor
-				\EndFor
-			\end{algorithmic}
-			\caption*{\footnotesize Stochastic OTT Optimization}
-		\end{algorithm}
-		\caption{\label{alg:ott_opt}}
-	\end{subfigure}%
-	\hfill
-	\begin{subfigure}{.49\textwidth}
-		\centering
-		\includegraphics[width=0.85\columnwidth,trim={0 1.5cm 0 0},clip]{figs/stiefel/stiefel_update.pdf}
-		\caption{}
-	\end{subfigure}
-        \vspace{-10pt}
-	\captionof{figure}{\label{fig:ott_opt}\footnotesize Algorithm (a) and visualization (b) of the gradient descent update using the projection and retraction on the Stiefel manifold. The update is applied to each core individually, allowing for smaller manifold operations that would otherwise scale poorly with dimension.}
-\end{figure*}
-\fi
+\paragraph{Is this useful?} It is not obvious that this construction is useful at all. How much is lost through this approximation? What is gained by using this construction? In what follows, we demonstrate that we can approximate any tensor with bounded norm using an OTT, and that with a full rank assumption and a trainable constant, our formulation admits a solution with $\epsilon$ error.
+\begin{algorithm}
+	\SetAlgoLined
+	\For{t=1,\ldots,T}{
+		$g_t := \frac{df}{d\cW} f(X^{mini-batch})$
+		\For{Core $Q^i_t \in \cW_t$ and Core Gradient $g^i_t \in g_t$}{
+			$G^i_t = P_{T_{\cW_t}M}(g^i_t)$ \Comment{Projection Step} \\
+			$Q^i_{t+1} \leftarrow \Exp(Q^i_t, G^i_t)$ \Comment{Retraction Step}
+		}
+	}
+	\caption{\label{alg:ott_opt} Stochastic OTT Optimization}
+\end{algorithm}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.75\columnwidth,trim={0 1.5cm 0 0},clip]{4_ott/figs/stiefel/stiefel_update.pdf}
+	\caption{\label{fig:ott_opt} Gradient descent algorithm using the projection and retraction on the Stiefel manifold. The update is applied to each core individually, allowing for smaller manifold operations that would otherwise scale poorly with dimension.}
+\end{figure}
+
 \subsection{Theoretical Analysis}
 We start by reshaping any tensor $\cX$ to a matrix $X^M$ by grouping the modes into two groups, $X^M \in \RR^{n \times m}$. We may fix this arbitrary matrix as $X^M = A \in \RR^{n \times m}$.
 

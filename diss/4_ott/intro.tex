@@ -20,11 +20,11 @@ handle high dimensional data
 %CNNs, partly due to how most networks in broad use today are set up,
 far better and 
 can reduce the dimension of an input significantly by deriving rich feature maps. Most computer vision tasks involve some form of a CNN within the architecture, but incorporating CNNs within recurrent structures 
-seamlessly to mitigate the RNN specific model size issues described above is not always straightforward. Notice that a direct replacement of input and output layers with CNNs leads to a shrinkage of the sequence length considerably \cite{srivastava2015unsupervised}, and pre-training CNN layers may lead to poor local minima when we train without using an end-to-end pipeline \cite{donahue2015long}. Some recent works suggest the use of dilated convolutional networks 
-for sequence modeling \cite{yu2015multi} to partly mitigate these issues, but this line of work is still developing \cite{zhenIccv2019}. 
+seamlessly to mitigate the RNN specific model size issues described above is not always straightforward. Notice that a direct replacement of input and output layers with CNNs leads to a shrinkage of the sequence length considerably \citep{srivastava2015unsupervised}, and pre-training CNN layers may lead to poor local minima when we train without using an end-to-end pipeline \citep{donahue2015long}. Some recent works suggest the use of dilated convolutional networks 
+for sequence modeling \citep{yu2015multi} to partly mitigate these issues, but this line of work is still developing \citep{zhenIccv2019}. 
 %A similar issue exists with other 
 For model-size reduction, both for RNN style networks and otherwise, 
-PCA or random projections \cite{ye2005two,bingham2001random} style ``compression" ideas have 
+PCA or random projections \citep{ye2005two,bingham2001random} style ``compression" ideas have 
 also been used with varying degrees of success.
 
 An interesting perspective on the effective degrees of freedom afforded 
@@ -33,17 +33,17 @@ is provided by tensor methods.
 % and traces its roots to early 
 %results in approximation theory and numerical linear algebra. 
 %distinct but related line of work is on t
-Tensor decomposition based methods have recently been shown to enable low dimensional representations of very high dimensional data \cite{hwangCvpr18}, 
+Tensor decomposition based methods have recently been shown to enable low dimensional representations of very high dimensional data \citep{hwangCvpr18}, 
 and while these ideas were known to be effective in the ``shallow" regime much earlier, new results also demonstrate their applicability for deep neural 
 networks. 
-In particular, in the last year, we see a number of tensor based methods being successfully adapted for deep neural network design and compression \cite{cohen2016expressive,zhang2017tucker,yu2017compressing,xiong2019antnets}.
+In particular, in the last year, we see a number of tensor based methods being successfully adapted for deep neural network design and compression \citep{cohen2016expressive,zhang2017tucker,yu2017compressing,xiong2019antnets}.
 Specifically, \cite{pmlr-v70-yang17e} shows that these compression methods can be very effective in reducing the parameter cost of weight layers in RNNs, enabling simple video analysis tasks that previously would have been computationally prohibitive.
 
 There are a number of key reasons why the size of the model, especially in the context of formulations for sequential data, is central to this paper. Our goal is to design rich sequential or recurrent models to analyze a longitudinal sequence of high dimensional 3D brain images. 
-This task raises two issues. {\bf First}, 
+This task raises two issues. \textbf{First}, 
 unless the model size is parsimonious, we find that merely instantiating the 
 model with data involving 3D images over multiple time points, even on multiple high end GPU instances, is challenging.
-{\bf Second}, 
+\textbf{Second}, 
 the eventual goal of medical image analysis is either scientific discovery or generating 
 actionable knowledge for the patient. 
 Both goals require evaluating a model's confidence via 
@@ -54,8 +54,8 @@ have a strong dependence on the number of parameters in
 the model. Therefore, even if the first issue above could be mitigated by clever implementation ideas, purely as a practical 
 matter, the design of rich and expressive models with a small number of parameters yields immense benefits for calculating model uncertainty.
 
-{\bf This paper and its contributions.}
-We tackle the problem of modeling 
+Here,
+we tackle the problem of modeling 
 sequential 3D brain imaging data using 
 recurrent/sequential models. 
 Our development starts from well known results on tensor decomposition. In particular, we 
