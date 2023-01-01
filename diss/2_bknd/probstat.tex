@@ -73,16 +73,25 @@ Specifically,
     \end{align}
 \end{theorem}
 Complete independence among variables is often not possible and in most settings not valuable. However, a more powerful result for conditional independence exists.
-\begin{theorem}\label{thm:mvncondindep}
+\begin{theorem}\citep{lauritzen1996graphical}\label{thm:mvncondindep}
     Let $X$ be governed by a multivariate Gaussian as defined in \ref{eq:mvgauss}, and $\Omega:=\Sigma^{-1}$ be the precision matrix. Then it holds that
     \begin{align}
         \Omega_{ij} = 0 \iff X_i \indep X_j | X_{\setminus(i,j)}
     \end{align}
 \end{theorem}
 This immediately yields that the precision matrix encodes the edges of the probabilistic graphical model over the variables. Estimating these dependencies is thus equivalent to estimation of the precision matrix.
+Further, if the precision matrix is sparse, we can  
+derive dependencies between features when the data are high-dimensional and/or the number of measurements are small. 
+
 
 \subsection{Estimating Parameters and Measures Over and Among Distributions}
+Multivariate data analysis exploiting the conditional independence structure between features or covariates using 
+undirected graphical models is now standard within any data analysis toolbox. 
 When samples are drawn from a particular family of distributions, a number of methods exist to estimate the parameters that fit that data best. 
+The estimation of a graphical model
+has been extensively studied
+and a rich literature is available describing 
+its statistical and algorithmic properties \citep{koller2009probabilistic,jordan1998learning}. 
 MAP estimation and maximum likelihood estimation as described above are typically used,
 but in many cases their standard forms do not yield
 parameters that reveal independence, i.e., it is often impossible for standard
@@ -100,12 +109,12 @@ a \textit{penalized} version of a maximum likelihood estimate can be recovered t
     \hat{\Omega} = \min_{\Omega \succeq} \tr(S\Omega) + \log|\Omega| + \lambda||\Omega||_1
 \end{align}
 With $S$ being the sample covariance of the data samples, and $\lambda$ a penalization weight. This $\ell_1$ penalization has been shown to be easy to compute, and a number of alternative versions have been proposed with varying theoretical properties and recovery guarantees~\citep{cai2011constrained,yuan2010high}.
-Particularly interesting are extensions to \textit{nonparanormal} distributions, which allow for a much larger set of graphs to be estimated over other distributions via a rank covariance matrix, generalizing the pairwise rank and distance coefficients above \cite{liu2009nonparanormal,xue2012regularized}.
+Particularly interesting are extensions to \textit{nonparanormal} distributions, which allow for a much larger set of graphs to be estimated over other distributions via a rank covariance matrix, generalizing the pairwise rank and distance coefficients above \citep{liu2009nonparanormal,xue2012regularized}.
 
 The distributional assumptions needed for all of these methods, however, are often completely unknown in practice, or the data represent highly complex densities and functions that cannot be represented by simple exponential families or rank-based measures.
-Newer measures of \textit{nonparametric} estimations of dependence have been developed, such as distance correlation and kernel-based coefficients \cite{abc}, but they tend to either only test for independence and not strength of functional relationship, or have complex instantations or asymptotic theories, making them difficult to deploy and rely upon in practice.
+Newer measures of \textit{nonparametric} estimations of dependence have been developed, such as distance correlation and kernel-based coefficients \cite{szekely2014partial,wang2015conditional,doran2014permutation}, but they tend to either only test for independence and not strength of functional relationship, or have complex instantations or asymptotic theories, making them difficult to deploy and rely upon in practice.
 
-A recent coefficient, the Chatterjee coefficient, has been demonstrated to have a number of desirable properties, and has been further developed into an elegant method for testing conditional independence~\citep{abc,abc}. 
+A recent coefficient, the Chatterjee coefficient, has been demonstrated to have a number of desirable properties, and has been further developed into an elegant method for testing conditional independence~\citep{chatterjee2020new,codec}. 
 Particularly,
 no conditional densities need to be estimated,
 it can be computed in $O(n\log n)$ time where $n$ is the number of data samples,
@@ -116,7 +125,7 @@ For arbitrary variables random $X,Y,Z$, where $Y$ is univariate and $X,Z$ can be
     T(Y,X|Z) = \frac{\int\EE\left[\VAR(\PP(Y\geq t)|X,Z)|Z)\right]d\mu(t)}{\int\EE\left[\VAR(\II\{Y\geq t\}|Z\right] d\mu(t)}
 \end{align}
 In the following chapters we will take advantage of these properties. Critically, without a specific procedure, identifying the conditioning set for a particular independence test is exponential. If we wish to find which variables $X_1,\ldots,X_n$ are sufficient for creating independence between some outcome $Y$ and the rest of the variables, na\"ively we would need to test all possible subsets.
-An advantage of the coefficient of dependence in \cite{abc} is that it admits a linear time algorithm for iteratively building the sufficient set, naturally enabling an algorithm for constructing a Markov graph over the variables of interest.
+An advantage of the coefficient of dependence in \cite{codec} is that it admits a linear time algorithm for iteratively building the sufficient set, naturally enabling an algorithm for constructing a Markov graph over the variables of interest.
 
 \subsection{Hypothesis Testing}
 
@@ -192,21 +201,10 @@ novel tests and procedures are necessary
 to effectively identify those differences.
 
 
-
-
-
 \begin{verbatim}
-basics
-    form
-    measures
-    continuous, traditionally want "gap" to be at least "alpha" large
-    example: means
-
 some of the measures described above have specific 
 guarantees when evaluated under
 standard hypothesis testing frameworks...
 
 a common test: likelihood ratio...
-
-subsec: scan statistics
 \end{verbatim}
