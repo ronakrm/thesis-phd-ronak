@@ -5,11 +5,11 @@ signal is weak (with small to medium sample sizes). We describe the dataset deta
 in the context of scientific results that have been published in the literature in aging and dementia.
 
 %\subsection{Background}
-{\bf Study background.} We analyzed data from a 
+\paragraph{Study background.} We analyzed data from a 
 %unique  neuroimaging obtained through the Wisconsin Registry for Alzheimer's Prevention (WRAP), 
 cohort of individuals who have been longitudinally tracked for at least three visits over multiple years, as part of an ongoing study (since 2001)
 to understand the disease processes in the brain {\em before} an individual exhibits signs of 
-cognitive decline due to Alzheimer's Disease (AD) \cite{sager2005middle}. The study, Wisconsin Registry for 
+cognitive decline due to Alzheimer's Disease (AD) \citep{sager2005middle}. The study, Wisconsin Registry for 
 Alzheimer's Prevention (WRAP)  
 is among the largest of its kind in existence, focused on ``preclinical'' AD, i.e., when the 
 individuals are still cognitively healthy, offering a window into the early disease processes 
@@ -20,15 +20,15 @@ acquire neuroimaging data (MRI, PET with different tracers, diffusion MRI) and v
 genetic and demographic data as well as clinical measures such as Cerebrospinal Fluid (CSF). Our analysis 
 seeks to understand subtle group-wise differences in longitudinal patterns of dependencies between these measures at this early stage of the disease. 
 
-{\bf Dataset.} The dataset consisted of 114 subjects with imaging data from at least two types of imaging modalities: Positron emission tomography and 
+\paragraph{Dataset.} The dataset consisted of 114 subjects with imaging data from at least two types of imaging modalities: Positron emission tomography and 
 diffusion weighted Magnetic Resonance (MR) images. 
 Positron emission tomography (PET) images were used to calculate, using well-validated pre-processing pipelines, 
 the mean amyloid-plaque load (an important biomarker for AD) in 16 different anatomical regions of interest in the brain. 
 Amyloid plaque is known to be an AD-related pathology and generally {\em precedes} onset of cognitive symptoms. 
-Separately, diffusion tensor MR imaging (DTI) data were processed and used to calculate both Fractional Anisotropy (FA) and Mean Diffusivity (MD) in 48 distinct regions \cite{mori2008stereotaxic}. 
+Separately, diffusion tensor MR imaging (DTI) data were processed and used to calculate both Fractional Anisotropy (FA) and Mean Diffusivity (MD) in 48 distinct regions \citep{mori2008stereotaxic}. 
 DTI images provide information about structural connectivity between gray matter regions in the brain. 
 In addition to these $108$ ($48 \times 2 + 16$) image-derived features, 
-we also included in the analysis the participant's scores on a battery of cognitive tests, known to be correlated with various neuropsychological functions \cite{lezak2004neuropsychological}. 
+we also included in the analysis the participant's scores on a battery of cognitive tests, known to be correlated with various neuropsychological functions \citep{lezak2004neuropsychological}. 
 %One of the focus of of pre-clinical AD research is to identify biomarkers which may be reasonable indicators of developing pathology. 
 %Identifying cognitive and neuroimaging measures that are significant differential trajectories could help in finding these biomarkers. 
 %To detect group differences, grouping was performed using subject age, binned into three quantiles. 
@@ -36,17 +36,17 @@ Differences were evaluated on various groupings of the subjects which were, for 
 based on known results in the literature.   
 Specifically, gender, APOE (Apolipoprotein E) genotype and amyloid positivity (based on thresholding the amyloid plaque summaries) have 
 all been evaluated as significant in
-AD studies \cite{racine2014associations} but often such analyses involve a population covering a broader disease spectrum where 
+AD studies \citep{racine2014associations} but often such analyses involve a population covering a broader disease spectrum where 
 the signal is much stronger. 
 %Our cohort is still pre-sympotomatic.
 %
 
-{\bf Is analysis of second order statistics necessary?} In Figure \ref{fig:imagehists}, we present histograms detailing the distribution of two critical cognitive tests, stratified across various groups of scientific interest. Evaluating these distributions were the key motivation for our exploration into the methods described in the paper. Small differences in means across groups {\em regardless of grouping selection (i.e., stratification variable)}, and the saturation that occurs at the ceiling of cognitive test scores and other preliminary experiments conducted by us suggest that standard analyses are not sensitive enough to identify subtle higher-order differences.
-\begin{figure}[]
+\paragraph{Is analysis of second order statistics necessary?} In Figure \ref{fig:imagehists}, we present histograms detailing the distribution of two critical cognitive tests, stratified across various groups of scientific interest. Evaluating these distributions were the key motivation for our exploration into the methods described in the paper. Small differences in means across groups {\em regardless of grouping selection (i.e., stratification variable)}, and the saturation that occurs at the ceiling of cognitive test scores and other preliminary experiments conducted by us suggest that standard analyses are not sensitive enough to identify subtle higher-order differences.
+\begin{figure}
 	\centering
 	%\includegraphics[width=0.49\textwidth]{BNTHists.pdf}
 	%\includegraphics[width=0.49\textwidth]{TTOTALHists.pdf}
-	\includegraphics[width=0.99\textwidth]{3_covtraj/figs/hists.pdf}
+	\includegraphics[width=\textwidth]{3_covtraj/figs/hists.pdf}
 	\caption[Summary histograms of neuropsychological test scores for preclinical AD participants]{Histograms of the Boston Naming Test Scores and RAVLT Total Scores for all time points for the $114$ individual measurements across different group separations. The means for each test score is not significantly different across different stratification variable.}
 	\label{fig:imagehists}
 \end{figure}
@@ -58,18 +58,17 @@ Additional details and results are available in the appendix.
 %, along with a longer description of our experimental setup and the covariate models learned for the significant groups.
 %
 
-{\bf A) Graph Scan Statistics on slope differences across gender.} 
+\paragraph{A) Graph Scan Statistics on slope differences across gender.} 
 The most significant (based on region-score) subset identified by the gender grouping was between the FA DTI measurement in the left cingulum gyrus 
 as well as the scores on the Rey Auditory Verbal Learning Test (RAVLT). In recent AD research, gender has been identified as a factor in the progression 
-of various pathology measures (e.g., incidence and prevalence of AD is higher in women \cite{fratiglioni1991prevalence,rimol2010sex}), and has contributed to a formal NIH notice (NOT-OD-15-102). However, we note that previous work in the field has \textit{not} identified gender-related 
-differences when looking {\em only} at diffusion measures in the cingulum \cite{lin2014cingulum}. Our algorithm 
+of various pathology measures (e.g., incidence and prevalence of AD is higher in women \citep{fratiglioni1991prevalence,rimol2010sex}), and has contributed to a formal NIH notice (NOT-OD-15-102). However, we note that previous work in the field has \textit{not} identified gender-related 
+differences when looking {\em only} at diffusion measures in the cingulum \citep{lin2014cingulum}. Our algorithm 
 successfully identified longitudinal 
 changes in {\em interaction} between these variables which supports the earlier results, and provides some evidence that as men and women age, 
 their cognitive decline as measured by RAVLT manifests differently in relation to the cingulum gyrus.
 %
 
 \begin{table}
-	\scriptsize
 	\centering
 	\begin{tabular}[t]{ll}
 		\toprule
@@ -95,9 +94,9 @@ their cognitive decline as measured by RAVLT manifests differently in relation t
 \end{table}
 
 
-{\bf B) Graph Scan Statistics on slope differences across genotype.} 
+\paragraph{B) Graph Scan Statistics on slope differences across genotype.} 
 Next, we stratified the cohort
- based on the genotype known to be most closely linked with AD, i.e., the APOE (Apolipoprotein E) gene \cite{corder1993gene} --- 
+ based on the genotype known to be most closely linked with AD, i.e., the APOE (Apolipoprotein E) gene \citep{corder1993gene} --- 
 we inherit one APOE allele from each parent; having one or two copies of the e4 allele increases a person's risk of getting AD 
 whereas the rarer e2 allele is associated with a lower risk of AD. 
 Using this stratification, we obtain a low-risk and an at-risk group of individuals. 
@@ -109,15 +108,14 @@ and find that in the ``low-risk" group, the covariances between Digit Span and S
 In the ``at-risk'' group 
 (APOE4), however, we find that as a function of age, the features become more and more positively correlated. 
 Existing studies have shown that the accumulation 
-of amyloid is significantly different across APOE4 gene expression \cite{mormino2014amyloid}, and our results provide some evidence 
+of amyloid is significantly different across APOE4 gene expression \citep{mormino2014amyloid}, and our results provide some evidence 
 that the expression of the genotype may interact with cognitive scores as well, {\em even at this early stage of the disease}, 
 when the individuals in our cohort are 
 cognitively healthy. The sets of features showing a differential signal are presented in Table \ref{tab:wrapIMG}.
 %has a real impact on the way in which one might solve language problems. (this sounds odd/needs elaboration)
 %
 
-\begin{table}[]
-	\small
+\begin{table}
 	\centering
 	\begin{tabular}{lll}
 		\toprule
@@ -137,16 +135,16 @@ cognitively healthy. The sets of features showing a differential signal are pres
 	\label{tab:wrapPIB}
 \end{table}
 
-{\bf C) Graph Scan Statistics on slope differences across amyloid load positivity.} 
+\paragraph{C) Graph Scan Statistics on slope differences across amyloid load positivity.} 
 As briefly described above, amyloid load is an important biomarker for AD. For our analysis, amyloid (or PiB) positivity 
 is calculated using the mean amyloid PiB measures across all brain regions using a PiB PET image scan of the participant. 
 When we used this measure for stratification (threshold was set at $1.18$, following \cite{darst2017pathway}), 
 our model identified fifteen of the sixteen PiB regions that were input to the model when the density of the oracle graph was set to be high. 
 This result is as expected, but interestingly we find that controlling for the linear combination of the features (through centering), 
 the residual error \textit{still} has significant signal with the PiB positivity measure, indicating that amyloid burden \textit{interactions} 
-across brain regions plays a very important role in AD progression \cite{hardy2002amyloid,hardy1992alzheimer,tanzi2005twenty,jack2010brain}. When the sparsity of the oracle graph was increased, however, four neighboring regions, the left and right corticospinal tract and the left and right cerebral peduncle were identified on both PiB and DTI measures (supported by the literature \cite{douaud2011dti}), together with Part A of the Trail Making Test (see Table \ref{tab:wrapPIB}) which 
-happens to be used in AD diagnosis \cite{albert2011diagnosis}. 
-This suggests that changes in atrophy within these regions, as measured by DTI, co-occur with changes in amyloid burden. Additionally, because these regions are highly correlated with rough and fine motor ability \cite{naidich2009duvernoy}, it seems plausible that amyloid positivity will lead to higher `covariation' in the regions associated with 
+across brain regions plays a very important role in AD progression \citep{hardy2002amyloid,hardy1992alzheimer,tanzi2005twenty,jack2010brain}. When the sparsity of the oracle graph was increased, however, four neighboring regions, the left and right corticospinal tract and the left and right cerebral peduncle were identified on both PiB and DTI measures (supported by the literature \citep{douaud2011dti}), together with Part A of the Trail Making Test (see Table \ref{tab:wrapPIB}) which 
+happens to be used in AD diagnosis \citep{albert2011diagnosis}. 
+This suggests that changes in atrophy within these regions, as measured by DTI, co-occur with changes in amyloid burden. Additionally, because these regions are highly correlated with rough and fine motor ability \citep{naidich2009duvernoy}, it seems plausible that amyloid positivity will lead to higher `covariation' in the regions associated with 
 a measure of fine motor speed, i.e., the Trail Making Test.
 
 \subsection{Results for for Group difference analysis for individuals with Cognitive Testing data}
@@ -154,13 +152,12 @@ a measure of fine motor speed, i.e., the Trail Making Test.
 In addition to the dataset presented above, we apply our method to a much larger dataset consisting of approximately 1500 individuals with only cognitive testing data collected in a longitudinal manner. Each individual was administered these tests for between two and three time-points, yielding approximately $n = 4000$ samples for our model. For each assessment, a conference of experts applied a diagnostic label indicating normal cognition or mild cognitive impairment. Using this binary classification, we can stratify our population for group difference analysis.
 We find that among many different significant subsets, the covariance trajectory among the scores on both parts of the Trail-Making Test and 
 on all trials of the RAVLT test explain a significant group difference. These have previously been shown to be the {\em most sensitive tests} for 
-early cognitive decline \cite{albert2001preclinical}. 
+early cognitive decline \citep{albert2001preclinical}. 
 Table \ref{tab:wrapCC} displays the other tests identified by our algorithm, and additional experiments on this larger cohort 
 can be found in the appendix. 
 %
 
 \begin{table}
-	\small
 	\centering
 	\begin{tabular}{ll}
 		\toprule

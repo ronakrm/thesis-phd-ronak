@@ -1,5 +1,5 @@
-We begin our empirical analysis of the model by first applying the subgraph localization procedure by itself (standalone), separate from our manifold regression scheme. In this case, our statistic is derived from {\em only} Generalized Linear Models (GLM) constructions, where the $\hat{\Bbeta}_g^R$ in equation \eqref{eq:LRstat} is the slope estimated from fitting standard first order linear models. Identifying the differentially varying subgraphs across groups in this way is similar to a simpler version of the planted clique identification problem \cite{arora2009computational}, where the clique we are trying to identify corresponds to those nodes whose slopes vary significantly across groups.
-\begin{figure}[]
+We begin our empirical analysis of the model by first applying the subgraph localization procedure by itself (standalone), separate from our manifold regression scheme. In this case, our statistic is derived from {\em only} Generalized Linear Models (GLM) constructions, where the $\hat{\Bbeta}_g^R$ in equation \eqref{eq:LRstat} is the slope estimated from fitting standard first order linear models. Identifying the differentially varying subgraphs across groups in this way is similar to a simpler version of the planted clique identification problem \citep{arora2009computational}, where the clique we are trying to identify corresponds to those nodes whose slopes vary significantly across groups.
+\begin{figure}
 	\begin{center}
 		\includegraphics[trim={0cm 0cm 0cm 0cm}, clip, width=0.9\textwidth]{3_covtraj/figs/tobacco_zoom.pdf}
 	\end{center}
@@ -27,9 +27,9 @@ pulmonary or cardiovascular diseases for women (e.g., infertility, reduced bone-
 state-wide indoor smoking bans were put in place in the Northeast 
 %\href{https://en.wikipedia.org/wiki/List_of_smoking_bans_in_the_United_States}{(2003/2004)} 
 ahead of many other states in the union.  
-In the South, the trends among men and women also seems to differ significantly. (see Fig. \ref{fig:tobalc}). 
+In the South, the trends among men and women also seems to differ significantly. (see Figure \ref{fig:tobalc}). 
 Apart from health factors, the group-wise differences in the group-wise trends may also be explained by 
-a few reasons identified in a study in 2007 \cite{HEC:HEC1223} which found that as the state sales tax on cigarettes changed (increased), 
+a few reasons identified in a study in 2007 \citep{HEC:HEC1223} which found that as the state sales tax on cigarettes changed (increased), 
 women were significantly more price elastic than men. Between 2006 and 2008, the cigarette tax increased dramatically for all of the 4 states identified \textit{except for Louisiana}, whose tax rate has remained constant. Additionally, while Arkansas did increase their cigarette tax in 2009, they did \textit{not increase taxes in locations near borders shared with higher taxing states}. These intricate relationships among states lend credibility to the fact that our scan statistics framework is indeed identifying interesting sub-regions, and suggests that the full covariance-trajectory pipeline may be more appropriate if effects beyond the means are relevant within an analysis. 
 
 %With heavy alcohol usage in the South, West, and Northeast, the prevalence of heavy drinking seems to be declining faster in men. 

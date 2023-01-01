@@ -4,9 +4,9 @@ In many existing analyses, the effect of the mean differences may be stronger th
 However, in cases where the {\em mean signal is weak}, we expect that the covariance effect will be important. To evaluate 
 our model in this regime, we perform a set of simulation studies and also analyze a publicly available longitudinal dataset.
 
-{\bf Simulations.} We randomly generate SPD matrices from a `path' of 4 discrete points along the manifold, and use these data 
+\paragraph{Simulations.} We randomly generate SPD matrices from a `path' of 4 discrete points along the manifold, and use these data 
 as population 
-covariance matrices to generate 0-mean sample data. Table \ref{recover-table} shows the results of the hypothesis testing 
+covariance matrices to generate 0-mean sample data. Table \ref{tab:recover-table} shows the results of the hypothesis testing 
 procedure with 50 features averaged over 100 runs, where both the true number of features with covariance trajectory differences, $p_t$, 
 and the number of samples per group, $n$, were varied. 
 As expected, our recovery rate increases nicely 
@@ -26,7 +26,7 @@ all possible interactions or \textit{specific interactions specified by an exper
 problems since the number of samples $n \ll p^2$. In the second model, we depend completely on the user's choice of interactions, 
 and must correct for multiple testing when testing different models, at least partly reducing the power of the final test.
 %
-\begin{figure}[!]
+\begin{figure}
 	\begin{center}
 		\includegraphics[width=\textwidth]{3_covtraj/figs/sim_results.pdf}
 		\caption[Synthetic hypothesis testing true positive rates]{\label{fg:sim_graphs}{\footnotesize Correct null hypothesis rejections over 100 runs for three models. For $p = 50$ features, each plot shows the rejection rate
@@ -34,9 +34,9 @@ and must correct for multiple testing when testing different models, at least pa
 	\end{center}
 \end{figure}
 %	
-\begin{table}[]
+\begin{table}
 	{
-		\caption{Detection Accuracy of hypothesis test scheme (100 runs).}
+		\caption{\label{tab:recover-table} Detection Accuracy of hypothesis test scheme (100 runs).}
 		\begin{center}
 			{\begin{tabular}{lllll}
 					\toprule
@@ -54,7 +54,6 @@ and must correct for multiple testing when testing different models, at least pa
 			\end{tabular}}
 		\end{center}
 	}
-	\label{recover-table}
 \end{table}
 Figure \ref{fg:sim_graphs} shows the value of our method over these models. For the interaction GLM case, we randomly select interaction terms to include in the GLM, with size $p_t$ (the ground truth number of variables in the interaction). In this way, we approximate the effect of an oracle specifying to the GLM which terms may describe the underlying interaction. 
 We report the fraction of significance tests where a significance threshold 
@@ -65,7 +64,7 @@ were correctly rejected (i.e., there was a significant group-difference signal).
 graphs is particularly evident in the needle in haystack setting where the true differential signal is small ($p_t \leq 8$)
 and the sample size is small to medium. When the sample size is large and $p_t$ is also large, the standard linear model with additional interaction terms starts to approach the statistical performance of our algorithm.
 
-{\bf Longitudinal trends in Baby Names.} In addition to the simulations above, we report results from a simple analysis of 
+\paragraph{Longitudinal trends in Baby Names.} In addition to the simulations above, we report results from a simple analysis of 
 how male/female baby names evolve over time over the last century. 
 The United States Social Security Administration provides a publicly available dataset listing the frequency of the 
 top 1000 baby names in each state for the last 106 years.
@@ -94,7 +93,7 @@ evidence to conclude that such trends (slopes) are different between boys and gi
 %evolve over time but we have insufficient evidence to conclude that such trends are different between boys/girls. 
 %tend to follow the trends of neighboring states very closely, regardless of sex. 
 
-\begin{figure}[]
+\begin{figure}
 	\begin{center}
 		\includegraphics[,trim={5cm 5cm 5cm 5cm}, clip, width=0.7\textwidth]{3_covtraj/figs/babynames_res-eps-converted-to.pdf}
 		\caption[Covariance trajectory difference testing results on baby name frequency in the contiguous United States.]{\label{fig:usmap} Contiguous states identified as having significantly different time-varying co-occurrences between boys and girls baby names from 1910 to 2015. Best viewed in color.}

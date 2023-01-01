@@ -12,9 +12,9 @@ To this end, we consider the following global hypothesis testing problem
 \begin{equation*}
 H_0: \forall R, \Bbeta_1^R=\Bbeta_2^R \quad vs. \quad H_1: \exists R, \Bbeta_1^R\ne\Bbeta_2^R,
 \end{equation*}       
-where $\beta$ denotes the slope and $R$ is the region of the covariance matrix
+where $\beta$ denotes the slope and $R$ is the \textbf{region of the covariance matrix}
 {\em which only includes the relevant features}, see Fig. \ref{fg:ball}.
-It turns out that by adapting {\em Scan statistics} \cite{fan2012control, arias2011detection}, we will be able to exclude the effect of irrelevant regions of the covariance 
+It turns out that by adapting {\em Scan statistics} \citep{fan2012control, arias2011detection}, we will be able to exclude the effect of irrelevant regions of the covariance 
 matrix in the calculated trajectories. 
 By extending this concept to graphs, we obtain an algorithm to identify {\em subsets of features} of the covariance matrix which show group differences that 
 are otherwise unidentifiable, in a statistically rigorous way. 
@@ -48,7 +48,7 @@ Of course, there is flexibility in terms of specifying properties of the regions
 \begin{definition} Let $\cR$ be the collection of all possible structured regions, and $L_R$ be some statistic over region $R$, a structured subset of $\cR$. The scan statistic is defined as $L^* = \max_{R\in\cR} L_R$.
 \end{definition}
 Recent results in scan statistics show how \textit{size corrections} can be used to increase detection power in multi-scale analysis with 
-nice guarantees \cite{walther2010optimal,wang2016structured}. 
+nice guarantees \citep{walther2010optimal,wang2016structured}. 
 %With size corrections, scan statistics have been shown to be able to detect signal at level that theoretically no other detectors can improve \cite{walther2010optimal,wang2016structured}.
 %
 To utilize these ideas for our hypothesis test, we must extend scan statistics and these size corrections to a graph setting 
@@ -70,7 +70,7 @@ A natural question is whether such an enumeration is tractable
 if the number of connected subgraphs $\cR$ is exponential. It turns out that if we make a mild assumption on the graph, 
 the number of induced regions can be shown to be polynomially bounded. Further, it then naturally provides a {\em size correction}, the analog for a multiple testing adjustment. 
 
-{\em Remarks.} In our motivating application, the group differences we seek to identify will involve a cohesive set of features that will be 
+In our motivating application, the group differences we seek to identify will involve a cohesive set of features that will be 
 connected to each other, by definition (large changes in covariances indicate dependent features). 
 %features in one neighborhood are believed to behave similarly. 
 Based on this observation, we assume that the true localized subgraph is a ``ball'' subgraph. 
@@ -91,7 +91,7 @@ The number of unique ball subgraphs in any graph $G$ is bounded above by $D|\cV|
 (i.e., blocks of covariance matrix), 
 we will invoke LCGLM to provide us a statistic $L_R$. This is just the difference in slopes of the calculated manifold regression across groups in \eqref{eq:traj}. 
 We will iteratively obtain this statistic for distinct regions $R$ and find subgraphs that differ in their trajectories across groups using a size correction for hypothesis tests.
-\begin{figure}[]
+\begin{figure}
 	\begin{center}
 		%\scalebox{0.6}
 		{
@@ -181,7 +181,7 @@ To compare the group trajectories, we first parallel transport each tangent vect
 In the case of the product space construction, we apply the test in \eqref{prop_prodstat} to the data subset corresponding to the features 
 in region $R$, with the same correction as in \eqref{eq:LRstat}.
 
-{\em Summary.} We now have a region-based statistic for the manifold regression setting that is approximately normally distributed $N(0,1)$, allowing effective comparison across differently-sized regions.
+\paragraph{Summary.} We now have a region-based statistic for the manifold regression setting that is approximately normally distributed $N(0,1)$, allowing effective comparison across differently-sized regions.
 
 %\iffalse
 %{ \color{red}
@@ -252,7 +252,7 @@ in the outer region of the ball subgraph, i.e., hard on the inside, soft on the 
 \end{assumption}
 We see that this assumption holds for many classes of graphs:
 a ring graph satisfies this condition when $H=1$ and $S=1$ and the 2-d lattice satisfies this condition when $H=1/4$ and $S=2$ (see Fig. \ref{fg:avocado}). 
-\begin{figure}[]
+\begin{figure}
 	\begin{center}
 		\scalebox{0.8}
 		{
@@ -382,20 +382,19 @@ q_\alpha=O(1).
 Moreover, as $|E|\to \infty$, if a subgraph $R_0$ obeys 
 \begin{equation}
 \label{eq:sigcond}
-{(\Bbeta_1^{R_0}-\Bbeta_2^{R_0})^T\Sigma_{R_0}^{-1}(\Bbeta_1^{R_0}-\Bbeta_2^{R_0})\over \sqrt{|E({R_0})|}}\gg 2\sqrt{\log{|E|\over |E({R_0})|}},
+\frac{(\Bbeta_1^{R_0}-\Bbeta_2^{R_0})^T\Sigma_{R_0}^{-1}(\Bbeta_1^{R_0}-\Bbeta_2^{R_0})}{\sqrt{|E({R_0})|}}\gg 2\sqrt{\log\frac{|E|}{|E({R_0})|}},
 \end{equation}
 then as $|E|\to \infty$,
 \begin{equation}
 \label{eq:power}
-\PP\left(L_{R_0}-2\sqrt{\log{|E|\over |E({R_0})|}}>q_\alpha\right)\to 1.
+\PP\left(L_{R_0}-2\sqrt{\log\frac{|E|}{|E({R_0})|}}>q_\alpha\right)\to 1.
 \end{equation}
 \label{lm:mainthm}
 \end{theorem}
 The full proof of this result follows a generic chaining argument (see, e.g. \cite{talagrand2006generic}) along with application of 
 concentration inequalities and union bounds, and can be found in the Appendix.
 
-{\em Summary.}
-At a high level, this result directly characterizes the behavior of $T^*$ under the null hypothesis $H_0$ and 
+\paragraph{Summary.} At a high level, this result directly characterizes the behavior of $T^*$ under the null hypothesis $H_0$ and 
 the alternative hypothesis $H_1$, respectively. 
 We see that \eqref{eq:criticalvl} implies that $T^*$ can roughly be seen as a constant under the null hypothesis, 
 and under the alternative hypothesis when \eqref{eq:sigcond} is satisfied, the test based on $T^*$ is consistent, see \eqref{eq:power}. 

@@ -1,25 +1,7 @@
-% intro to graphical models
-Multivariate data analysis exploiting the conditional independence structure between features or covariates using 
-undirected graphical models is now standard within any data analysis toolbox. 
-When the data are multivariate Gaussian, the zeros in the inverse covariance (precision) matrix give conditional independences 
-among the variables \cite{lauritzen1996graphical}. Further, if the precision matrix is sparse, we can  
-derive dependencies between features when the data are high-dimensional and/or the number of measurements are small. 
-The estimation of a graphical model
-has been extensively studied
-%in statistics and machine learning,
-and a rich literature is available describing 
-its statistical and algorithmic properties \cite{koller2009probabilistic,jordan1998learning}. 
-%Particularly for higher-dimensional settings where the dimension $p$ is allowed to grow, \textit{sparse} estimation of the precision matrix has been well-studied. 
-For instance, the so-called \textit{graphical lasso} formulation uses an $\ell_1$-norm penalty on the 
-precision matrix and is widely used, and consistency properties 
-in the large $p$ regime \cite{cai2011constrained,friedman2008sparse,yuan2010high} are now well understood. 
-These formulations have also been extended to various transformations of Gaussian distributions (e.g., non-paranormal)
-%, where the 
-using rank statistics \cite{liu2009nonparanormal,xue2012regularized,liu2012high}.
-%are a consistent estimator of 
-%the precision matrix nonzero pattern 
-
-{\em Coupled and Temporal Graphical Models.} 
+As described in the previous chapter, a numbr of methods have been extensively studied for 
+the sparse recovery of graphical models
+with various assumptions on collected data.
+% {\em Coupled and Temporal Graphical Models.} 
 %In various situations,
 Often, data come from two (or more) disparate sources or multiple timepoints.
 %, where we seek to estimate 
@@ -33,7 +15,7 @@ Often, data come from two (or more) disparate sources or multiple timepoints.
 %sources. Consequently, w
 Within the last few years, a few proposals have 
 described strategies for linking the sparsity patterns of multiple graphical models, e.g., using a fused lasso 
-penalty \cite{danaher2014joint} \cite{yang2015fused}. Observe that 
+penalty \citep{danaher2014joint,yang2015fused}. Observe that 
 %these ideas assume that the two (or more) models share a similar structure; 
 if the data sources correspond to {\em longitudinal} acquisitions, we should expect 
 the `structure' to gradually evolve.
@@ -41,7 +23,7 @@ the `structure' to gradually evolve.
 %in the case where the model is changing such a construction would not allow for identification of the evolving graph structure. 
 Several authors have offered generalizations to address this problem: \cite{zhou2010time} removes the assumption
 that each graph is independent and structurally `close'.
-Instead, \cite{zhou2010time} can be thought of as a growth model \cite{mcardle2000introduction} defined on these structures: they show how non-identically distributed graphs can be learned over time. 
+Instead, \cite{zhou2010time} can be thought of as a growth model \citep{mcardle2000introduction} defined on these structures: they show how non-identically distributed graphs can be learned over time. 
 Recently, the nonparametric procedure in \cite{qiu2015joint} extends these ideas
 %via means
 to handle multiple sources, each with multiple samples.
@@ -51,40 +33,40 @@ While such a formulation offers benefits, in many estimation problems,
 parametric models may 
 %require fewer samples (better convergence rates) and possibly, 
 be more convenient for downstream statistical analysis,
-particularly for hypothesis testing \cite{hardle1993comparing,geer2000empirical,roehrig1988conditions}.
+particularly for hypothesis testing \citep{hardle1993comparing,geer2000empirical,roehrig1988conditions}.
 Given that the topic of \textit{coupled} graphical models, by itself, is fairly recent, algorithms for {\em parametric estimation} of 
 temporal or coupled Gaussian graphical models have not yet been heavily studied. 
 %Part of the reason is the difficulty of 
 This will involve parameterizing {\em trends} in the highly structured nature of the `response' variable ($\SPD$ matrices). 
 %In contrast, w
-We find that parametric formulations for manifold-valued data {\em have} been proposed recently \cite{hjkimcvpr2014,cornea2016regression}. %, albeit only in the 
+We find that parametric formulations for manifold-valued data {\em have} been proposed recently \citep{hjkimcvpr2014,cornea2016regression}. %, albeit only in the 
 %context of regression models and dictionary learning \cite{xie2013nonlinear}. 
 %This result is relevant --- b
 Because $\SPD$ matrices form a Riemannian manifold, algorithms
 that estimate a parametric model respecting the underlying Riemannian metric are more suitable in many applications as opposed to assuming a Euclidean metric 
-on positively or negatively curved spaces \cite{xie2010statistical, fletcher2007riemannian, jayasumanakernel}. We will make a few simple modifications 
+on positively or negatively curved spaces \citep{xie2010statistical, fletcher2007riemannian, jayasumanakernel}. We will make a few simple modifications 
 (for efficiency purposes) to such algorithms and make use of the estimated parameters for follow-up analysis.
 
 %Unfortunately, their deployment for the $\SPD$ may not always be trivial.
 
-{\em Finding Group-wise Differences.} Assuming that we have a black-box procedure to estimate a parametric model on the $\SPD$ manifold available, 
+\paragraph{Finding Group-wise Differences.} Assuming that we have a black-box procedure to estimate a parametric model on the $\SPD$ manifold available, 
 in many tasks, such an estimation is merely a segue to other analyses designed to answer scientifically meaningful questions. 
 For example, we are often interested in asking whether the temporally coupled model estimated using the procedure above differs 
 in meaningful ways {\em across} groups induced by a stratification or dichotomous variable (e.g., gender or disease). For instance, is the `slope' in structured response space statistically different 
 across education level or body mass index? 
 %in if this model differs significantly across two groups.
 While the body of work for graphical model estimation is mature, the literature describing hypothesis tests in this
-regime \cite{diffnet,belilovsky2015hypothesis}
-is sparse at best.
+regime \citep{diffnet,belilovsky2015hypothesis}
+is relatively nascent.
 %When considering a single graphical model for each group, \cite{diffnet} propose a framework for two sample testing to discover differences in biological network structures.
 %However, to the best of our knowledge no literature exists describing a testing framework for temporal graphical models.
 %In this paper we propose a method for evaluating this group difference temporally.
 Given that such questions are simpler to answer with alternative schemes (with assumptions on the distributional properties of the data), e.g., structural equation modeling, 
-latent growth models and so on \cite{ullman2003structural, mcardle2000introduction}, it seems that 
+latent growth models and so on \citep{ullman2003structural, mcardle2000introduction}, it seems that 
 the unavailability of such tools is limiting the adoption of such ideas in a broader 
-cross-section of science. We will seek to address this gap. 
+cross-section of science. Here we will seek to address this gap. 
 
-{\em Needles in Temporal Haystacks.} If we temporarily set aside the potential value of a hypothesis test framework for temporal 
+\paragraph{Needles in Temporal Haystacks.} If we temporarily set aside the potential value of a hypothesis test framework for temporal 
 trajectories in graphical models, we see that
 from an operational viewpoint, such procedures are most effective when a practitioner already has a precise scientific question in mind. In reality, however, 
 many data analysis tools are deployed for exploratory analyses to inform an investigator as to which questions to ask. 
@@ -106,7 +88,7 @@ provides a practical turnkey product for an experimental scientist, and makes up
 %A second key issue we aim to address is that of feature selection. In many medical regimes, the true indicators and dependencies among measured features is unknown. In most analyses feature selection is done manually, generally by the researcher. Structural equation modeling (SEM) in particular is a popular tool which requires the user to choose the features as input for analysis. The first component of SEM requires the \textit{structural model} be specified, that the dependences we wish to determine significant are explicitly stated. Quantitative approaches for feature selection  (cite) have been looked at in machine learning. (elaborate)... In the case of image analysis, scan statistics have been used as a measure to detect regions of high correlation between images (cite what Ming cites). These scan statistics, however, require a selection of a subregion of the image or some strong heuristic to make the problem of searching over all possible window sizes tractable. Recently (ming paper) were able to polynomially bound the number of regions needed to detect highly correlated regions with high probability. Motivated by their work, we attempt to solve a parallel problem. In the case of feature selection among high-dimensional covariance matrices, we aim to identify a subset of features such that the evolution of the correlation matrix is significantly different among two groups.
 
 \input{3_covtraj/grenander.tex}
-Concurrent to our work, \cite{su2014statistical,zhang2018rate} have developed similar methods of analyzing the statistical properties of trajectories on the $\SPD(n)$ manifold via the transported square-root vector field. While here we focus on a simple approach to enable localization, these developments can be incorporated into our construction.
+Concurrent to this work, \cite{su2014statistical,zhang2018rate} have developed similar methods of analyzing the statistical properties of trajectories on the $\SPD(n)$ manifold via the transported square-root vector field. While here we focus on a simple approach to enable localization, these developments can be incorporated into this construction.
 
 Briefly, we provide \textbf{(i)} a simple and efficient parametric procedure for modeling temporally evolving graphical models, \textbf{(ii)} a 
 hypothesis test for identifying differences between group-wise estimated models, and \textbf{(iii)} a scan
@@ -118,11 +100,11 @@ From the experimental perspective, we find scientifically plausible results on
 a unique longitudinally tracked cohort of middle-aged (and young elderly) persons at risk for Alzheimer's disease due to family history, 
 but who are otherwise completely cognitively healthy.
 
-The rest of the paper is organized as follows. In Section \ref{sec:mglm} we present an efficient manifold regression procedure for 
+The rest of this chapter is organized as follows. In Section \ref{sec:mglm} we present an efficient manifold regression procedure for 
 modeling covariance trajectories, which serves as a blackbox module in our hypothesis testing framework. 
 In Section \ref{sec:hyp-test}, we define our main hypothesis test for group difference analysis over covariance trajectories. 
 In Section \ref{sec:loc}, we present a set of technical results describing our localization procedure based on scan statistics, 
 as well as derive suitable size corrections to compare across feature subsets. Sections \ref{sec:loceval}, \ref{sec:pipeval}, and \ref{sec:wrap} conclude with
 empirical evaluations of our model on synthetic data, various types of demographics/behavior data collected longitudinally 
 in the United States from publicly available resources, and finally, our 
-analysis on a unique longitudinal dataset (followed since 2001) from a preclinical Alzheimer's disease study involving approximately 1500 individuals.
+analysis on a unique longitudinal dataset (followed from 2001 to 2017) from a preclinical Alzheimer's disease study involving approximately 1500 individuals.

@@ -1,11 +1,11 @@
-\subsection*{Detailed results on larger cohort with only cognitive scores}
+\subsection{Detailed results on larger cohort with only cognitive scores}
 We also applied our method to a larger cohort consisting of approximately 1500 subjects with varying temporal measurements on the battery of cognitive tests. Each individual had approximately 3 visits worth of data, and so our total number of measurements was approximately $n = 4000$. In addition to the groupings used above, we were able to use an algorithmic cognitive impairment (ACI) measure to further evaluate the model against a factor which is known to be group-separating. Below are the tabulated feature sets identified by our model for each of the group separations described in the main paper. In this case to increase interpretability of the results we limited our search to groups of 3-6 features.
 
 When grouped by genotype, the most indicative subset as shown in Table \ref{fig:coggenotype}. These tests are most closely associated with memory, and we see that no tests of executive function or spatial ability (Trail-Making or Clock Drawing) were included.
 
 In addition to an algorithmic measure of impairment, a conference of expert clinicians and researchers have given each individual a clinical impairment diagnosis for each time they underwent the cognitive battery. Using this as a group separator, we found a large number of overlapping subsets that displayed significant group difference at the $p = 0.05$ level. These are shown in Table \ref{fig:cogcc}. Trail-Making Test Parts A and B appeared in all identified subsets.
 
-\begin{table}[h]
+\begin{table}
 	\centering
 	\begin{tabular}{p{0.8cm}p{5.5cm}p{6cm}}
 		\toprule
@@ -17,7 +17,7 @@ In addition to an algorithmic measure of impairment, a conference of expert clin
 	\caption{Group Difference Localization Across Algorithmic Impairment}
 \end{table}
 
-\begin{table}[h]
+\begin{table}
 	\centering
 	\begin{tabular}{p{0.8cm}p{5.5cm}p{6cm}}
 		\toprule
@@ -31,7 +31,7 @@ In addition to an algorithmic measure of impairment, a conference of expert clin
 	\label{fig:coggenotype}
 \end{table}
 
-\begin{table}[h]
+\begin{table}
 	\centering
 	\begin{tabular}{p{5.5cm}p{6cm}}
 		\toprule

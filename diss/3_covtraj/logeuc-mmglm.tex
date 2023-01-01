@@ -1,5 +1,5 @@
 Several regression models for manifold-valued data have been proposed recently, a majority of 
-which are nonparametric \cite{jayasumanakernel,banerjee2015nonlinear}. 
+which are nonparametric \citep{jayasumanakernel,banerjee2015nonlinear}. 
 %             , and make use of various distance metrics.
 Because of the longitudinal nature of our dataset (and recruitment considerations in neuroimaging studies),
 %it is not common for  
@@ -43,19 +43,19 @@ base point $b \in \Mc$ and a geodesic basis $V^j \in T_{b}\Mc$ respectively. The
 %for a manifold-valued \textit{dependent} variable is,
 %It is clear that in MMGLM each covariate parameterizes a geodesic curve $\EXP(p, v^j x_i^j)$ on $\Mc$. 
 Intuitively, this model is a `generalized' linear model with the inverse exponential map $\EXP^{-1}$ (or logarithm map $\LOG$) as a 
-`link' function \cite{hjkimcvpr2014,cornea2016regression}. When the covariate/predictors are univariate, we will obtain a single geodesic curve, modeled via 
-the so-called Geodesic Regression \cite{fletcher2013geodesic}.
+`link' function \citep{hjkimcvpr2014,cornea2016regression}. When the covariate/predictors are univariate, we will obtain a single geodesic curve, modeled via 
+the so-called Geodesic Regression \citep{fletcher2013geodesic}.
 
 \subsection{Efficient Estimation of Trajectories}
 \label{sec:effest}
-The objective in \eqref{eq:multigr}, can be solved by both gradient descent \cite{fletcher2013geodesic,hjkimcvpr2014} and MCMC methods \cite{cornea2016regression}. 
+The objective in \eqref{eq:multigr}, can be solved by both gradient descent \citep{fletcher2013geodesic,hjkimcvpr2014} and MCMC methods \citep{cornea2016regression}. 
 Unfortunately, these schemes can be expensive, especially when the dimension of the manifold is large. Further, if the algorithm needs to be run a 
 large number of times, the computational footprint quickly becomes prohibitive. 
 Motivated by these considerations, we use a so-called log-Euclidean approximate algorithm introduced in \cite{hjkimcvpr2014} with some adaptations, which requires mild assumptions on the manifold-valued data. 
 
 Recall that in classical ordinary least squares (OLS), 
 the regression curve goes through the mean of covariates and response variables, i.e., $y-\bar{y} = \beta(x-\bar{x})$.
-Similarly, we assume that geodesic curves go through the mean of response variables on the manifold. Then, the base point, or intercept, ``$b$'' in \eqref{eq:multigr} can be approximated by the {\em manifold-valued mean of the sample points}, the Karcher mean \cite{karcher1977riemannian}. The propositions derived from \cite{hjkimcvpr2014} lead directly to the following. 
+Similarly, we assume that geodesic curves go through the mean of response variables on the manifold. Then, the base point, or intercept, ``$b$'' in \eqref{eq:multigr} can be approximated by the {\em manifold-valued mean of the sample points}, the Karcher mean \citep{karcher1977riemannian}. The propositions derived from \citep{hjkimcvpr2014} lead directly to the following. 
 \begin{proposition}
 Let $\bar{C}$ be the unique Karcher mean of a sufficiently close set of covariance matrices that lie on a curve $\Omega$. Then $\bar{C} \in \Omega$, and for some tangent vector $V \in T_{\bar{C}}\Mc$ and each $C$, there exists $x \in \mathbb{R}$ such that $C = \EXP(\bar{C},Vx)$. 	
 \end{proposition}
@@ -71,7 +71,7 @@ When the base point $b$ is the identity $I$, then the inner product is exactly t
 \end{remark}
 This follows from the fact that $u$ and $v$ are symmetric matrices on $\SPD(p)$. We take advantage of this property
 through \textit{parallel transport}. Specifically, we can bring all of the data to $T_{I}\Mc$ which will allow for a meaningful comparison of two tangent vectors from different base points.
-Similar schemes have been used for projection on submanifolds in \cite{xie2010statistical} and other problems \cite{sommer2014optimization}. 
+Similar schemes have been used for projection on submanifolds in \cite{xie2010statistical} and other problems \citep{sommer2014optimization}. 
 %%More details about optimization on manifolds is available in \cite{}.
 %%We now summarize the estimation procedure.
 %
