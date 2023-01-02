@@ -1,17 +1,17 @@
 \section{Identifying Differential Progression in AD}\label{sec:adni}
-        {\bf Motivation.} The Alzheimer's Disease Neuroimaging Initiative (ADNI, \url{adni.loni.usc.edu})  provides a comprehensive dataset
-        targeted towards understanding AD. The goals of the initiative include measuring the development of the disease as a function of different imaging modalities, other biological markers, and clinical and neuropsychological assessments. 
+\paragraph{Motivation.} The Alzheimer's Disease Neuroimaging Initiative (ADNI, \url{adni.loni.usc.edu})  provides a comprehensive dataset
+targeted towards understanding AD. The goals of the initiative include measuring the development of the disease as a function of different imaging modalities, other biological markers, and clinical and neuropsychological assessments. 
 Deep learning methods traditionally applied to this corpus require imaging data to be heavily preprocessed into summary measures, such as \textit{regions of interest}.
-  In other cases, based on the needs of the application (e.g., segmentation),
+In other cases, based on the needs of the application (e.g., segmentation),
 the approach may operate with 3D image patches instead of the entire image. 
 The size of the images, especially when considered longitudinally, can be impractical for modern deep learning frameworks unless some novel
 implementation tricks are utilized. 
 
 \textbf{Data.} Our dataset consists of 522 subjects with Magnetic Resonance Imaging (MRI) scans collected over three years. For each individual, an MRI was collected annually, along with a battery of neuropsychological evaluations.
 
-{\bf Pre-processing.}
+\textbf{Pre-processing.}
 Full head MRIs were processed using SPM12 \cite{ashburner2014spm12}. Each image was segmented/registered using the MNI152 template. Gray matter probabilities were computed, and these gray matter density (GMD) images were used as input to our models.
-The processed image size was $121 \times 145 \times 121$ (voxel size $1.5mm^3$), with {\bf 3 images per subject}.
+The processed image size was $121 \times 145 \times 121$ (voxel size $1.5mm^3$), with \textbf{3 images per subject}.
 
 \textbf{Model.} At this scale, we use convolutional input and deconvolutional output layers to incorporate local information with respect to reconstruction and prediction. The architecture consists of a straightforward 3-state RNN with input-hidden, hidden-hidden, and hidden-output layers replaced with TT and OTT layers. Input volumes are passed through a 3D convolutional input network, with max-pooling layers and ReLUs.
 Hidden states are passed through an output convolutional network consisting of max-unpooling layers using indices
@@ -29,20 +29,18 @@ ADNI experiments, with learning rate $1e^{-3}$, and decay rate $0.9$ and $0.999$
 \subsection{Modeling gray matter progression in AD}
 Our first goal is to predict the next MR image
 given the previously seen ones. Importantly, standard RNN constructions cannot easily handle inputs of this size.
-On a single NVIDIA Titan Xp, the images must be {\bf downsampled} by over 20$\times$ to allow for a
+On a single NVIDIA Titan Xp, the images must be \textbf{downsampled} by over 20$\times$ to allow for a
 batch size of 4 in a standard LSTM model with a hidden state size of 2048 (4.3 billion parameters for a full sized input map).
 
-{\bf Results.}
+\textbf{Results.}
 Fig \ref{fig:adpos} show the results for a held-out subject in the study using OTT-RNN on a single representative 2D slice,
 with their predicted third timepoint image. While higher levels of compression (lower OTT ranks) lead to ``blocky" reconstructions,
 our model is still able to identify boundaries of edges between low and high probabililty voxels.
 
-\begin{figure}[!b]
+\begin{figure}
 	\centering
-	\includegraphics[width=0.95\columnwidth]{4_ott/figs/Hollywood2_samples.png}
-	\vspace{-20pt}
-	\caption{\label{fig:hollywood} \footnotesize Sample sequences from the Hollywood2 dataset. Labels are (Top) Answer Phone, (Middle) Drive Car, and (Bottom) Get Out Car.}
-	
+	\includegraphics[width=\columnwidth]{4_ott/figs/Hollywood2_samples.png}
+	\caption{\label{fig:hollywood} Sample sequences from the Hollywood2 dataset. Labels are (Top) Answer Phone, (Middle) Drive Car, and (Bottom) Get Out Car.}
 \end{figure}
 
 %
@@ -55,29 +53,28 @@ our model is still able to identify boundaries of edges between low and high pro
 %    \label{fig:adneg}
 %\end{figure}
 \newcolumntype{C}{>{\centering\arraybackslash}p{0.23\textwidth}}
-\begin{figure*}[!t]
-    \centering
-    \begin{tabular}{CCCC}
-    	Timepoint 1 & Timepoint 2 & Timepoint 3 & \textbf{\color{blue}Predicted T3 }\\
-    	\multicolumn{4}{C}{\includegraphics[width=\textwidth,trim={5cm 1cm 4cm 0.5cm},clip]{4_ott/figs/brains/ott_brain_side.eps}} \\	\multicolumn{4}{C}{\includegraphics[width=\textwidth,trim={5cm 0.5cm 4cm 1cm},clip]{4_ott/figs/brains/ott_brain_top.eps}}
-    \end{tabular}
-%    \includegraphics[angle=90,origin=c,width=0.3\textwidth]{figs/brains/1_A.eps}
-%    \includegraphics[angle=90,origin=c,width=0.3\textwidth]{figs/brains/2_A.eps}
-%    \includegraphics[angle=90,origin=c,width=0.3\textwidth]{figs/brains/p_A.eps}
-%    \includegraphics[width=0.3\textwidth]{figs/brains/1_S.eps}
-%    \includegraphics[width=0.3\textwidth]{figs/brains/2_S.eps}
-%    \includegraphics[width=0.3\textwidth]{figs/brains/p_S.eps}\\    
-%    \includegraphics[width=0.75\columnwidth,trim={0 5.5cm 0 4.5cm},clip]{figs/brains/pos_1.png}
-%    \includegraphics[width=0.75\columnwidth,trim={0 5.5cm 0 4.5cm},clip]{figs/brains/pos_2.png}
-    %    \includegraphics[width=0.75\columnwidth,trim={0 5.5cm 0 4.5cm},clip]{figs/brains/pos_p.png}
-    \vspace{-15pt}
-    \caption{\label{fig:adpos} \footnotesize Ground truth progression and prediction of gray matter probabilities in an individual from our validation set. From the left, the first three images are the ground truth images at visits 1, 2, and 3, followed by our prediction at visit 3.}
-\end{figure*}
+\begin{figure}
+	\centering
+	\begin{tabular}{CCCC}
+		Timepoint 1 & Timepoint 2 & Timepoint 3 & \textbf{\color{blue}Predicted T3 }\\
+		\multicolumn{4}{C}{\includegraphics[width=\textwidth,trim={5cm 1cm 4cm 0.5cm},clip]{4_ott/figs/brains/ott_brain_side.eps}} \\	\multicolumn{4}{C}{\includegraphics[width=\textwidth,trim={5cm 0.5cm 4cm 1cm},clip]{4_ott/figs/brains/ott_brain_top.eps}}
+	\end{tabular}
+	%    \includegraphics[angle=90,origin=c,width=0.3\textwidth]{figs/brains/1_A.eps}
+	%    \includegraphics[angle=90,origin=c,width=0.3\textwidth]{figs/brains/2_A.eps}
+	%    \includegraphics[angle=90,origin=c,width=0.3\textwidth]{figs/brains/p_A.eps}
+	%    \includegraphics[width=0.3\textwidth]{figs/brains/1_S.eps}
+	%    \includegraphics[width=0.3\textwidth]{figs/brains/2_S.eps}
+	%    \includegraphics[width=0.3\textwidth]{figs/brains/p_S.eps}\\    
+	%    \includegraphics[width=0.75\columnwidth,trim={0 5.5cm 0 4.5cm},clip]{figs/brains/pos_1.png}
+	%    \includegraphics[width=0.75\columnwidth,trim={0 5.5cm 0 4.5cm},clip]{figs/brains/pos_2.png}
+	%    \includegraphics[width=0.75\columnwidth,trim={0 5.5cm 0 4.5cm},clip]{figs/brains/pos_p.png}
+	\caption{\label{fig:adpos} Ground truth progression and prediction of gray matter probabilities in an individual from our validation set. From the left, the first three images are the ground truth images at visits 1, 2, and 3, followed by our prediction at visit 3.}
+\end{figure}
 \subsection{Cognition from gray matter sequence}
 Based on the results from the above experiment, one may ask if, in fact, a good model of progression is being learned, or
 if only the ``average'' of all participants is being predicted by the model.
 
-{\bf (A) Predicting Cognition from 3D image sequences.}
+\textbf{(A) Predicting Cognition from 3D image sequences.}
 To answer this question, we can directly try to predict summary cognition measures which are used in practice.
 %As a baseline, we first predict a subject's final disease diagnosis from their MR scans. Participants in ADNI may enter the study as cognitively healthy, but progress in their cognitive decline as time passes. We construct a binary label for each individual based on their final expert disease diagnosis, and attempt to predict it from their 3D image. Note that most of these diagnoses have occurred well after the third scan has been acquired: we are predicting \textit{future} disease condition from current and past imaging.
 %Using a simple hidden layer of size 128 and an OTT/TT hidden layer, we are able to learn a model that can perfectly predict eventual AD diagnosis from MR sequences on a held out validation set.
@@ -91,14 +88,14 @@ The Rey Auditory Verbal Learning Test (RAVLT) evaluates a large variety of cogni
 functions, including short and long term memory, cognitive function, and learning ability \cite{schmidt1996rey}, and
 has been identified as a strong indicator for developing AD pathology. We train both TT and OTT models with dropout for 200 epochs.
 
-{\bf Results.} Figure \ref{fig:loss} (left) shows the results of this analysis.
+\textbf{Results.} Figure \ref{fig:loss} (left) shows the results of this analysis.
 Here, the advantage of the OTT construction is clear, we are able to converge significantly faster compared to the TT construction,
 with half as many parameters.
-\begin{figure}[!b]
+\begin{figure}
 	\centering
 	\includegraphics[width=0.49\columnwidth]{4_ott/figs/adni/adni_convergence.eps}
 	\includegraphics[width=0.49\columnwidth]{4_ott/figs/adni/adni_widths.eps}
-        \vspace{-10pt}
+	\vspace{-10pt}
 	\caption{\label{fig:loss} \footnotesize Validation losses for reconstruction (left) and confidence interval widths (right) for uncertainty estimation of RAVLT prediction (lower is better). }
 \end{figure}
 
@@ -117,7 +114,7 @@ Obtaining good measures of this uncertainty requires sampling all parameters a s
 %Again, we can take advantage of our reduced parameter construction.
 Using tensor train constructions allows us to feasibly compute an estimate of uncertainty over all outputs, and with OTT we can further reduce this required sampling rate.
 
-{\bf Results.} Figure \ref{fig:loss} (right)
+\textbf{Results.} Figure \ref{fig:loss} (right)
 shows
 95\% interval widths computed over 100 MC Dropout instantiations, averaged over individuals in the validation set. The advantage of our compressed orthogonal construction is clear, resulting in smaller confidence intervals compared to the standard TT decomposition. 
 

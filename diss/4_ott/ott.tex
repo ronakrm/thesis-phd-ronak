@@ -56,15 +56,16 @@ This construction can be seen as an approximation to the full tensor train forma
 %\begin{remark}
 \paragraph{Is this useful?} It is not obvious that this construction is useful at all. How much is lost through this approximation? What is gained by using this construction? In what follows, we demonstrate that we can approximate any tensor with bounded norm using an OTT, and that with a full rank assumption and a trainable constant, our formulation admits a solution with $\epsilon$ error.
 \begin{algorithm}
+	\caption{Stochastic OTT Optimization}\label{alg:ott_opt}
 	\SetAlgoLined
+	\DontPrintSemicolon
 	\For{t=1,\ldots,T}{
-		$g_t := \frac{df}{d\cW} f(X^{mini-batch})$
-		\For{Core $Q^i_t \in \cW_t$ and Core Gradient $g^i_t \in g_t$}{
-			$G^i_t = P_{T_{\cW_t}M}(g^i_t)$ \Comment{Projection Step} \\
-			$Q^i_{t+1} \leftarrow \Exp(Q^i_t, G^i_t)$ \Comment{Retraction Step}
+		$g_t := \frac{df}{d\cW} f(X^{mini-batch})$\\
+		\For{\text{Core} $Q^i_t \in \cW_t$ \text{and Core Gradient} $g^i_t \in g_t$}{
+			$G^i_t = P_{T_{\cW_t}M}(g^i_t)$ \Comment*[r]{Projection Step}
+			$Q^i_{t+1} \leftarrow \Exp(Q^i_t, G^i_t)$ \Comment*[r]{Retraction Step}
 		}
 	}
-	\caption{\label{alg:ott_opt} Stochastic OTT Optimization}
 \end{algorithm}
 \begin{figure}
 	\centering
@@ -120,7 +121,7 @@ Consider the problem of approximating a 4 dimensional tensor $\cX$ with $n_{1,2,
 We can then apply Corollary \ref{theory:corr2} and find that the product of indexed orthonormal matrices and orthonormal vectors with full rank can approximate any matrix with bounded norm. 
 Applying this to our OTT format, it immediately follows that with  the addition of at most $dn$ constants in $\RR$ we can approximate any arbitrary tensor. While this addition would put the format well over the number of parameters in the standard format, this provides sufficient evidence that, in typical learning settings in which our model is already overparameterized, we can still capture the full expressive power of the model class in which an OTT format is inserted. 
 
-{\bf Remark.} It also important to note that the above calculation of dimensionality is the \textit{intrinsic} dimension. The number of actual allocated variables is indeed $dn^3$ for an exact formulation.
+\paragraph{Remark.} It also important to note that the above calculation of dimensionality is the \textit{intrinsic} dimension. The number of actual allocated variables is indeed $dn^3$ for an exact formulation.
 It remains open to theoretically analyze the degradation of the approximation as $r<n$.
 
 \subsection{Efficient Stiefel Optimization}\label{sec:opt}
@@ -147,59 +148,52 @@ The Riemannian Exponential map on $\text{SO}(n)$ is the matrix exponential, comp
 Hence, we use the Cayley map from $\mathfrak{SO}(n)$ to $\text{SO}(n)$, given by $A \mapsto \left(I-A\right)\left(I+A\right)^{-1}$, where $\mathfrak{SO}(n)$ (the space of $n\times n$ skew-symmetric matrices) is the tangent space of $\text{SO}(n)$ at identity.
 Although the Cayley map requires a matrix inverse, it is much easier to handle using standard tools
 in modern toolboxes (e.g., TensorFlow, PyTorch).
-
-%\begin{wrapfigure}[]{r}{0.4\textwidth}
-%\begin{figure}
-%\begin{minipage}[t]{0.5\textwidth}
-%			\vspace{-45pt}
-%		\begin{algorithm}[H]
-%			\caption*{}
-%			\begin{algorithmic}
-%				\Function{OTT-Core}{$r$}
-%				\State $w \leftarrow \RR^{r(r-1)/2}$
-%				\State $R \leftarrow \text{triu}(w)$
-%				\State $A \leftarrow R - R^\top$
-%				\State $Q \leftarrow (I - A)(I + A)^{-1}$
-%				\State return $Q$
-%				\EndFunction
-%			\end{algorithmic}
-%		\end{algorithm}
-%%	\end{minipage}
-%	\captionof{algorithm}{OTT Core.\label{alg:ott-core}}
-%%	\vspace{-20pt}
-%%\end{wrapfigure}
-%\end{figure}
-
- Observe that
+%\begin{algorithm}
+%	\caption{OTT Core.}\label{alg:ott-core}
+%	\SetAlgoLined
+%	\DontPrintSemicolon
+%	\SetKwFunction{FMain}{OTT-Core}
+%	\SetKwProg{Fn}{Function}{:}{}
+%	\Fn{\FMain{$r$}}{
+%		$w \leftarrow \RR^{r(r-1)/2}$ \\
+%		$R \leftarrow \text{triu}(w)$ \\
+%		$A \leftarrow R - R^\top$ \\
+%		$Q \leftarrow (I - A)(I + A)^{-1}$ \\
+%		\KwRet{$Q$}
+%	}
+%\end{algorithm}
+Observe that
 the work in \cite{helfrich2017orthogonal} used the Cayley map for RNNs, but does not make use of the sparse representation of a skew-symmetric matrix $A \in \mathfrak{SO}(n)$.
 In contrast, in our formulation we use the Cayley map as a mapping from $\mathbb{R}^{\frac{n(n-1)}{2}}$ to $\text{SO}(n)$. This enables a strict reduction in the number of trainable/learnable variables in a network, and provides a direct path through which gradients can be computed and backpropagated.
-Algorithm \ref{alg:ottcore} describes the procedure for constructing an OTT-core.
+Algorithm \ref{alg:ott-core} describes the procedure for constructing an OTT-core.
 The Euclidean variable vector $w$ is mapped directly to the upper triangular part, defined as $\triu(\cdot)$, of a new matrix $R$, and by subtracting its transpose,
 we arrive at a skew symmetric matrix $A$. The Cayley map, as described above, maps to our Orthogonal OTT Core. 
 
-\textbf{Remark.} Note that the Cayley map is not a bijective mapping between $\mathfrak{SO}(n)$ and $\text{SO}(n)$ as the range is not the entire $\text{SO}(n)$. This is because the Cayley map cannot generate matrices with negative eigenvalue(s). Empirically, we do not find this to be an issue when learning the OTT representation directly.
+\paragraph{Remark.} Note that the Cayley map is not a bijective mapping between $\mathfrak{SO}(n)$ and $\text{SO}(n)$ as the range is not the entire $\text{SO}(n)$. This is because the Cayley map cannot generate matrices with negative eigenvalue(s). Empirically, we do not find this to be an issue when learning the OTT representation directly.
 
 With this efficient approximation in hand, we are able to directly apply our OTT formulation to architectures for a variety of applications.
-\iffalse
- {\begin{algorithm}[t]
- 		\caption{ \label{alg:ottcore} Constructing an OTT Variable}
- 		\begin{algorithmic}
- 		    \Function {OTT-Variable}{$d, n_{in}, n_{out}, r$}
- 		        \State $OTT \leftarrow \emptyset$
- 		        \For{$i \in 1,\ldots,d$}
- 		            \For{$j,k \in 1,\ldots,n_{in}[i],1,\ldots,n_{out}[i]$}
-                        \State $OTT$.append(OTT-Core($r$))
-                    \EndFor
- 		        \EndFor
- 			    \State return $OTT$
- 			\EndFunction
- 			\Function {OTT-Core}{$r$}
-     			\State $w \leftarrow \RR^{r(r-1)/2}$
-     			\State $R \leftarrow \triu(w)$
-     			\State $A \leftarrow R - R^\top$
-     			\State $Q \leftarrow (I - A)(I + A)^{-1}$
-     			\State return $Q$
- 			\EndFunction
- 		\end{algorithmic}
-\end{algorithm}}
-\fi
+\begin{algorithm}
+	\caption{ \label{alg:ott-core} Constructing an OTT Variable}
+	\SetAlgoLined
+	\DontPrintSemicolon
+	\SetKwFunction{FVar}{OTT-Variable}
+	\SetKwProg{Fn}{Function}{:}{}
+	\Fn{\FVar{$d, n_{in}, n_{out}, r$}}{
+       $OTT \leftarrow \emptyset$ \\
+       \For{$i \in 1,\ldots,d$}{
+           \For{$j,k \in 1,\ldots,n_{in}[i],1,\ldots,n_{out}[i]$}{
+                $OTT$.append(OTT-Core($r$)) \\
+			}
+       }
+		\KwRet{$OTT$}
+	}
+	\SetKwFunction{FCore}{OTT-Core}
+	\SetKwProg{Gn}{Function}{:}{}
+	\Gn{\FCore{$r$}}{
+		$w \leftarrow \RR^{r(r-1)/2}$ \\
+		$R \leftarrow \text{triu}(w)$ \\
+		$A \leftarrow R - R^\top$ \\
+		$Q \leftarrow (I - A)(I + A)^{-1}$ \\
+		\KwRet{$Q$}
+	}
+\end{algorithm}
