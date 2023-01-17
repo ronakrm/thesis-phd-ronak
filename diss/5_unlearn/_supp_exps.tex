@@ -6,9 +6,9 @@ Experimental settings were taken from \cite{bullseye}, with code adapted from  \
 
 \subsection{L-CODEC vs CODEC Speed Results}
 The full figure can be seen below, at Figure~\ref{fig:full_speed_hist}. Each pair of columns corresponds to a different attribute in the CelebA dataset as the focal variable of interest, with the rest as potential conditioning variables.
-\begin{figure}[h]
+\begin{figure}
     \centering
-    \includegraphics[width=0.7\columnwidth]{5_unlearn/figs/Speed_Hist.png}
+    \includegraphics[width=\columnwidth]{5_unlearn/figs/Speed_Hist.png}
     \caption{\label{fig:full_speed_hist} L-CODEC vs CODEC run time comparison for identifying sufficient subsets for each CelebA attribute separately (pairs of columns, details in supplement).}
 \end{figure}
 
@@ -25,7 +25,7 @@ Repeating the retraining comparison in the main paper with a larger regularizati
     \includegraphics[width=0.24\columnwidth]{5_unlearn/figs/retrain/Retrain_Validation_Accs_0.1.png}
     \includegraphics[width=0.24\columnwidth]{5_unlearn/figs/retrain/Retrain_Gradient_Norms_0.01.png}
     \includegraphics[width=0.24\columnwidth]{5_unlearn/figs/retrain/Retrain_Gradient_Norms_0.1.png}
-    \caption{MNIST Retraining results, comparing the effect of weight decay on unlearning via our LFOCI unlearning scheme and retraining.}
+    \caption[MNIST Retraining results]{MNIST Retraining results, comparing the effect of weight decay on unlearning via our LFOCI unlearning scheme and retraining.}
     \label{fig:mnistretrainweightdecay}
 \end{figure}
 
@@ -33,9 +33,9 @@ Repeating the retraining comparison in the main paper with a larger regularizati
 An important requirement for our retraining experiment is that our residual training set used for both scrubbing validation and retraining is able to take on any size, including 1 and any size for which the modulus over the batch size equals 1. This causes particular problems when models include batch normalization layers: general practice in training deep neural networks includes the choice of dropping the last batch, so as to avoid issues of unbalanced batch sizes. For our setting we \textit{cannot} drop these batches, because we explicitly want to measure and compute on networks trained with and without specific samples. While we can ``skip" removals during our experimentation, this can still lead to odd behavior, see Figure~\ref{fig:cifarretrain}. The spikes are exactly congruent with points in the removal process corresponding to a final batch size of 1 for retraining. In general, care must be taken when attempting to unlearn from batchnorm models, and further work may be necessary to adequately address it, both in theory and practice.
 \begin{figure}
     \centering
-    \includegraphics[width=0.4\columnwidth]{5_unlearn/figs/retrain/CIFAR_Retrain_Residual_Accs.png}
-    \includegraphics[width=0.4\columnwidth]{5_unlearn/figs/retrain/CIFAR_Retrain_Validation_Accs.png}
-    \caption{Retraining Results on CIFAR. Dips occur at removal counts where the modulus equals 1.}
+    \includegraphics[width=0.495\columnwidth]{5_unlearn/figs/retrain/CIFAR_Retrain_Residual_Accs.png}
+    \includegraphics[width=0.495\columnwidth]{5_unlearn/figs/retrain/CIFAR_Retrain_Validation_Accs.png}
+    \caption[CIFAR retraining results]{Retraining Results on CIFAR. Dips occur at removal counts where the modulus equals 1.}
     \label{fig:cifarretrain}
 \end{figure}
 
@@ -57,7 +57,7 @@ Fine tuning was done for 4 epochs to estimate the Hessian for the sample downloa
 For unlearning, 100 images for a specific identity were randomly ordered and removed with $\epsilon=0.0001, \delta=0.01$. 100 perturbations were used to estimate the activation and loss distributions for L-FOCI.
 
 \subsection{Person Re-identification}
-We discuss in more detail the experimental details of unlearning deep neural networks for the person re-identification task in this section. We consider four different datasets namely, Market1501 \cite{zheng2015scalable}, MSMT17 \cite{wei2018person}, PRID \cite{hirzer11} and  QMUL GRID \cite{loy2009multi}. We unlearn from different deep neural networks including ResNet50, a variant of ResNet50 with a fully connected layer (called Resnet50\_fc512), Multi-Level Factorisation Net (MLFN) and MobilNet\_V2. In all cases the models were first trained to reasonable accuracy as per benchmarks before proceeding with unlearning a randomly selected individual's identity from the corresponding dataset. To perform experiments pertaining to person re-identification we make use of the popular framework torchreid \cite{zhou2019omni}. We had to make changes to the original code in order to make our procedure function correctly in this framework. We include this modified source within the code presented in the supplement. We use Adam as the optimizer, a step scheduler and learning rate of $0.0003$ across all person re-identification datasets and models used. We use softmax loss and weights were initialized using a model pre-trained on ImageNet in all cases. Images were resized to $256 \times 128$ before being used as input to any of the models. The number of training epochs was chosen accordingly to allow the training to have converged. Results from multiple runs involving different models, datasets and the privacy parameter $(\epsilon)$ are conclusive. With lower value of $\epsilon$, e.g. $0.0005$, the number of samples that could be unlearned for a particular class while maintaining model performance was lower than what could be unlearned for a higher value of the privacy parameter $\epsilon$, e.g. $0.1$. For the smaller datasets, i.e. PRID and QMUL GRID, which have approximately 2 samples per class, the unlearning procedure lead to more drastic changes as expected and it could be observed that our selection procedure selected many more layers to update than what it did for the larger datasets. Activation maps from some experiments are presented in Fig \ref{fig:reid_sup}.
+We discuss in more detail the experimental details of unlearning deep neural networks for the person re-identification task in this section. We consider four different datasets namely, Market1501 \citep{zheng2015scalable}, MSMT17 \citep{wei2018person}, PRID \citep{hirzer11} and  QMUL GRID \citep{loy2009multi}. We unlearn from different deep neural networks including ResNet50, a variant of ResNet50 with a fully connected layer (called Resnet50\_fc512), Multi-Level Factorisation Net (MLFN) and MobilNet\_V2. In all cases the models were first trained to reasonable accuracy as per benchmarks before proceeding with unlearning a randomly selected individual's identity from the corresponding dataset. To perform experiments pertaining to person re-identification we make use of the popular framework torchreid \citep{zhou2019omni}. We had to make changes to the original code in order to make our procedure function correctly in this framework. We include this modified source within the code presented in the supplement. We use Adam as the optimizer, a step scheduler and learning rate of $0.0003$ across all person re-identification datasets and models used. We use softmax loss and weights were initialized using a model pre-trained on ImageNet in all cases. Images were resized to $256 \times 128$ before being used as input to any of the models. The number of training epochs was chosen accordingly to allow the training to have converged. Results from multiple runs involving different models, datasets and the privacy parameter $(\epsilon)$ are conclusive. With lower value of $\epsilon$, e.g. $0.0005$, the number of samples that could be unlearned for a particular class while maintaining model performance was lower than what could be unlearned for a higher value of the privacy parameter $\epsilon$, e.g. $0.1$. For the smaller datasets, i.e. PRID and QMUL GRID, which have approximately 2 samples per class, the unlearning procedure lead to more drastic changes as expected and it could be observed that our selection procedure selected many more layers to update than what it did for the larger datasets. Activation maps from some experiments are presented in Figure~\ref{fig:reid_sup}.
 
 \begin{figure*}
     \centering
@@ -69,7 +69,7 @@ We discuss in more detail the experimental details of unlearning deep neural net
         \includegraphics[width=0.45\columnwidth]{5_unlearn/figs/scrub/0001_mlfn_ret1.jpg}
     \end{subfigure}
     
-    \vspace{10 pt}
+    \vspace{5 pt}
     
     \begin{subfigure}[b]{0.98\textwidth}
         \centering
@@ -78,7 +78,7 @@ We discuss in more detail the experimental details of unlearning deep neural net
         \includegraphics[width=0.45\columnwidth]{5_unlearn/figs/scrub/0029_mlfn_ret2.jpg}
     \end{subfigure}
     
-    \vspace{10 pt}
+    \vspace{5 pt}
     
     \begin{subfigure}[b]{0.98\textwidth}
         \centering
@@ -87,7 +87,7 @@ We discuss in more detail the experimental details of unlearning deep neural net
         \includegraphics[width=0.45\columnwidth]{5_unlearn/figs/scrub/0014_mob_ret1.jpg}
     \end{subfigure}
     
-    \vspace{10 pt}
+    \vspace{5 pt}
     
     \begin{subfigure}[b]{0.98\textwidth}
         \centering
@@ -115,7 +115,7 @@ We discuss in more detail the experimental details of unlearning deep neural net
     %\includegraphics[width=0.3\textwidth]{figs/scrub/MNIST_Valid_Acc.png}
     
     % \vspace{-10pt}
-    \caption{\label{fig:reid_sup}Activation maps from a different models (top two rows correspond to MLFN and bottom two correspond to MobileNet\_V2; both trained on Market\_1501) scrubbed for the person on the left (right set is not scrubbed). For each triplet, from (L to R) are the original image, the activation map and its image overlay. Note the effect of scrubbing: activations change significantly for the scrubbed sample (compare column 2 to 3) whereas remain stable for the non-scrubbed sample (compare column 5 to 6).}
+    \caption[Re-ID Activation Maps]{\label{fig:reid_sup}Activation maps from different models (top two rows MLFN, bottom two MobileNet\_V2; both trained on Market\_1501) scrubbed for the person on the left. For each triplet, from (L to R) are the original image, the activation map and its image overlay. Activations change significantly for the scrubbed sample (compare column 2 to 3) whereas remain stable for the non-scrubbed sample (compare column 5 to 6).}
 \end{figure*}
 
 
