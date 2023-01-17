@@ -1,6 +1,25 @@
 \chapter{Generalizing the Earth Mover's Distance for Efficient Neural Network Regularization}\label{chap:demd}
 
-transition
+The unlearning procedures above work well
+when samples to be removed are known.
+In cases of data privacy these samples are clear,
+defined by guidelines or direct user requests.
+However in the case where individual
+samples are not explicitly identified,
+we may still want a model to behave as if
+it is agnostic to individual samples,
+or perform equally across different individuals
+or groups of people. Building a model
+beforehand that has been trained in a manner
+that automatically provides a privacy guarantee
+can alleviate some of the post-hoc
+computational stressors described in the last chapter.
+Here, we will describe a fast method
+for both identifying samples during training
+that are outliers in a particular sense,
+and directly pushing model parameters
+towards reducing disparate model performance
+on those samples.
 
 \input{6_demd/_intro}
 \input{6_demd/_related}
