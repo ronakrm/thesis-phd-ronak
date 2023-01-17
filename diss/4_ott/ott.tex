@@ -9,7 +9,7 @@ A na\"ive approach may orthogonalize the reshaped cores, and progressively push 
     &= Q_1^L Q_2^L R_2 \cdots A_d^L \nonumber\\
     &= Q_1^L \cdots Q_d^L R_d \label{eq:eott}
 \end{align}
-where $ [Q_1^L, R_1] = qr(A_1^L) $, $ [Q_i^L, R_i] = qr(R_{i-1} A_i^L ), \ i \in \left \{2,\ldots,d \right \}$, and $ Q_i^L \in \RR^{r_{i-1} n_i \times r_i} \ ,\ R_i \in \RR^{r_i \times r_i} $. 
+where $ [Q_1^L, R_1] = qr(A_1^L) $, $ [Q_i^L, R_i] = qr(R_{i-1} A_i^L ), \ i \in \left \{2,\ldots,d \right \}$, and $ Q_i^L \in \RR^{r_{i-1} n_i \times r_i}$ with $R_i \in \RR^{r_i \times r_i}$. 
 Each $Q_i^L$ is on a Stiefel given by $\ST(r_i, r_{i-1}n_i)$. Here, the number of components in the product space of Stiefels is $d$, with the `residual' $R_d \in \RR$. This decomposition is exact and only requires a reshaping of the tensor cores.
 If all $r_i = r, n_i = n$,
 then the total number of parameters needed is
@@ -33,7 +33,7 @@ The Orthogonal Tensor Train is defined as
 \begin{align}
 \cX(x_1,\ldots,x_d) = Q_1(x_1) \cdots Q_d(x_d),
 \end{align}
-where each $Q_i(x_i)$ lies on the Stiefel $\ST(m_i, M_i)$, where $m_i = \min(r_{i-1},r_i), \ M_i = \max(r_{i-1},r_i)$.
+where each $Q_i(x_i)$ lies on the Stiefel $\ST(m_i, M_i)$, and $m_i = \min(r_{i-1},r_i)$, $\ M_i = \max(r_{i-1},r_i)$.
 \end{definition}
 While in this formulation the total number of components in the product space of Stiefels is $nd$, the dimension of each manifold is \textbf{significantly smaller},
 dependent {\em only} on the core rank as opposed to the mode size.
