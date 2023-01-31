@@ -22,7 +22,7 @@ The tuple of variables we need samples from is now
     \{a_1, \ldots a_{|\cL|}, \cL(z^\prime)\}
 \end{align}
 We can obtain samples from this set by perturbing the input and consecutively collecting activations along all weight slices during the computation of the loss. For a particular perturbation $\xi^j \sim N(0,\sigma^2)$,
-\begin{align}
+\begin{align}\label{eq:perturbsupp}
     x_i^j = x_i + \xi^j; \quad
     l^j, a_L^j = \{l(x_i^j), a_1^j, \ldots a_{|\cL|}^j\}
 \end{align}

@@ -18,7 +18,7 @@ easily adapted to accept as inputs $p_i\in\RR^{n_i}_+$ with $n_i\not=n_j$.
     \State $x(I)\gets s_k$  {\em \hspace*{\fill} // update the EMD solution}
     \State $p_j(I(j))\gets p_j(I(j))-s_k$, $(\forall j\in d)${\em\hspace*{\fill} // shrink the data}
     \State $j^*\gets\arg\min_{j\in[d]} p_j(I(j))$
-    \State  $I(j^*)\gets I(j^*)+1$
+    \State $I(j^*)\gets I(j^*)+1$
     \State $k\gets k+1$
     \State $t_k\gets c(I)${\em\hspace*{\fill} // cost of this step}
     \If{ $I(j^*)\leq n$}
@@ -29,4 +29,27 @@ easily adapted to accept as inputs $p_i\in\RR^{n_i}_+$ with $n_i\not=n_j$.
 \end{algorithmic}
 \end{algorithm}
 \fi
+\begin{algorithm}
+	\caption{ \label{alg:primaldual} EMD Primal/Dual Algorithm}
+	\SetAlgoLined
+	\DontPrintSemicolon
+	\KwIn{$p_j\in\RR^{n}_+$ with $e'p_j=1$ , $(\forall j\in[d])$}
+	\SetKwFunction{FVar}{DEMD}
+	\SetKwProg{Fn}{Function}{:}{}
+	\Fn{\FVar{$n$}}{
+		\While{$I(j) \leq n$, $(\forall j\in[d])$} {
+			$s_k\coloneqq \min_{j\in[d]} p_j(I(j))$ {\em\hspace*{\fill}  // the mass to move} \\
+			$x(I)\gets s_k$  {\em \hspace*{\fill} // update the EMD solution} \\
+			$p_j(I(j))\gets p_j(I(j))-s_k$, $(\forall j\in d)${\em\hspace*{\fill} // shrink the data} \\
+			$j^*\gets\arg\min_{j\in[d]} p_j(I(j))$ \\
+			$I(j^*)\gets I(j^*)+1$ \\
+			$k\gets k+1$ \\
+			$t_k\gets c(I)${\em\hspace*{\fill} // cost of this step} \\
+			\If{$I(j^*)\leq n$} {
+				$z_{j^*}(I(j^*))\gets t_k-t_{k-1} + z_{j^*}(I(j^*)-1)$ {\em\hspace*{\fill} // update the dual solution}
+			}
+		}
+		\KwRet{$x$, $(z_1,\ldots,z_d)$, and the objective value $\sum_k s_k t_k$}
+	}
+\end{algorithm}
 The algorithm has explicit terminal conditions for the main while loop. In the worst case the number of iterations can be $nd$.

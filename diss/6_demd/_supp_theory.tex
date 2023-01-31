@@ -1,4 +1,4 @@
-\section{Proof of Theorem~MAKEREFHERE}\label{sec:app-proof}
+\section{Proof of Theorem~\ref{thm:dualgrad}}\label{sec:app-proof}
 % Let $e\coloneqq (1,1,1,\ldots,1)\in\RR^{n}$ denote the vector of all $1$s.
 % Given $x_{0}, \ldots x_{d-1}\in\RR^{n}$, normalized so that $e'x_j=1$ for $0\leq j<d$,
 % consider the linear program,
@@ -9,7 +9,6 @@
 % Let $z_j^*\in\RR^{n}$ ($0\leq j<d$) represent an optimal solution to this program,
 % and denote by $\phi(x_0,x_1,\ldots,x_{d-1})$ the optimal objective value.
 \label{sec:proofthm}
-
 Here, we present the proof of Theorem 4.2.  The main observation in the proof invokes perturbation analysis \cite{mangasarian1979nonlinear,ferris1991finite} of linear programs to assert that, under mild uniqueness conditions, small changes to a linear program's data does not change the linear program's optimal solution. The informal reason why such a result is possible can be explained using a  short,  geometric argument as follows. 
 
 The feasible set of a nontrivial linear program is a polytope, and, as a rule, an optimal solution to a linear program lives at the point where a hyperplane defined by the objective functional intersects a vertex of the polytope. A small perturbation of the hyperplane does not alter the intersecting vertex. The derivative of a linear program's optimal objective value, treated as a function of the data fed to the LP, has been described several times in prior work, and under a variety of conditions~\cite{dewolf,freund1985postoptimal,agueh2011barycenters,Mills19578MV}.
@@ -17,7 +16,7 @@ The feasible set of a nontrivial linear program is a polytope, and, as a rule, a
 The second claim of Theorem 4.2 is useful because dual solutions to the generalized EMD linear program are not unique.  The claim explains how one can modify a given solution (found by a direct gradient computation or else from an interior point solver, for example) so that it agrees with the solution yielded by the primal/dual greedy algorithm. 
 
 \begin{proof}[Proof of Theorem 4.2]
-Let $z_j^*$, for $j\in[d]$, denote an optimal solution to the dual linear program of equation 5 in the main paper.  Standard sensitivity analysis of linear programs implies that $z_j^*\in\RR^{n}$ ($j\in[d]$) is
+Let $z_j^*$, for $j\in[d]$, denote an optimal solution to the dual linear program of equation~\eqref{eq:dualgeneralemd} in the main thesis.  Standard sensitivity analysis of linear programs implies that $z_j^*\in\RR^{n}$ ($j\in[d]$) is
  also optimal for the perturbed linear program,
 % \begin{align*}
 % \max_{z_j\in\RR^n, 0\leq j<d}&\sum_{j} (x_j'+ \varepsilon h_j)'z_j\\

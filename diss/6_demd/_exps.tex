@@ -148,13 +148,13 @@ DEMD (ours) & $\textbf{14}\scriptscriptstyle(7)$ & $\textbf{9}\scriptscriptstyle
 
 \subsection{Harmonization for Invariant Representations}
 Having evaluated the use of the DEMD layer to constrain the neural network for  fairness measures, we will now move to a more general problem of deriving invariant representations from the datasets. Here, invariance is sought in regard to the sensitive attributes. Recent works \citep{equivar} on invariant representation learning propose leveraging an encoder-decoder architectures to map the dataset features to latent space representations. The latent space representations are penalized to match or harmonize the distributions across several groups in the dataset. In contrast to the previous section, the goal here is to identify a good mapping in the latent space that is devoid of any group-related information in the dataset.  Consequently, our evaluation metrics test if the latent representations have a lower value of (i) ADV, adversarial measure and (ii) MMD, maximum mean discrepancy measure. The measure ADV tests to what extent can a separate neural network predict the group information from the latent features. Alternatively, the MMD scores measure the distance between the probability distributions across groups. Prior works such as \cite{zemel} and \cite{cai} optimize each of these measures separately. Our experiments (Table~\ref{tab:harm_results}) show the DEMD layer performs competitively with the baselines when applied on the latent space. Interestingly, these performance gains come despite not directly optimizing the harmonization measures, in contrast to baselines, which require several practical adjustments (batch variants and secondary neural networks).
-{\bf Summary:} DEMD as an intermediate layer can be used to derive invariant representations efficiently.
+\textbf{Summary}: DEMD as an intermediate layer can be used to derive invariant representations efficiently.
 % \vishnu{Need to convey a message that the baseline directly optimizes for the ADV and MMD measures. Our although doesn't directly optimizes these measures, still achieves competitive values on them. }
 %Due to skewness amongst the groups, ROC-AUC is used to report the ADV measure on German dataset.
 \begin{table*}[!t] 
 	\scriptsize
 	\setlength\tabcolsep{2.25pt} % make LaTeX figure out width of inter-column spaces
-	\caption{\footnotesize {\bf Harmonization Experiments.} Evaluations conducted along three metrics, Accuracy \textbf{(ACC)}, Adversarial measure \textbf{(ADV)} and Maximum Mean Discrepancy \textbf{(MMD)}. A lower value $\downarrow$ of ADV and MMD indicate successful harmonization across the different groups. A higher ACC with a small drop from baseline is preferred. }
+	\caption{\footnotesize \textbf{Harmonization Experiments.} Evaluations conducted along three metrics, Accuracy \textbf{(ACC)}, Adversarial measure \textbf{(ADV)} and Maximum Mean Discrepancy \textbf{(MMD)}. A lower value $\downarrow$ of ADV and MMD indicate successful harmonization across the different groups. A higher ACC with a small drop from baseline is preferred. }
 	\vspace{-10pt}
 	\begin{tabular*}{\linewidth}{l *{3}{c}|*{3}{c}|*{3}{c}|*{3}{c}}
 		\midrule%\midrule
@@ -215,7 +215,7 @@ we observe similar performance when compared
 to the original MWGAN construction.
 In Figure~\ref{fig:mwgan} we show a few samples generated over an image translation task on the CelebA dataset.
 Here, we aim to translate original dataset images to ones with specific target attributes.
-{\bf Summary:} Multi-domain image translation can be conducted by adding a DEMD layer in the native GAN construction. 
+\textbf{Summary:} Multi-domain image translation can be conducted by adding a DEMD layer in the native GAN construction. 
 
 % \begin{figure}
 %     \centering

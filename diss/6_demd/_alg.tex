@@ -103,9 +103,11 @@ We observe that the following  result gives us  this functionality.
 % an optimal solution to the dual program~(\ref{eq:dualgeneralemd}).
 \begin{theorem}
 The dual linear program of the d-MMOT problem (\ref{eq:gemd}) is
-\begin{alignat}{2}\label{eq:dualgeneralemd}\begin{split}
+\begin{alignat}{2}\label{eq:dualgeneralemd}
+\begin{split}
 \underset{z_j\in\RR^n, j\in[d]}{\textrm{maximize}}\qquad\sum_{j} p_j'z_j 
-\qquad \textrm{subject to}\qquad z_{1}(i_1)+\cdots+z_{d}(i_{d})\leq c(i_1,\ldots,i_{d}),\end{split}
+\qquad \textrm{subject to}\qquad z_{1}(i_1)+\cdots+z_{d}(i_{d})\leq c(i_1,\ldots,i_{d}),
+\end{split}
 \end{alignat}
 where the indices in the constraints include all $i_j\in[n]$, $j\in[d]$.
 Denote by $\phi(p_1,\ldots,p_d)$, the optimal objective value of the LP in (\ref{eq:gemd}). Let $z^*$ be an optimal solution to the dual program~(\ref{eq:dualgeneralemd}).
@@ -128,7 +130,7 @@ The main observation invokes perturbation analysis \citep{mangasarian1979nonline
 \begin{remark} The first part of this result provides what we require: a direction of descent. 
 Thus, if we can solve the d-MMOT problem and also find the optimal solution to its dual, 
 then we can step (or move) our distributions in the opposite direction of the dual variables
-to push them together, {\color{blue}see Fig. \ref{fig:min_demd}}.
+to push them together, see Figure~\ref{fig:min_demd}.
 The second claim is somewhat technical, and reconciles particular affine shifts that result in equivalent objective values.
 \end{remark}
 
@@ -229,6 +231,25 @@ As backpropagation proceeds, when the EMD module encounters an incoming gradient
 \end{algorithmic}
 \end{algorithm}
 \fi
+\begin{algorithm}
+	\caption{ \label{alg:demdFunc} $d-$Dimensional Earch Mover's Distance (DEMD)}
+	\SetAlgoLined
+	\DontPrintSemicolon
+	\SetKwFunction{FVar}{Forward}
+	\SetKwProg{Fn}{Function}{:}{}
+	\Fn{\FVar{$p_1, \ldots, p_j$}}{
+		Compute $\sum s_k t_k$ and $(z_1,\ldots,z_d)$ via \cite{kline2019properties}. \\
+		Save $(z_1,\ldots, z_d)$. \\
+		\KwRet{$\sum_k s_k t_k$}
+	}
+	\SetKwFunction{FCore}{Backward}
+	\SetKwProg{Gn}{Function}{:}{}
+	\Gn{\FCore{$\text{gradOutput}$}}{
+		Load $(z_1,\ldots, z_d)$ \\
+		\KwRet{$(z_1,\ldots, z_d)\cdot \text{gradOutput}$}
+	}
+\end{algorithm}
+
 
 {\bf Complexity.} Computing the DEMD distance in the forward pass is exactly $O(nd)$: linear in the number of distributions and number of bins. This property follows directly from the algorithm, needing only a single pass through all of the data. \cite{BEIN199597} provides this result for greedy algorithms that solve OT programs as in Def.~\ref{def:dmmot}. {\color{blue}  In contrast to methods that derive gradients via entropic regularization schemes, i.e., relaxations of the optimal transport problem \citep{diffpropsinkwass,difftopkOT,quantnorm}, this approach solves the distance computation exactly in linear time.}
 This linear time analysis is not only provided by the theory in prior work, but is also explicit in the number of iterations defining our algorithm (see Appendix~\ref{sec:suppdemd} for more details).
