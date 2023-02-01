@@ -1,5 +1,5 @@
 %!TEX TS-program = pdflatex
-% dissertation.tex -- main dissertation file
+% main.tex -- main dissertation file
 %
 % Wisconsin dissertation template
 % Copyright (c) 2008-2009 William C. Benton.  All rights reserved.
@@ -20,22 +20,12 @@
 \documentclass[12pt,oneside,letterpaper,oldfontcommands]{memoir}
 \usepackage[margin=1.2in]{geometry}
 
-%\usepackage{my_base}
-
-% \usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools}
-% \usepackage{caption,subcaption,wrapfig,multirow}
-% \usepackage{color,xcolor,hyperref}
-% %,amscd}
-% \usepackage{times,url,paralist}
-
 \newcommand{\omitme}[1]{}
 
-% \graphicspath{{diss/0_intro/figs/}{diss/1_bknd/figs/}{diss/2_chap2/figs/}{diss/3_chap3/figs/}{diss/4_chap4/figs/}{diss/5_chap5/figs/}{diss/6_chap6/figs/}{diss/7_conclude/figs/}}
 \input{includes/preamble}
 \input{includes/defs} %all packages and definitions can go here
 \input{includes/ronak_defs}
 \input{includes/thesisdefs}
-
 
 \hypersetup{
 	colorlinks = true,
@@ -44,19 +34,13 @@
 	linkbordercolor = {green}
 }
 
-
-%\svnidlong{$LastChangedBy$}{$LastChangedRevision$}{$LastChangedDate$}{$HeadURL: http://freevariable.com/dissertation/branches/diss-template/dissertation.tex $} 
-
-
 \let\ab\allowbreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% \title{Identifying Problem-Specific Subsets of Features and Samples in Modern Learning via Geometry and Independence}
-% \title{Low-Dimensional Subspace Identification and Analysis in Modern Learning via Geometry and Independence}
 \title{Identifying Feature, Parameter, and Sample Subsets in Machine Learning and Image Analysis}
 \author{Ronak Mehta}
 \department{Computer Sciences Department}
-\date{2022}
+\date{2023}
 
 \begin{document}
 
@@ -90,7 +74,6 @@
 \include{5_unlearn/main} % LCODEC
 \include{6_demd/main} % DEMD
 \include{7_conclude/main}
-
 
 %% Do you have appendices?  If so, add them here, just like chapters.
 \begin{appendices}
