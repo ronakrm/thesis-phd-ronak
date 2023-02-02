@@ -27,7 +27,7 @@
 \input{includes/ronak_defs}
 \input{includes/thesisdefs}
 
-\usepackage[textsize=scriptsize,color=red]{todonotes}
+\usepackage[textsize=scriptsize,color=red!25]{todonotes}
 
 \hypersetup{
 	colorlinks = true,
@@ -63,7 +63,8 @@
 \listoftables
 \newpage
 
-\include{_notes}
+\listoftodos
+\newpage
 \include{0_frontmatter/abs}
 
 \clearpage
@@ -77,6 +78,13 @@
 \include{6_demd/main} % DEMD
 \include{7_conclude/main}
 
+\todo{cite to citep}
+\todo{check thm/etc numbering, appendix}
+\todo{figure/table captions}
+\todo{appendix refs/cites check}
+\todo{acks: grants, people}
+\todo{clean bibtexs}
+\todo{order cites inline}
 %% Do you have appendices?  If so, add them here, just like chapters.
 \begin{appendices}
 	\input{8_appendices}
