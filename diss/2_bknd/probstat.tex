@@ -29,8 +29,9 @@ Maximum a posteriori (MAP) estimation attempts to find the parameters that maxim
 If we have some samples $\{x_i\}_{i=1}^n$ from the data distribution that comprise a dataset,
 then we have the following equivalent log-transformed model:
 \begin{align}
-	\max_\theta \sum_{i=1}^n \log p(x_i|\theta) + \log
+	\max_\theta \sum_{i=1}^n \log p(x_i|\theta) + \log p(\theta)
 \end{align}
+This is the canonical form used in most of machine learning: generally associated a ``loss" or recovery term to the likelihood, and a regularization to the prior.
 
 \subsection{Conditional Independence} 
 With three or more variables, independence relations among variables may be determined by which variables are being conditioned upon. 
@@ -46,6 +47,7 @@ Intuitively, once you know $Z$, $X$ provides no additional information in predic
 
 
 \paragraph{Graphs.}
+\todo{fig: pgm,graph, precision}
 With a larger number of variables, independence relations can be difficult to define with this notation. \textit{Graphs} are commonly used in place.
 Graphs $G \in \cG$ are defined by their vertex and edge sets $G:=(E,V)$.
 The vertices $V$ correspond to some random variables $X,Y,Z,\ldots$, or $X_1,\ldots,X_n$. 
@@ -124,7 +126,7 @@ For arbitrary variables random $X,Y,Z$, where $Y$ is univariate and $X,Z$ can be
 \begin{align}\label{eq:contcodec}
     T(Y,X|Z) = \frac{\int\EE\left[\VAR(\PP(Y\geq t)|X,Z)|Z)\right]d\mu(t)}{\int\EE\left[\VAR(\II\{Y\geq t\}|Z\right] d\mu(t)}
 \end{align}
-In the following chapters we will take advantage of these properties. Critically, without a specific procedure, identifying the conditioning set for a particular independence test is exponential. If we wish to find which variables $X_1,\ldots,X_n$ are sufficient for creating independence between some outcome $Y$ and the rest of the variables, na\"ively we would need to test all possible subsets.
+In Chapter~\ref{chap:lcodec} we will take advantage of these properties. Critically, without a specific procedure, identifying the conditioning set for a particular independence test is exponential. If we wish to find which variables $X_1,\ldots,X_n$ are sufficient for creating independence between some outcome $Y$ and the rest of the variables, na\"ively we would need to test all possible subsets.
 An advantage of the coefficient of dependence in \cite{codec} is that it admits a linear time algorithm for iteratively building the sufficient set, naturally enabling an algorithm for constructing a Markov graph over the variables of interest.
 
 \subsection{Hypothesis Testing}
@@ -200,12 +202,51 @@ a subtle difference between groups,
 novel tests and procedures are necessary
 to effectively identify those differences.
 
-\todo{likelihood ratio test+permtest bknd}
-\begin{verbatim}
-some of the measures described above have specific 
-guarantees when evaluated under
-standard hypothesis testing frameworks...
+\subsubsection{Likelihood ratios and permutation testing}
+Two challenges often appear in practice:
+\textbf{(1)} An obvious test statistic may not exist,
+and \textbf{(2)} the null distribution of that statistic
+or the one chosen may not have a clear form.
 
-a common test: likelihood ratio...
-permutation testing
-\end{verbatim}
+In the case of large parametric models,
+distributions over hundreds of parameters or more
+become infeasible to compute in practice. In these
+cases, the \textit{likelihood-ratio test} can be used.
+With our posterior notation above, we have the following
+test statistic for the null hypothesis $\theta\in\Theta_0, \Theta_0\subseteq\Theta$ and the alternative $\theta\in\Theta^C:=\Theta\setminus\Theta_0$:
+\begin{align}\label{eq:lrt}
+\lambda_{LR} = -2\text{ln}\left[ \frac{\sup_{\theta\in\Theta_0}p(x|\theta)}{\sup_{\theta\in\Theta} p(x|\theta)} \right]
+\end{align}
+The true power of the LRT statistic comes from two fundamental results.
+First, the distribution of $\lambda_{LR}$
+asymptotically approaches a $\chi^2$ distribution
+with a fixed number of degrees of freedom,
+enabling easy testing (Wilk's Theorem, \citep{wilks}).
+And second,
+the Neyman-Pearson lemma states
+that this likelihood-ratio test is the 
+most powerful $\alpha$ level test for this case~\citep{neymanpearson}.
+
+When even a likelihood ratio cannot be constructed in this form,
+a nonparametric test exists that may be used
+for any statistic defined by the problem of interest.
+Consider again a test of the form in~\eqref{eq:hyptest},
+but where instead of the mean we have some arbitrary
+statistic over our two groups.
+A \textit{permutation test} comprises
+of generating a null distribution through
+resampling. By shuffling the data
+and recomputing the statistic,
+we can estimate the distribution of the
+statistic if there were no difference among the groups.
+This distribution can then be used
+as the null distribution for checking
+if the true group allocations result in a 
+test statistic significantly different
+from the null distribution.
+
+These ideas will be used to construct
+and evaluate 
+hypothesis tests in Chapter~\ref{chap:covtraj},
+as well as in subsequent work building upon
+those results.
