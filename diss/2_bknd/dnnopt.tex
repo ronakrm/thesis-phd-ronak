@@ -19,7 +19,7 @@ Consider a simple function $f_\theta(x)$
 that is defined as a linear combination of 
 some parameters $\theta:=w, w\in \RR^d$ with $x\in \RR^d$ followed by 
 a differentiable, nonlinear scalar \textit{activation} function $a(\cdot)$:
-\begin{align}
+\begin{align}\label{eq:wx}
 	f_\theta(x) := a(w\cdot x)
 \end{align}
 If we have some estimate of the parameters $\theta:=w$,
@@ -99,28 +99,76 @@ These formulations and SGD updates generalize
 to extremely large and complex stacks
 of operations, and are what have enabled
 the enormous success and ubiquity of learning
-methods to this day.
+methods.
+While ``fully-connected" layers, such as
+in~\eqref{eq:wx} are the simple in their form,
+they have been proven to be sufficient
+in large capacity to serve as
+\textit{universal function approximators}~\citep{abc}.
+In this form however, capacity guarantees
+require the number of parameters (dimension of $w$)
+to grow exponentially: infeasible in practice.
+If the size is misspecified, training
+can lead to parameter settings that are provably
+optima at that level, but fail to sufficiently
+capture the true problem complexity.
+These problems extend to stacks of ``fully-connected"
+layers as well: nonlinearity through multiplication
+and activations is effective, but leads
+to poor training time results due to 
+the speed at which a local minima can be found~\citep{abc}.
 
+The final minima identified 
+can vary significantly based on 
+the particular form of the function $f_\theta$, 
+and, in the case where the function $f$ is not \textit{convex}, 
+it can also depend on the estimate $\theta_0$ at initialization.
+This detail has been used to suggest
+that large, complex neural networks 
+may contain sub-networks that can be trained in isolation
+to perform a task with high accuracy,
+even when randomly initialized.
+The ``lottery ticket hypothesis" states 
+a small, sparse sub-network can be trained to perform just as well as the larger network, 
+but with fewer parameters and less computation.
+\begin{figure}
+	\includegraphics[]{example-image-a}
+	\caption[Initialization importance in nonconvex problems]{Nonconvex functions optimized using variations of gradient descent can lead to different (and potentially non-global) optima.}
+\end{figure}
 
+A wide variety of neural network \textit{architectures}
+have been proposed depending on the type of data and learning task.
+Some of the most commonly used architectures include
+Convolutional Neural Networks (CNNs), Recurrent Neural Networks (RNNs),
+Transformers, Autoencoders, and Generative Adversarial Networks (GANs).
+CNNs, mainly used in image recognition and processing tasks,
+use convolutions designed to process grid-like imaging data ~\citep{abc}. 
+RNNs are designed to handle sequential data such as time series or language,
+and have a memory-like mechanism that allows information to persist in hidden state vectors~\citep{abc}. 
+Transformers, now the de-facto method in Natural Language Processing (NLP),
+make use of a self-attention mechanism,
+weighing the importance of different input tokens for eventual prediction~\citep{abc}. 
+Autoencoders and Generative Adversarial Networks (GANs) fall under the category of generative models,
+trained to generate outputs that resembles real data~\citep{abc}. 
+Newer generative models built on diffusion methods have 
+been able to produce photorealistic images based
+only on captions input by the user~\citep{abc}.
+All of these methods come with their own
+idiosyncracies in model capacity and practical
+methods for efficient training.
 
-The final minima identified can 
-vary significantly based on the particular form 
-of the function $f_\theta$, and,
-in the case where the function $f$ is
-not \textit{convex},
-it can also depend on
-the estimate $\theta_0$ at initialization.
-
-
-\begin{verbatim}
-forms of f, archs
-	search
-
-in case of init, lottery ticket
-\end{verbatim}
-
+With these varying architectures
+has also come the field of \textit{architecture search},
+identifying the hyperparameters and layer types
+that would lead to the best downstream performance
+with the most efficient full architecture.
+While computationally expensive, techniques
+such as reinforcement learning, evolutionary algorithms,
+gradient-based methods, and even greedy approaches
+have been used to identify state-of-the-art networks~\citep{abc}.
 
 \subsection{Losses and Probability Measures}
+\todo{losses/prob. measures}
 loss functions, objectives
 arbitrary distances
 MSE
@@ -132,6 +180,7 @@ mutual information
 MMD
 
 \subsection{Optimal Transport}	
+\todo{optimal transport}
 \begin{verbatim}
 	OT definition
 	earth movers bknd
