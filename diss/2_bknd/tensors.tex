@@ -1,9 +1,10 @@
-Let $\cX \in \RR^{n_1 \times \cdots \times n_d}$ be a $d$-dimensional array, or tensor, with each mode having length $n_i$. To store a full rank tensor, $n^d$ storage would be required. A number of tensor factorizations have been developed to reduce this storage cost. The CANDECOMP/PARAFAC (CP) \cite{harshman1970foundations,carroll1970analysis} decomposition reduces the storage to $O(dnr)$, but finding the exact CP-rank $r$ is NP-hard. Hierarchical tensor methods have also proven to be effective in tensor compression \cite{cohen2016expressive, cohen2016convolutional}. {\color{red} maybe slow down here, expand a bit}
-
+Let $\cX \in \RR^{n_1 \times \cdots \times n_d}$ be a $d$-dimensional array, or tensor, with each mode having length $n_i$. To store a full rank tensor, $n^d$ storage would be required. A number of tensor factorizations have been developed to reduce this storage cost. The CANDECOMP/PARAFAC (CP) decomposition \citep{harshman1970foundations,carroll1970analysis} reduces the storage to $O(dnr)$, but finding the exact CP-rank $r$ is NP-hard. Hierarchical tensor methods have also proven to be effective in tensor compression \citep{cohen2016expressive, cohen2016convolutional}.
 \begin{figure}
-	\includegraphics[width=\textwidth]{example-image-a}
-	\caption[Tensor train decomposition]{\label{Visualization of a tensor train decomposition.}}
+	\includegraphics[width=\textwidth]{2_bknd/tensor_decomps.png}
+	\caption[CP tensor decomposition]{\label{fig:cp_decomp} Rank-1 and rank $n$ decompositions of an arbitrary tensor.}
 \end{figure}
+\todo{tensors: maybe slow down here, expand a bit}
+
 A more recent decomposition, the \textit{Tensor Train} decomposition (TT) \cite{oseledets2011tensor}, defines an element of the tensor as
 \begin{align}
 \cX(x_1,\ldots,x_d) = A_1(x_1)\cdots A_d(x_d)
@@ -12,13 +13,18 @@ where $x_i \in \left\{1,\ldots, n_i\right\}$, and $A_i(x_i) \in \RR^{r_{i-1} \ti
 \begin{align}\label{eq:fullTT}
 	\cX &= \sum_{k_0 = 1}^{r_0} \cdots \sum_{k_d = 1}^{r_d} A_1(k_0,:,k_1) \otimes \cdots \otimes A_d(k_{d-1},:,k_d) 
 \end{align}
-where $A_i \in \RR^{r_{i-1}\times n_i \times r_i} $. This format requires $O(dnr^2)$ storage, but has two major advantages over the CP format. First, finding the TT-rank (the smallest set of $r_i$'s that satisfy the decomposition with equality) of any arbitrary tensor is tractable, and as such all tensors can be efficiently rewritten in the TT format. Second, projecting arbitrary tensors onto the TT format of a fixed rank requires only a set of QR and singular value decompositions \cite{oseledets2011tensor}. This projection, \textit{TT-rounding}, additionally allows for a given TT tensor of some rank to be projected onto the space of TTs with lower rank, and requires $O(dr^3)$ computational complexity. Separately, specific tensor train constructions have recently been identified as forms of general recurrent networks \cite{khrulkov2018generalized}.
+where $A_i \in \RR^{r_{i-1}\times n_i \times r_i} $. 
+This format requires $O(dnr^2)$ storage, but has two major advantages over the CP format. First, finding the TT-rank (the smallest set of $r_i$'s that satisfy the decomposition with equality) of any arbitrary tensor is tractable, and as such all tensors can be efficiently rewritten in the TT format. Second, projecting arbitrary tensors onto the TT format of a fixed rank requires only a set of QR and singular value decompositions \citep{oseledets2011tensor}. This projection, \textit{TT-rounding}, additionally allows for a given TT tensor of some rank to be projected onto the space of TTs with lower rank, and requires $O(dr^3)$ computational complexity. Separately, specific tensor train constructions have recently been identified as forms of general recurrent networks \citep{khrulkov2018generalized}.
+\begin{figure}
+	\includegraphics[width=\textwidth]{2_bknd/tt_decomp.png}
+	\caption[Tensor train decomposition]{\label{fig:ttdecomp} Visualization of a tensor train decomposition.}
+\end{figure}
 
 We denote a tensor operator $\tG$ as a grouping of tensor modes into an ``input" and ``output" list, such that $\tG \in \RR^{(n_1^{in},\times\ldots\times,n_d^{in}) \times (n_1^{out},\times\ldots\times,n_d^{out})}$. This operator $\tG$ can be seen as the TT representation of a matrix $W \in \RR^{(n_1^i\cdots n_d^i) \times (n_1^o\cdots n_d^o)}$. In \cite{novikov2015tensorizing}, authors use this formulation to directly compress the weight layers in neural networks. Cores in the operator are indexed by both an input and output index, i.e., $A_i(x_i,y_i) \in \RR^{r_{i-1}\times r_i}$, where $x_i \in [1,\ldots,n_i^{in}], y_i \in [1,\ldots,n_i^{out}]$.
 
 Common operations upon tensor trains require \textit{matricizing} the cores of the TT format. Here, we define the left matricization of core $A_i(x_i)$ as $A_i^L \in \RR^{r_{i-1}n_i \times r_i} $ and the right matricization similarly.
 
-{\color{red} example operations, add/mult, QR decomp}
+\todo{tensors: tt example operations, add/mult, QR decomp}
 
 \subsection{Differential Geometry of Tensor Trains}
 Tensor trains with fixed TT-ranks form a Riemannian submanifold of $\RR^{n_1 \times \cdots \times n_d}$ \cite{lubich2015time, holtz2012manifolds}:
