@@ -31,7 +31,7 @@ where $df/da$ is the (known) derivative of the \textit{activation} function,
 and $da/dw$ is exactly $x$, the derivative of a linear function.
 With a direction of descent,
 we can update the parameters via some update to minimize the functional $f$ of interest:
-\begin{align}
+\begin{align}\label{eq:fullgd}
 	\theta_{t+1} = \theta_t + g(\theta_t,x)
 \end{align}
 where $g(\cdot)$ is some function of the full derivative $g(\cdot) := g(\nabla f_\theta(x))$,
@@ -42,43 +42,83 @@ or some stopping criterion has been reached,
 typically that the gradient is small,
 indicating that a minima has been identified.
 
-\begin{verbatim}
-full gradients not feasible, large samples,
-hessians
-\end{verbatim}
+In data science and machine learning applications,
+we typically do not have a fixed $x$, but 
+rather a dataset $X:=\{x_i\}_{i=1}^n$.
+If the dataset is small,
+we may be able to still compute an update as in~\eqref{eq:fullgd}.
+But this is infeasible when we have thousands,
+hundreds of thousands, or millions of samples.
+In this case,
+stochastic gradient descent (SGD) is used.
+Gradient updates in SGD proceed
+by taking a single sample and computing~\eqref{eq:fullgd}.
+\textit{Training} of $\theta$
+follows by iteratively updating the parameters
+over full passes of the dataset.
+When feasible, mini-batches of samples can
+be used instead of a single sample,
+and in both cases convergence and convergence
+rates have been shown to be reasonable~\citep{hardt2016train}.
 
+\paragraph{Hessians.}
+Uninformed gradient updates
+are generally preferred
+for their speed and ease of computation.
+However, additional information in the form of the \textit{Hessian}
+can lead to faster convergence
+as well as a number of theoretical properties and guarantees.
+Consider the function at a critical point $\theta^*$.
+The Taylor expansion of the function at that point is
+\begin{align}
+f(\theta) = f(\theta^*) + \nabla f(\theta^*)^\top f(\theta - \theta^*) + \frac{1}{2}(\theta - \theta^*)^\top H(\theta^*)(\theta - \theta^*) + \ldots
+\end{align}
+Where $H(\theta^*)$ is the Hessian matrix at the point $\theta^*$. 
+With no additional terms, this second-order approximation provides information
+about the local curvature of the function near the critical point,
+allowing a scaling of the gradient that can use this local 
+curvature to inform optimization:
+\begin{align}\label{eq:newtonstep}
+	\theta_{t+1} = \theta_t + H(\theta_t)^{-1} g(\theta_t)
+\end{align}
+These Newton updates are typically infeasible in most
+machine learning applications with high-dimensional
+parameter spaces, where the complexity of
+the actual function or the maximal moment is unknown.
+In some cases, Hessian approximations,
+or its eigenspectrum can be efficiently computed,
+and as we will see this can lead to 
+practical measures that lead to new
+algorithms and guarantees.
 
+For more on these ideas, 
+and a formal treatment with respect to 
+general optimization, see~\cite{wright1999numerical}.
 
-This formulation and gradient update generalize
+These formulations and SGD updates generalize
 to extremely large and complex stacks
 of operations, and are what have enabled
 the enormous success and ubiquity of learning
 methods to this day.
-Importantly,
-the final minima identified can 
+
+
+
+The final minima identified can 
 vary significantly based on the particular form 
 of the function $f_\theta$, and,
 in the case where the function $f$ is
 not \textit{convex},
 it can also depend on
-the initial estimate $\theta_0$ at initialization.
-
-
-forms of $f$, architectures
-	architecture search
-	initializations
-		lottery ticket
-		
+the estimate $\theta_0$ at initialization.
 
 
 \begin{verbatim}
-networks
-    objective
-how to minimize?
-    general optimization?
-    gradients
-    stochastic grad
+forms of f, archs
+	search
+
+in case of init, lottery ticket
 \end{verbatim}
+
 
 \subsection{Losses and Probability Measures}
 loss functions, objectives
@@ -91,7 +131,7 @@ KL
 mutual information
 MMD
 
-\subsubsection{Optimal Transport}	
+\subsection{Optimal Transport}	
 \begin{verbatim}
 	OT definition
 	earth movers bknd

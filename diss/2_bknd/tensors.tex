@@ -1,5 +1,9 @@
 Let $\cX \in \RR^{n_1 \times \cdots \times n_d}$ be a $d$-dimensional array, or tensor, with each mode having length $n_i$. To store a full rank tensor, $n^d$ storage would be required. A number of tensor factorizations have been developed to reduce this storage cost. The CANDECOMP/PARAFAC (CP) \cite{harshman1970foundations,carroll1970analysis} decomposition reduces the storage to $O(dnr)$, but finding the exact CP-rank $r$ is NP-hard. Hierarchical tensor methods have also proven to be effective in tensor compression \cite{cohen2016expressive, cohen2016convolutional}. {\color{red} maybe slow down here, expand a bit}
 
+\begin{figure}
+	\includegraphics[width=\textwidth]{example-image-a}
+	\caption[Tensor train decomposition]{\label{Visualization of a tensor train decomposition.}}
+\end{figure}
 A more recent decomposition, the \textit{Tensor Train} decomposition (TT) \cite{oseledets2011tensor}, defines an element of the tensor as
 \begin{align}
 \cX(x_1,\ldots,x_d) = A_1(x_1)\cdots A_d(x_d)

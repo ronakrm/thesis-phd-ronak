@@ -104,7 +104,7 @@ practical estimation does not often yield exact zeros,
 and estimating all partial coefficients separately can be computationally heavy.
 
 With some assumptions, \textit{sparse} recoveries are possible while estimating ALL conditional independencies. Following the results from multivariate Gaussians above,
-a \textit{penalized} version of a maximum likelihood estimate can be recovered through the following \textit{graphical lasso} \cite{friedman2008sparse} formulation:
+a \textit{penalized} version of a maximum likelihood estimate can be recovered through the following \textit{graphical lasso} \citep{friedman2008sparse} formulation:
 \begin{align}\label{eq:glasso}
     \hat{\Omega} = \min_{\Omega \succeq} \tr(S\Omega) + \log|\Omega| + \lambda||\Omega||_1
 \end{align}
@@ -112,7 +112,7 @@ With $S$ being the sample covariance of the data samples, and $\lambda$ a penali
 Particularly interesting are extensions to \textit{nonparanormal} distributions, which allow for a much larger set of graphs to be estimated over other distributions via a rank covariance matrix, generalizing the pairwise rank and distance coefficients above \citep{liu2009nonparanormal,xue2012regularized}.
 
 The distributional assumptions needed for all of these methods, however, are often completely unknown in practice, or the data represent highly complex densities and functions that cannot be represented by simple exponential families or rank-based measures.
-Newer measures of \textit{nonparametric} estimations of dependence have been developed, such as distance correlation and kernel-based coefficients \cite{szekely2014partial,wang2015conditional,doran2014permutation}, but they tend to either only test for independence and not strength of functional relationship, or have complex instantations or asymptotic theories, making them difficult to deploy and rely upon in practice.
+Newer measures of \textit{nonparametric} estimations of dependence have been developed, such as distance correlation and kernel-based coefficients \citep{szekely2014partial,wang2015conditional,doran2014permutation}, but they tend to either only test for independence and not strength of functional relationship, or have complex instantations or asymptotic theories, making them difficult to deploy and rely upon in practice.
 
 A recent coefficient, the Chatterjee coefficient, has been demonstrated to have a number of desirable properties, and has been further developed into an elegant method for testing conditional independence~\citep{chatterjee2020new,codec}. 
 Particularly,
