@@ -169,26 +169,106 @@ have been used to identify state-of-the-art networks~\citep{abc}.
 
 \subsection{Losses and Probability Measures}
 \todo{losses/prob. measures}
-loss functions, objectives
-arbitrary distances
-MSE
-regularizers
+The methods for optimization above
+lend themselves to typically arbitrary functions.
+As described in the Introduction,
+typically a \textit{loss function}
+is defined to measure the disparity
+between the prediction or output of a model
+and the target of interest.
+Optimizer flexibility has led
+to the development and design of loss functions
+that suit particular tasks,
+or those that correspond more directly
+to practitioners' high-level goals.
+Building on the classical mean-squared error:
+\begin{align}
+l(f_\theta(x), y) := (y - f_\theta(x))^2
+\end{align}
+methods have extended to information-based schemes
+such as cross-entropy, as well as 
+incorporating classical \textit{regularization} schemes
+to push solutions towards desirable minima.
+These typically take the form of additive terms 
+penalizing large norms over weights, where
+the norm chosen corresponds to the choice of 
+prior assumed by the user.
 
-probabilistic distances
-KL
-mutual information
-MMD
+Following the information-based schema,
+significant work has been done
+on probabilistic forms of losses,
+treating the input and output spaces
+of models as distributions.
+Particularly useful for generative models,
+$f$-divergences have been studied
+as a general form of distances
+between probability distributions
+that can be effectively minimized to
+train in such a way that model outputs
+come from a maximum-entropy distribution
+with respect to the original training data~\citep{fgan}.
+Measures such as KL-divergence, mutual information,
+maximum-mean discrepency, and others all fall within
+this framing.
 
 \subsection{Optimal Transport}	
-\todo{optimal transport}
-\begin{verbatim}
-	OT definition
-	earth movers bknd
-	continuous
-	discrete
-	2d bknd
-	when metric is abc,...
-	nice props, existing work, more in chapter 6
-    OT can be framed as a linear program....
-\end{verbatim}
-    
+Of particular interest in this thesis is the \textit{Wasserstein} distance,
+or traditionally known as the Earth Mover's distance.
+Recent developments in GANs \citep{wgan} have demonstrated
+the Wasserstein metric is typically more stable
+compared to other measures and avoids
+\textit{mode collapse}, sharp local minima 
+with low variation. Interestingly
+this formulation can be viewed as an approximation
+of the \textit{optimal transport} problem.
+
+Optimal transport refers to the problem of finding
+a transportation plan that minimizes some cost of transforming
+one probability distribution to another.
+Developments in Riemannaian geometry and measure theory 
+have led to a general formulation.
+\begin{definition}[Monge-Kantorovich Problem \citep{mongekant}]\label{def:mongekant}
+	Let $\mu,\nu$ be probability measures over separable metric spaces $X$ and $Y$.
+	The optimal transportation problem seeks to find a joint measure $\gamma$ on $X\times Y$
+	that satsifies
+	\begin{align}
+	\gamma^* = \text{inf} \left\{\left. \int_{X\times Y} c(x,y) d\gamma(x,y) \right| \gamma \in \Gamma(\mu,\nu) \right\}
+	\end{align}
+\end{definition}
+Where $\Gamma$ is the space of all probability measures with marginals equal to $\mu$ on $X$ and $\nu$ on $Y$.
+More common in recent machine learning is the \textit{Wasserstein} distance,
+defined as the $p$-th distance over the Monge-Kantorovich problem~\citep{rubenstein}.
+\begin{definition}[Wasserstein metric]\label{def:wassmetric}
+	The Wasserstein $p$-distance is given by:
+	\begin{align}
+	W_p(\mu, \nu) = \left( \inf_{\gamma \in \Gamma(\mu, \nu)} \EE_{(x, y) \sim \gamma} d(x, y)^p \right)^{1/p}
+	\end{align}
+\end{definition}
+And the discrete analog:
+\begin{definition}[Earth Mover's Distance]
+	Let $p_1$ and $p_2$ be distributions with discrete support of size $n$, and $x(i,j)$, where  $x\in\RR^{n\times n}$, denotes the movement of ``mass" from $p_1(i)$ to $p_2(j)$.
+	Denote by $c(i,j)$ the cost of moving one unit of mass from  $p_1(i)$ to $p_2(j)$.
+	The Earth Mover's Distance (EMD) between $p_1$ and $p_2$ is the minimal cost to transform $p_1$ into $p_2$.
+	%given by the sum of the costs associated with shifting mass, according to $x(i,j)$ such that $p_1$ is transformed into $p_2$.
+	% Unless otherwise specified, we assume $c(i,j)=|i-j|$, which corresponds to ground distance. 
+	%This can be 
+	Written as a linear program (LP):
+	\begin{align}\label{eq:2d-emd}
+	\begin{aligned}
+	\underset{{x\in \RR^{n\times n}_+}}{\textrm{min}} \sum_{i,j} c(i,j) x(i,j) \quad  \textrm{s.t.}\quad \sum_j x(i,j) &= p_1(i); \ 
+	\sum_i x(i,j) = p_2(j),\ (\forall i,j\in[n]).
+	\end{aligned}
+	\end{align}
+\end{definition}
+Computation of the continuous measures can be straightforward with some assumptions,
+leading to natural linear programming formulations akin to the EMD.
+However in cases where one wishes to \textit{minimize} this distance,
+practical complexity explodes, even in the discrete
+formulations commonly found in application.
+A new entropic regularization method introduced in \cite{lightspeed}
+has led to newfound interest,
+use, and analysis of optimal transport for deep learning applications.
+In Chapter~\ref{chap:demd} we will expand upon these
+ideas to the case where we have multiple distributions,
+and wish to minimize the distance among all of them concurrently.
+\todo{OTfig}    
