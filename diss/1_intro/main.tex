@@ -140,11 +140,11 @@ statistical and deep models to enable similar measures of sample influence, feat
 \paragraph{A full picture.}
 Let us expand our notation from the example above to consider this more general framing.
 Consider a dataset $X:=\{x_i\}_{i=1}^n$ of size $n$ where each data point $x_i$ in the set $X$ is drawn from some underlying distribution over the domain $x_i \sim \cX^d$, 
-with domain dimensionality (number of features) $d$.
+with domain dimensionality (number of features) $d$ (typically indexed by $j$ as $x^j$).
 A model $f$ is fit using a parameterization $\theta \in \Theta$,
-with $\Theta$ the space of possible paramterizations (models) with some intrinsic dimension $p$. 
+with $\Theta$ the space of possible parameterizations (models) with some intrinsic dimension $p$. 
 %While all three of these problems are closely related, they require different approaches. 
-Generalizing the least squares``error measure'' from \eqref{eq:lq} to an arbitrary \textit{loss} $\ell$, we have
+Generalizing the least squares``error measure'' from~\eqref{eq:lq} to an arbitrary \textit{loss} $\ell$, we have
 \begin{align}\label{eq:learning}
     \hat{f}:=\hat{\theta} = \mathop{\arg\min}_{\theta\in\Theta} \sum_{x \in X} \ell(f_\theta(x_i))
 \end{align}
@@ -211,7 +211,7 @@ with the goal of associated specific, distinct, parameters or regions of model s
 Text and image generation models have benefited largely from similar ideas, enabling tunable ``knobs'' corresponding to independent features of interest~\citep{higgins2017betavae,karras2019style,hjelm2018learning}.
 
 Of particular interest here are the parameters relevant to specific regions of the input space \textit{after} training (Figure~\ref{fig:param_select}). 
-Here, recent analysis of deployed networks has shown that indeed, models tend to learn subsets of parameters corresponding to specific subregions of the input space, or subtasks~\citep{bau2017network,fong2018net2vec}, and current work continues to explore these network regions to aid in interpretability and explainability~\citep{netdissect,yiyou}.
+Here, recent analysis of deployed networks has shown that indeed, models tend to learn subsets of parameters corresponding to specific subregions of the input space, or subtasks~\citep{bau2017network,fong2018net2vec}, and current work continues to explore these network regions to aid in interpretability and explainability~\citep{netdissect,yiyou}, some associating specific paths through the network with specific tasks~\citep{geigerinducing,elhage2021mathematical}.
 
 
 \paragraph{Sample Selection.}

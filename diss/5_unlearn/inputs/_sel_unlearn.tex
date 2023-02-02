@@ -22,7 +22,7 @@ The full proof is in the appendix. Main idea: Because we only update a subset of
 Sampling with weights proportional to the Lipschitz constant of individual filters/layers is an established approach in optimization, see \cite{gorbunov2020unified}. We argue that L-CODEC computes an approximation to optimal sampling probabilities.
 %for updating purposes. 
 Under a mild assumption that the sampling probabilities have \emph{full} support, it turns out that correctness of our approximate (layer/filter selection) procedure can be guaranteed for unlearning purposes using recently developed optimization tools, see \cite{gower2019sgd}. By adapting results from \cite{gorbunov2020unified}, we can show the following, summarizing the main result of our slice-based unlearning procedure.
-\begin{theorem}
+\begin{theorem}\label{thm:fociconv}
 Assume that layer-wise sampling probabilities are nonzero. Given unlearning parameters $\epsilon,\delta$, the unlearning procedure in Alg~ \ref{alg:blockunlearn} is $(\epsilon',\delta')-$forgetting where $\epsilon'>\epsilon,\delta'>\delta$ represent an arbitrary  precision (hyperparameter) required for unlearning. Moreover, iteratively applying our algorithm converges exponentially fast (in expectation) w.r.t. the precision gap, that is, takes (at most) $O(\log\frac{1}{\mathbf{g_{\epsilon}}}\log\frac{1}{\mathbf{g_{\delta}}})$ iterations to output such a solution where  $\mathbf{g_{\epsilon}} = \epsilon'-\epsilon>0,\mathbf{g_{\delta}}=\delta'-\delta>0$ are gap parameters.
 \end{theorem}
 Our result differs from Nesterov's acceleration: we do not use previous iterates in a momentum or ODE-like fashion; rather, here we are closer to primal-dual algorithms where knowing nonzero coordinates at the dual optimal solution  

@@ -14,7 +14,7 @@ optimal transport continues to be an active area of research
 \citep{villani2009optimal}. The literature is vast, but we list a few key developments.
 %Optimal transport is intimately tied to the theory and practice of linear programming, and this connection holds true in our work. 
 
-{\bf Early applications.}
+\textbf{Early applications.}
 %The Earth Mover's problem has been applied to machine learning in many domains.
 Starting in~\citep{peleg}, the idea of shifting  ``mass'' around within an image was 
 used 
@@ -25,7 +25,7 @@ and applied to image retrieval  \citep{rubner}, where the term ``Earth Mover's D
 %The Earth Mover's Distance 
 EMD has since been widely used in computer vision: e.g., for image warping \citep{zhang2011discriminative}, in supervised settings \citep{wang2012supervised}, matching point sets \citep{CABELLO2008118} and in scenarios involving histogram comparisons ~\citep{ling2007efficient,wang2012supervised,haker2004optimal}. 
 
-{\bf Modern machine learning.}
+\textbf{Modern machine learning.}
 The continuous optimal transport problem (Monge-Kantorovich problem), was originally presented in \citep{,kantorovich1942,kantorovitch1958}.
 %, and the Wasserstein distance form  
 %The Wasserstein distance arises from the idea of optimal transport, and it is being 
@@ -46,11 +46,11 @@ domain adaptation \citep{courty2016optimal}, word embeddings \citep{huang2016sup
  classification tasks \citep{frogner2015learning}
  have benefited via the use of optimal transport. 
 
-{\bf Multi-marginal optimal transport.}
+\textbf{Multi-marginal optimal transport.}
 Extending optimal transport theory to an {\em arbitrary number} of distributions has been 
 studied on the theoretical side \citep{pass2015multi}, and practical extensions have been proposed \citep{mmotcuturi}. But implementations that integrate directly into machine learning pipelines rely on either heuristics or modifications that result in an approximation of the original MMOT problem \citep{cao2019multi}.
 
-{\bf Wasserstein barycenters.}
+\textbf{Wasserstein barycenters.}
 One use case of our algorithms will be in 
 formulations that involve Wasserstein barycenters. 
 Given a set of probability distributions, the Wasserstein barycenter minimizes 
@@ -60,7 +60,7 @@ distances to {\em each} probability distribution in the set: a practical definit
 Applications of Wasserstein barycenter  
 include texture analysis \citep{rabin2011wasserstein}, sensor data fusion \citep{elvander2020multi}, shape interpolation \citep{solomon2015convolutional}, coupling problems \citep{ruschendorf2002n} and others \citep{ho2017multilevel}. Very recently, polynomial time algorithms have been derived  \citep{altschuler2021wasserstein}. 
 
-{\bf Fairness.}
+\textbf{Fairness.}
 %These applications have not been purely on the modeling side.
 %As learning models become larger and more ubiquitous a number of works have aimed to identify and address problems of fairness.
 %The idea of \textit{minimizing} these computed distances between distributions...fairness...
@@ -85,7 +85,7 @@ a common central distribution. This requires solving an optimal transport proble
 
 % Recent advances in computational algorithms have allowed the  application of the Earth Mover's problem and more general transportation problems to expand their applicability. In~\cite{cuturi2013sinkhorn}, the idea of entropic relaxations was introduced. This relaxation allows for rapid optimization of Earth Mover's distances for two dimensional problems with arbitrary discrete support. This work and others have spurred applications and analysis of Wasserstein metrics and their optimization as learning problems, leading to reframing of a number of classical learning methods under the transportation lens \cite{wae,wgan}.
 
-{\bf Greedy algorithms and extensions.}
+\textbf{Greedy algorithms and extensions.}
 % Alternative to the barycentric approach, \cite{BEIN199597} first was able to extend the results of \cite{hoffman1963simple} to $d$-dimensional problems, suggesting that linear-time, greedy methods may have some value.
 \cite{hoffman1963simple} observed that there exists a family of linear-time greedy algorithms that solve the classical two-dimensional transportation problem. % with $m$ sources and $n$ sinks.   
 Later,~\cite{BEIN199597} extended
