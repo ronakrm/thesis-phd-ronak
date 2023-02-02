@@ -1,11 +1,32 @@
-Let $\cX \in \RR^{n_1 \times \cdots \times n_d}$ be a $d$-dimensional array, or tensor, with each mode having length $n_i$. To store a full rank tensor, $n^d$ storage would be required. A number of tensor factorizations have been developed to reduce this storage cost. The CANDECOMP/PARAFAC (CP) decomposition \citep{harshman1970foundations,carroll1970analysis} reduces the storage to $O(dnr)$, but finding the exact CP-rank $r$ is NP-hard. Hierarchical tensor methods have also proven to be effective in tensor compression \citep{cohen2016expressive, cohen2016convolutional}.
+Let $\cX \in \RR^{n_1 \times \cdots \times n_d}$ be a $d$-dimensional array, or tensor, with each mode having length $n_i$. To store a full rank tensor, $n^d$ storage would be required.
+A number of tensor factorizations have been developed to reduce this storage cost.
+The CANDECOMP/PARAFAC (CP) decomposition \citep{harshman1970foundations,carroll1970analysis} reduces the storage to $O(dnr)$,
+reducing the tensor to a sum of $R$ rank-1 weighted outer products:
+\begin{align}
+\cX^{PARAFAC} = \sum_{r=1}^R \lambda_r x_1^r \otimes \cdots \otimes x_d^r
+\end{align}
+where $x_i^r \in \RR^{n_i}$. Finding the exact CP-rank $r$ is NP-hard, however.
+An alternative decomposition decomposes the tensor into sets of matrices and one smaller ``core" tensor.
+Generalizing the above,
+\begin{align}
+\cX^{Tucker} = \cT \otimes_1 G_1 \ldots \otimes_d G_d 
+\end{align}
+where $\cT \in \RR^{k_1,\ldots,k_d}$ and the outer products are taken along the corresponding dimension.
+The size of $\cT$ is defined as the \textit{Tucker rank}, and when $\cX = \cX^{Tucker}$, is analogous to the number of nonzero
+eigenvalues for a matrix (tensor of dimension 2).
+In this way, it is also considered a \textit{higher-order singular value decomposition},
+and algorithms exist for computing it directly.
+Unfortunately its space complexity is $O(dnr + r^d)$, reasonable for lower-order tensors
+but unsuitable as the order grows.
+Hierarchical tensor methods have also proven to be effective in tensor compression \citep{cohen2016expressive, cohen2016convolutional},
+and have led to a newer construction with interesting properties.
 \begin{figure}
 	\includegraphics[width=\textwidth]{2_bknd/tensor_decomps.png}
-	\caption[CP tensor decomposition]{\label{fig:cp_decomp} Rank-1 and rank $n$ decompositions of an arbitrary tensor.}
+	\caption[Tensor decompositions]{\label{fig:cp_decomp} CP-style and Tucker decompositions of an arbitrary tensor.}
 \end{figure}
-\todo{tensors: maybe slow down here, expand a bit}
+\todo{fig: this figure is just wrong, need to update}
 
-A more recent decomposition, the \textit{Tensor Train} decomposition (TT) \cite{oseledets2011tensor}, defines an element of the tensor as
+A more recent decomposition, the \textit{Tensor Train} decomposition (TT) \citep{oseledets2011tensor}, defines an element of the tensor as
 \begin{align}
 \cX(x_1,\ldots,x_d) = A_1(x_1)\cdots A_d(x_d)
 \end{align}
@@ -23,8 +44,12 @@ This format requires $O(dnr^2)$ storage, but has two major advantages over the C
 We denote a tensor operator $\tG$ as a grouping of tensor modes into an ``input" and ``output" list, such that $\tG \in \RR^{(n_1^{in},\times\ldots\times,n_d^{in}) \times (n_1^{out},\times\ldots\times,n_d^{out})}$. This operator $\tG$ can be seen as the TT representation of a matrix $W \in \RR^{(n_1^i\cdots n_d^i) \times (n_1^o\cdots n_d^o)}$. In \cite{novikov2015tensorizing}, authors use this formulation to directly compress the weight layers in neural networks. Cores in the operator are indexed by both an input and output index, i.e., $A_i(x_i,y_i) \in \RR^{r_{i-1}\times r_i}$, where $x_i \in [1,\ldots,n_i^{in}], y_i \in [1,\ldots,n_i^{out}]$.
 
 Common operations upon tensor trains require \textit{matricizing} the cores of the TT format. Here, we define the left matricization of core $A_i(x_i)$ as $A_i^L \in \RR^{r_{i-1}n_i \times r_i} $ and the right matricization similarly.
-
-\todo{tensors: tt example operations, add/mult, QR decomp}
+Other desirable operations are fully supported by the format as well,
+including most linear algebra operations such as summations,
+multiplications, Frobenius norms,
+and decomposition into the format via an iterative higher-order SVD procedure.
+For brevity in this thesis, we refer interested readers
+to the original tensor train proposal and citations above.
 
 \subsection{Differential Geometry of Tensor Trains}
 Tensor trains with fixed TT-ranks form a Riemannian submanifold of $\RR^{n_1 \times \cdots \times n_d}$ \cite{lubich2015time, holtz2012manifolds}:
