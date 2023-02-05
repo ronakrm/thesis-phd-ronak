@@ -104,7 +104,7 @@ While ``fully-connected" layers, such as
 in~\eqref{eq:wx} are the simple in their form,
 they have been proven to be sufficient
 in large capacity to serve as
-\textit{universal function approximators}~\citep{abc}.
+\textit{universal function approximators}~\citep{cybenko1989approximation}.
 In this form however, capacity guarantees
 require the number of parameters (dimension of $w$)
 to grow exponentially: infeasible in practice.
@@ -116,7 +116,7 @@ These problems extend to stacks of ``fully-connected"
 layers as well: nonlinearity through multiplication
 and activations is effective, but leads
 to poor training time results due to 
-the speed at which a local minima can be found~\citep{abc}.
+the speed at which a local minima can be found.\todo{whats the citation here}
 
 The final minima identified 
 can vary significantly based on 
@@ -132,8 +132,10 @@ The ``lottery ticket hypothesis" states
 a small, sparse sub-network can be trained to perform just as well as the larger network, 
 but with fewer parameters and less computation.
 \begin{figure}
-	\includegraphics[]{example-image-a}
-	\caption[Initialization importance in nonconvex problems]{Nonconvex functions optimized using variations of gradient descent can lead to different (and potentially non-global) optima.}
+	\centering
+	\includegraphics[width=0.75\textwidth,trim={15cm 15cm 15cm 1cm},clip]{2_bknd/localmin.pdf}
+	\caption[Importance of initialization in nonconvex problems]{Nonconvex functions $f(x)$ optimized using variations of gradient descent can lead to different (and potentially non-global) optima ($\hat{x}$).}
+	\label{fig:localmin}
 \end{figure}
 
 A wide variety of neural network \textit{architectures}
@@ -142,20 +144,20 @@ Some of the most commonly used architectures include
 Convolutional Neural Networks (CNNs), Recurrent Neural Networks (RNNs),
 Transformers, Autoencoders, and Generative Adversarial Networks (GANs).
 CNNs, mainly used in image recognition and processing tasks,
-use convolutions designed to process grid-like imaging data ~\citep{abc}. 
+use convolutions designed to process grid-like imaging data. 
 RNNs are designed to handle sequential data such as time series or language,
-and have a memory-like mechanism that allows information to persist in hidden state vectors~\citep{abc}. 
+and have a memory-like mechanism that allows information to persist in hidden state vectors. 
 Transformers, now the de-facto method in Natural Language Processing (NLP),
 make use of a self-attention mechanism,
-weighing the importance of different input tokens for eventual prediction~\citep{abc}. 
+weighing the importance of different input tokens for eventual prediction~\citep{vaswani2017attention}. 
 Autoencoders and Generative Adversarial Networks (GANs) fall under the category of generative models,
-trained to generate outputs that resembles real data~\citep{abc}. 
+trained to generate outputs that resembles real data. 
 Newer generative models built on diffusion methods have 
 been able to produce photorealistic images based
-only on captions input by the user~\citep{abc}.
+only on captions input by the user~\citep{rombach2022high}.
 All of these methods come with their own
 idiosyncracies in model capacity and practical
-methods for efficient training.
+methods for efficient training~\citep{lecun2015deep}.
 
 With these varying architectures
 has also come the field of \textit{architecture search},
@@ -165,10 +167,9 @@ with the most efficient full architecture.
 While computationally expensive, techniques
 such as reinforcement learning, evolutionary algorithms,
 gradient-based methods, and even greedy approaches
-have been used to identify state-of-the-art networks~\citep{abc}.
+have been used to identify state-of-the-art networks~\citep{elsken2019neural}.
 
 \subsection{Losses and Probability Measures}
-\todo{losses/prob. measures}
 The methods for optimization above
 lend themselves to typically arbitrary functions.
 As described in the Introduction,
@@ -225,7 +226,7 @@ a transportation plan that minimizes some cost of transforming
 one probability distribution to another.
 Developments in Riemannaian geometry and measure theory 
 have led to a general formulation.
-\begin{definition}[Monge-Kantorovich Problem \citep{mongekant}]\label{def:mongekant}
+\begin{definition}[Monge-Kantorovich Problem \citep{kantorovich}]\label{def:mongekant}
 	Let $\mu,\nu$ be probability measures over separable metric spaces $X$ and $Y$.
 	The optimal transportation problem seeks to find a joint measure $\gamma$ on $X\times Y$
 	that satsifies
@@ -235,7 +236,7 @@ have led to a general formulation.
 \end{definition}
 Where $\Gamma$ is the space of all probability measures with marginals equal to $\mu$ on $X$ and $\nu$ on $Y$.
 More common in recent machine learning is the \textit{Wasserstein} distance,
-defined as the $p$-th distance over the Monge-Kantorovich problem~\citep{rubenstein}.
+defined as the $p$-th distance over the Monge-Kantorovich problem.
 \begin{definition}[Wasserstein metric]\label{def:wassmetric}
 	The Wasserstein $p$-distance is given by:
 	\begin{align}
@@ -258,15 +259,20 @@ And the discrete analog:
 	\end{aligned}
 	\end{align}
 \end{definition}
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth,trim={0 5cm 0 10cm},clip]{2_bknd/ot.pdf}
+	\caption[Distributions and Optimal Transport]{2D Optimal transport measures the distance or cost associated with transforming one discrete or continuous distribution to another.}
+	\label{fig:bkndot}
+\end{figure}
 Computation of the continuous measures can be straightforward with some assumptions,
 leading to natural linear programming formulations akin to the EMD.
 However in cases where one wishes to \textit{minimize} this distance,
 practical complexity explodes, even in the discrete
 formulations commonly found in application.
-A new entropic regularization method introduced in \cite{lightspeed}
+A new entropic regularization method introduced in \cite{cuturi2013sinkhorn}
 has led to newfound interest,
 use, and analysis of optimal transport for deep learning applications.
 In Chapter~\ref{chap:demd} we will expand upon these
 ideas to the case where we have multiple distributions,
 and wish to minimize the distance among all of them concurrently.
-\todo{fig: OTfig}    
