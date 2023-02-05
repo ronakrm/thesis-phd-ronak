@@ -1,4 +1,4 @@
-Here we present a brief overview of differential geometry. For a more in depth background, we refer interested readers to \cite{do1992riemannian},\cite{lee2003smooth}, and \cite{spivak1981comprehensive}.
+Here we present a brief overview of differential geometry. For a more in depth background, we refer interested readers to \cite{do1992riemannian}, \cite{lee2003smooth}, and \cite{spivak1981comprehensive}.
 
 
 %Before discussion about general regressions models for manifold-valued response variables, let's revisit manifolds.
@@ -21,21 +21,21 @@ Roughly speaking, a differentiable (smooth) manifold $\Mc$ is a topological
 space that is locally similar to Euclidean space and has a globally
 defined differential structure. 
 
-\textbf{Tangent space ($T_{p}\Mc$).} The \textit{tangent space} at $p \in \Mc$ is the vector space, which consists of 
+\paragraph{Tangent space ($T_{p}\Mc$).} The \textit{tangent space} at $p \in \Mc$ is the vector space, which consists of 
 the tangent vectors of {\em all} possible curves passing through $p$. 
 
-\textbf{Tangent bundle ($T\Mc$).} The \textit{tangent bundle} of $\Mc$ is the disjoint union of tangent spaces at all points of $\Mc$, 
+\paragraph{Tangent bundle ($T\Mc$).} The \textit{tangent bundle} of $\Mc$ is the disjoint union of tangent spaces at all points of $\Mc$, 
 $T\Mc = \coprod_{p \in \Mc}T_{p}\Mc$. 
 The tangent bundle is equipped with a natural \textit{projection map} $\pi: T\Mc \rightarrow \Mc$. 
 
-\textbf{Riemannian manifold.} A \textit{Riemannian manifold} is 
+\paragraph{Riemannian manifold.} A \textit{Riemannian manifold} is 
 %a differentiable manifold which is 
 equipped with a
 smoothly varying metric (inner product), which is called \textit{Riemannian metric}. 
 
 Various geometric notions, e.g., the angle between two curves or the length of a curve, can be extended on the manifold. \newline 
 
-\textbf{Geodesic curves.} A geodesic curve on a Riemannian manifold is the locally shortest (distance-minimizing) curve.
+\paragraph{Geodesic curves.} A geodesic curve on a Riemannian manifold is the locally shortest (distance-minimizing) curve.
 These are analogous to straight lines in Euclidean space and a main object to generalize linear models to Riemannian manifolds.
 
 \textbf{Geodesic distance.} The \textit{geodesic distance}
@@ -49,10 +49,10 @@ where $\gamma(a)=p$ and $\gamma(b)=q$.
 %known as \textit{geodesic} and are analogous to straight lines in
 %. 
 
-\textbf{Exponential map}. An exponential map is a map from a tangent space $T_p\Mc$  to $\Mc$, which is usually locally defined due to the existence and uniqueness of ordinary differential equation for the map. The geodesic curve from $y_i$ to $y_j$ can be parameterized by a tangent vector in the tangent space at $y_i$ with an exponential map $\EXP(y_i,\cdot ): T_{y_i}\Mc \rightarrow \Mc$. 
+\paragraph{Exponential map}. An exponential map is a map from a tangent space $T_p\Mc$  to $\Mc$, which is usually locally defined due to the existence and uniqueness of ordinary differential equation for the map. The geodesic curve from $y_i$ to $y_j$ can be parameterized by a tangent vector in the tangent space at $y_i$ with an exponential map $\EXP(y_i,\cdot ): T_{y_i}\Mc \rightarrow \Mc$. 
 
 
-\textbf{Logarithm map.}
+\paragraph{Logarithm map.}
 The inverse of the exponential map is the \textit{logarithm map}, $\LOG(y_i,\cdot):\Mc \rightarrow T_{y_i}\Mc$. 
 For completeness, Table \ref{tab:comp} shows corresponding operations in the Euclidean space and Riemannian manifolds.
 In what follows, when operations are nested, the exponential map and its inverse logarithm map are denoted by $\EXP(p, x)$ and $\LOG(p, v)$ respectively, where $p, x \in \Mc$ and $v\in T_p\Mc$. They are usually denoted $\exp_p(x)$ and $\log_p(v)$ in classical differential geometry texts. 
@@ -97,7 +97,7 @@ Separate from the above notations, the matrix exponential, i.e, $\exp(X):= \sum 
 \label{tab:comp}
 \end{table}
 
-\paragraph{Intrinsic mean} 
+\paragraph{Intrinsic mean.} 
 Let $d(\cdot,\cdot)$ define the distance between two points. The intrinsic (or Karcher) mean is the minimizer to
 {\small \begin{equation}
 \label{eq:karchermean}
@@ -129,7 +129,7 @@ which may be an arithmetic, geometric or harmonic mean depending on $d(\cdot,\cd
 \todo{fig: riem geom figure}
 This identity implies the first order necessary condition of \eqref{eq:karchermean}, i.e., $\bar{y}$ is a local minimum with a zero norm gradient \citep{karcher1977riemannian}. In general, on manifolds, the existence and uniqueness of th.e Karcher mean is not guaranteed unless we assume, for uniqueness, that the data is in a small neighborhood.\\
 
-\paragraph{Parallel transport} 
+\paragraph{Parallel transport.} 
 %\subsection{Parallel Transport} 
 Let $\Mc$ be a differentiable manifold with an affine connection $\nabla$ and $I$ be an open interval. Let $c:I \rightarrow \Mc$ be a differentiable curve in $\Mc$ and let $V_0$ be a tangent vector in $T_{c(t_0)}\Mc$, where $t_{0} \in I$. 
 Then, there exists a unique parallel vector field $V$ along $c$, such that $V(t_0)=V_0$. Here, $V(t)$ is called the \textit{parallel transport} of $V(t_0)$ along $c$. 

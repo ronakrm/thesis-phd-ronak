@@ -31,7 +31,7 @@ then we have the following equivalent log-transformed model:
 \begin{align}
 	\max_\theta \sum_{i=1}^n \log p(x_i|\theta) + \log p(\theta)
 \end{align}
-This is the canonical form used in most of machine learning: generally associated a ``loss" or recovery term to the likelihood, and a regularization to the prior.
+This is the canonical form used in most of machine learning: generally associated with a ``loss" or recovery term to the likelihood, and a regularization to the prior.\todo{grammar}
 
 \subsection{Conditional Independence} 
 With three or more variables, independence relations among variables may be determined by which variables are being conditioned upon. 
@@ -64,19 +64,20 @@ Extending the typical univariate Gaussian distribution $p(x) = \frac{1}{\sqrt{2\
 \begin{align}\label{eq:mvgauss}
     p(x_1,\ldots,x_n) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}} \EXP\left(\frac{1}{2}(\mathbf{x} - \mathbf{\mu})^\top \Sigma^{-1} (\mathbf{x} - \mathbf{\mu})\right)
 \end{align}
+\todo{exp def}
 Where $\mathbf{\mu}$ is the vector of means for each individual variable, and $\Sigma$ is the $n\times n$ \textit{covariance} matrix describing the second-order interactions among the variables. 
 The tractability of both computing the density and estimating it in typical likelihood estimation frameworks makes the multivariate Gaussian a particular attractive prior used in many applications,
 including estimating independence.
 Specifically, 
 \begin{theorem}\label{thm:mvnindep}
-    Let $X$ be governed by a multivariate Gaussian as defined in \ref{eq:mvgauss}. Then it holds that
+    Let $X$ be governed by a multivariate Gaussian as defined in \eqref{eq:mvgauss}. Then it holds that
     \begin{align}
         \Sigma_{ij} = 0 \iff X_i \indep X_j
     \end{align}
 \end{theorem}
 Complete independence among variables is often not possible and in most settings not valuable. However, a more powerful result for conditional independence exists.
 \begin{theorem}\citep{lauritzen1996graphical}\label{thm:mvncondindep}
-    Let $X$ be governed by a multivariate Gaussian as defined in \ref{eq:mvgauss}, and $\Omega:=\Sigma^{-1}$ be the precision matrix. Then it holds that
+    Let $X$ be governed by a multivariate Gaussian as defined in \eqref{eq:mvgauss}, and $\Omega:=\Sigma^{-1}$ be the precision matrix. Then it holds that
     \begin{align}
         \Omega_{ij} = 0 \iff X_i \indep X_j | X_{\setminus(i,j)}
     \end{align}
@@ -108,8 +109,9 @@ and estimating all partial coefficients separately can be computationally heavy.
 With some assumptions, \textit{sparse} recoveries are possible while estimating ALL conditional independencies. Following the results from multivariate Gaussians above,
 a \textit{penalized} version of a maximum likelihood estimate can be recovered through the following \textit{graphical lasso} \citep{friedman2008sparse} formulation:
 \begin{align}\label{eq:glasso}
-    \hat{\Omega} = \min_{\Omega \succeq} \tr(S\Omega) + \log|\Omega| + \lambda||\Omega||_1
+    \hat{\Omega} = \min_{\Omega \succeq 0} \tr(S\Omega) + \log|\Omega| + \lambda||\Omega||_1
 \end{align}
+\todo{semidefinite def}
 With $S$ being the sample covariance of the data samples, and $\lambda$ a penalization weight. This $\ell_1$ penalization has been shown to be easy to compute, and a number of alternative versions have been proposed with varying theoretical properties and recovery guarantees~\citep{cai2011constrained,yuan2010high}.
 Particularly interesting are extensions to \textit{nonparanormal} distributions, which allow for a much larger set of graphs to be estimated over other distributions via a rank covariance matrix, generalizing the pairwise rank and distance coefficients above \citep{liu2009nonparanormal,xue2012regularized}.
 

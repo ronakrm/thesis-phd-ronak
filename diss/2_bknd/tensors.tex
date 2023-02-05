@@ -54,7 +54,7 @@ to the original tensor train proposal and citations above.
 \subsection{Differential Geometry of Tensor Trains}
 Tensor trains with fixed TT-ranks form a Riemannian submanifold of $\RR^{n_1 \times \cdots \times n_d}$ \cite{lubich2015time, holtz2012manifolds}:
 \begin{align}\label{eq:riem}
-	\cM_r := \{ \cX \in \RR^{n_1 \times \cdots \times n_d} \text{ with TT-ranks } r_0,\ldots,r_d\} 
+	\cM_r := \{ \cX \in \RR^{n_1 \times \cdots \times n_d} \text{ with TT-ranks\ } r_0,\ldots,r_d\} 
 \end{align}
 Optimizing a function with respect to a Riemannian manifold-valued variable amounts to computing a free derivative in the ambient space, projecting the gradient to the tangent space of the current iterate, and using the (retraction) exponential map to compute the next iterate.
 The authors in \cite{novikov2016exponential} use this procedure to more effectively learn a model of all exponentially many interactions in a linear model.

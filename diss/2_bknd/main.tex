@@ -10,32 +10,38 @@ This is followed by the basics of Riemannian differential geometry
 and the geometry of tensor objects,
 the key objects that enable the 
 tests and efficiencies described in both 
-Chapters 3 and 4.
-Next we provide
+Chapters \ref{chap:covtraj} and \ref{chap:ott}.
+Next we will provide
 an overview of optimization tools
 and methods particularly suited
 and developed for neural network methods,
 alongside typical forms and objectives 
 in the machine learning literature,
-used in Chapter 5.
+used in Chapter \ref{chap:lcodec}.
 We conclude this chapter
 with a discussion on optimal transport
 methods in deep learning, important
 for our discussion of novel optimization schemes
-in Chapter 6.
+in Chapter \ref{chap:demd}.
 
 \section{General Notations}
 The following notations will be standard throughout the sequel, with any particular chapter overloads or redefinitions explicitly mentioned.
 \begin{itemize}
-\item Calligraphic capital letters will typically represent spaces, and capital letters will typically represent an instance or element from those spaces.
+\item Calligraphic capital letters will typically represent spaces, and capital letters will typically represent an instance from those spaces.
 
-\item Set sizes will typically take the form of lowercase $n,d,p$, generally associated with the number of samples, the dimension of some feature space, and the number of parameters respectively. $i,j,k$ will be used for indexing various sets within context.
+%\item Set sizes will typically take the form of lowercase $n,d,p$, generally associated with the number of samples, the dimension of some feature space, and the number of parameters respectively. $i,j,k$ will be used for indexing various sets within context.
 
 \item We use $\RR^d$ to represent $d$-dimensional vector space over the reals, and vectors will be lowercase typically as $x,y,z$ and matrices and higher order tensors will be denoted in uppercase, with local clarity on their distinction between a set instance.
 
-\item $S$ will denote a of training examples.
-A sample $s_i\in S$ may be indexed by $i \in [1,\ldots,n]$. 
-For general and generative settings, $x_i$ may be used in place, and for predictive settings will be represented by the tuple $s_i:=(x_i,y_i)$.
+\item Lower case letters will also \todo{dim size notations}
+
+\item \todo{upper case sets, including random variables, and matrix}
+
+%\item $S$ will denote a set of training examples.
+%A sample $s_i\in S$ may be indexed by $i \in [1,\ldots,n]$. 
+\item \todo{xi, s in S, }%For general and generative settings, $x_i$ may be used in place, and for predictive settings will be represented by the tuple $s_i:=(x_i,y_i)$.
+
+\item \todo{subscripts/superscripts}
 
 \end{itemize}
 
