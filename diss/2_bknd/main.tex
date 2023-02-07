@@ -1,5 +1,4 @@
 \chapter{Background}\label{chap:bknd}
-
 Here we will briefly describe some background concepts and ideas that will aid and facilitate discussion of subset identification in later chapters. 
 Following some general notation,
 we will begin with an overview
@@ -10,32 +9,34 @@ This is followed by the basics of Riemannian differential geometry
 and the geometry of tensor objects,
 the key objects that enable the 
 tests and efficiencies described in both 
-Chapters 3 and 4.
-Next we provide
+Chapters \ref{chap:covtraj} and \ref{chap:ott}.
+Next we will provide
 an overview of optimization tools
 and methods particularly suited
 and developed for neural network methods,
 alongside typical forms and objectives 
 in the machine learning literature,
-used in Chapter 5.
+used in Chapter \ref{chap:lcodec}.
 We conclude this chapter
 with a discussion on optimal transport
 methods in deep learning, important
 for our discussion of novel optimization schemes
-in Chapter 6.
+in Chapter \ref{chap:demd}.
 
 \section{General Notations}
 The following notations will be standard throughout the sequel, with any particular chapter overloads or redefinitions explicitly mentioned.
 \begin{itemize}
-\item Calligraphic capital letters will typically represent spaces, and capital letters will typically represent an instance or element from those spaces.
+\item Calligraphic capital letters such as $\cD, \cM, \cX$ will typically represent spaces.
 
-\item Set sizes will typically take the form of lowercase $n,d,p$, generally associated with the number of samples, the dimension of some feature space, and the number of parameters respectively. $i,j,k$ will be used for indexing various sets within context.
+\item Lowercase letters such as $i,x,n$ will represent vectors as well as scalars (indices, sizes, and dimensions), and subsequently a vector $v \in \RR^d$ would be a $d$-dimensional vector over the reals.
 
-\item We use $\RR^d$ to represent $d$-dimensional vector space over the reals, and vectors will be lowercase typically as $x,y,z$ and matrices and higher order tensors will be denoted in uppercase, with local clarity on their distinction between a set instance.
+\item Capital letters such as $X,H,T$ will refer to matrices and higher order tensors, as well as sets (including random variables) based on context.
 
-\item $S$ will denote a of training examples.
-A sample $s_i\in S$ may be indexed by $i \in [1,\ldots,n]$. 
-For general and generative settings, $x_i$ may be used in place, and for predictive settings will be represented by the tuple $s_i:=(x_i,y_i)$.
+\item We use $\RR^d$ to represent $d$-dimensional vector space over the reals.
+
+\item For learning settings, the training dataset will typically be defined by $S$, with samples $x_i \in S$ in the general setting, and $(x_i,y_i)\in S$ in the supervised setting. Other datasets $T,U$ may also be used and defined in context.
+
+\item Subscripts will denote indexing into sets or vectors, or estimation (in the case of integrals and expectations) over the specified subscript. Superscripts will be used as additional decorators when needed.
 
 \end{itemize}
 
@@ -56,4 +57,4 @@ is defined by a unique intersection
 of the above ideas, leading to new insights
 with respect to the subset selection problem of interest.
 The relevant background will be referenced and refreshed 
-as needed to avoid reader thrashing.\todo{lang., "thrashing" alternate?}
+as needed to ease narrative continuity.
