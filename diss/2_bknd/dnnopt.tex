@@ -32,9 +32,9 @@ and $da/dw$ is exactly $x$, the derivative of a linear function.
 With a direction of descent,
 we can update the parameters via some update to minimize the functional $f$ of interest:
 \begin{align}\label{eq:fullgd}
-	\theta_{t+1} = \theta_t + g(\theta_t,x)
+	\theta_{t+1} = \theta_t + g_x(\theta_t)
 \end{align}
-where $g(\cdot)$ is some function of the full derivative $g(\cdot) := g(\nabla f_\theta(x))$,
+where $g(\cdot)$ is some function of the full derivative $g_x(\cdot) := g(\nabla f_{\theta_t}(x))$,
 and $\theta_t$ are the current parameter estimates.
 Optimization proceeds and terminates when a certain amount
 of iterations $t$ have completed,
@@ -114,9 +114,10 @@ optima at that level, but fail to sufficiently
 capture the true problem complexity.
 These problems extend to stacks of ``fully-connected"
 layers as well: nonlinearity through multiplication
-and activations is effective, but leads
-to poor training time results due to 
-the speed at which a local minima can be found.\todo{whats the citation here}
+and activations is effective, but can lead
+to poor training time results due to
+convergence to local minima.
+%due to the speed at which a local minima can be found.\todo{whats the citation here}
 
 The final minima identified 
 can vary significantly based on 
@@ -130,7 +131,7 @@ to perform a task with high accuracy,
 even when randomly initialized.
 The ``lottery ticket hypothesis" states 
 a small, sparse sub-network can be trained to perform just as well as the larger network, 
-but with fewer parameters and less computation.
+but with fewer parameters and less computation~\citep{frankle2018the}.
 \begin{figure}
 	\centering
 	\includegraphics[width=0.75\textwidth,trim={15cm 15cm 15cm 1cm},clip]{2_bknd/localmin.pdf}
@@ -183,7 +184,7 @@ that suit particular tasks,
 or those that correspond more directly
 to practitioners' high-level goals.
 Building on the classical mean-squared error,
-$l(f_\theta(x), y) := (y - f_\theta(x))^2$,
+$\ell(f_\theta(x), y) := (y - f_\theta(x))^2$,
 methods have extended to information-based schemes
 such as cross-entropy, as well as 
 incorporating classical \textit{regularization} schemes
@@ -262,7 +263,7 @@ And the discrete analog:
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth,trim={0 5cm 0 10cm},clip]{2_bknd/ot.pdf}
-	\caption[Distributions and Optimal Transport]{2D Optimal transport measures the distance or cost associated with transforming one discrete or continuous distribution to another.}
+	\caption[Distributions and Optimal Transport]{2D Optimal transport measures the distance or cost associated with transforming one discrete (above) or continuous (below) distribution to another.}
 	\label{fig:bkndot}
 \end{figure}
 Computation of the continuous measures can be straightforward with some assumptions,
@@ -270,7 +271,7 @@ leading to natural linear programming formulations akin to the EMD.
 However in cases where one wishes to \textit{minimize} this distance,
 practical complexity explodes, even in the discrete
 formulations commonly found in application.
-A new entropic regularization method introduced in \cite{cuturi2013sinkhorn}
+An entropic regularization method introduced in \cite{cuturi2013sinkhorn}
 has led to newfound interest,
 use, and analysis of optimal transport for deep learning applications.
 In Chapter~\ref{chap:demd} we will expand upon these

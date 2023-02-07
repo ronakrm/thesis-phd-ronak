@@ -1,4 +1,4 @@
-Here we present a brief overview of differential geometry. For a more in depth background, we refer interested readers to \cite{do1992riemannian}, \cite{lee2003smooth}, and \cite{spivak1981comprehensive}.
+Here we present a brief overview of differential geometry. For a more in-depth background, we refer interested readers to \cite{do1992riemannian}, \cite{lee2003smooth}, and \cite{spivak1981comprehensive}.
 
 
 %Before discussion about general regressions models for manifold-valued response variables, let's revisit manifolds.
@@ -57,11 +57,11 @@ The geodesic curve from $y_i$ to $y_j$ can be parameterized by a tangent vector 
 \paragraph{Logarithm map.}
 The inverse of the exponential map is the \textit{logarithm map}, $\LOG(y_i,\cdot):\Mc \rightarrow T_{y_i}\Mc$. 
 For completeness, Table \ref{tab:comp} shows corresponding operations in the Euclidean space and Riemannian manifolds.
-In what follows, when operations are nested, the exponential map and its inverse logarithm map are denoted by $\EXP(p, x)$ and $\LOG(p, v)$ respectively, where $p, x \in \Mc$ and $v\in T_p\Mc$. They are usually denoted $\exp_p(x)$ and $\log_p(v)$ in classical differential geometry literature. 
+In what follows, when operations are nested, the exponential map and its inverse logarithm map are denoted by $\EXP(p, x)$ and $\LOG(p, v)$ respectively, where $p, x \in \Mc$ and $v\in T_p\Mc$. They are usually denoted $\EXP_p(x)$ and $\LOG_p(v)$ in classical differential geometry literature. 
  
-Separate from the above notations, the matrix exponential, i.e, $\exp(X):= \sum \frac{1}{k!} X^k$, where $0!=1$ and $X^0=I$  and the matrix logarithm are denoted by as $\exp(\cdot)$ and $\log(\cdot)$. These will be necessary in a specific instance in Chapter~\ref{chap:covtraj}, but otherwise will refer
+Separate from the above notations, the matrix exponential, i.e, $\exp(X):= \sum \frac{1}{k!} X^k$, where $0!=1$ and $X^0=I$  and the matrix logarithm are denoted fully lowercase by as $\exp(\cdot)$ and $\log(\cdot)$, similar to their univariate counterparts. These will be necessary in a specific instance in Chapter~\ref{chap:covtraj}, but otherwise will refer
 to the common univariate functions in other contexts.
-\todo{projection in figure should be curved probably, shift the tangent a big right/down}
+\todo{projection in figure should be curved probably, shift the tangent a bit right/down}
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth,trim={0 7cm 5cm 10cm},clip]{2_bknd/manifoldops.pdf}
@@ -164,7 +164,6 @@ The exponential maps and logarithm maps are given as
   \LOG(p,q) = p^{1/2} \log(p^{-1/2}qp^{-1/2})p^{1/2}.
 \end{split}
 \end{equation}
-
 Let $p, q$ be in SPD($n$) and a tangent vector $w \in T_{p}\Mc$, the
 tangent vector in $T_{q}\Mc$ which is the parallel transport of $w$ along
 the shortest geodesic from $p$ to $q$ is given by 

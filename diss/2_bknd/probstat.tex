@@ -1,7 +1,7 @@
 
 A density function (distribution) is a mapping from each element in an outcome space $x \in X$ to a number between 0 and 1.
 This mapping is generally written as $p(x):=\PP(X=x), x \in X$ to denote the distribution over possible realizations $x$ of $X$.
-$X$ may also denote a \textit{set} of random variables $X:=\{x_i\}_{i=1}^n$, where a draw from the distribution over $X$ results in a vector $x$ of dimension $n$. When $X$ follows the law defined by a specific $p(x)$, we say $X$ is a random variable with distribution $p(x)$.
+$X$ may also denote a \textit{set} of random variables $X:=\{X_i\}_{i=1}^n$, where a draw from the distribution over $X$ results in a vector $x$. When $X$ follows the law defined by a specific $p(x)$, we say $X$ is a random variable with distribution $p(x)$.
 The \textit{expectation} of a random variable $\EE[X]$ is the ``weighted average'' over all outcomes. For discrete variables (which will be our main focus with expectations), 
 \begin{align}
 \EE[X] = \sum_{x\in X} x\cdot p(x)
@@ -36,7 +36,7 @@ Applying Bayes' Rule:
 \end{align}
 Where $p(x|\theta)$ is the \textit{likelihood} of observing the data $x$ given some parameter set,
 $p(\theta)$ is the \textit{prior} assumption on the base distribution over parameters,
-$p(x)$ is the marginal over all data (treated as a normalizing constant),
+$p(x)$ is the marginal over all data (typically treated as a normalizing constant),
 and $p(\theta|x)$ is the \textit{posterior} distribution over the parameters given some data.
 Alternatively, we wish to update our estimation of the parameters $\theta$
 from $p(\theta)$ to $p(\theta|x)$ given some observations $x$ that change our beliefs about the parameter space.
@@ -66,11 +66,6 @@ $Y$ is \textit{conditionally independent} of $X$ given $Z$, written as $Y \indep
 \end{definition}
 Intuitively, once $Z$ is known, $X$ provides no additional information in predicting $Y$. This can also be written as $p(y|x,z)=p(y|z)$.
 
-\begin{figure}
-	\includegraphics[width=\textwidth,trim={0 10cm 0 5cm},clip]{2_bknd/graphest.pdf}
-	\caption[Graph Estimation from Data]{From data collected on various measures (left), we can compute a covariance matrix, estimate a sparse inverse, and recover the conditional independence relationships among measures (right).}
-	\label{fig:graphest}
-\end{figure}
 \paragraph{Graphs.}
 With a larger number of variables, tracking independence relations can
 become cumbersome with this notation.
@@ -100,7 +95,7 @@ we have the following exponential density function
 for multivariate Gaussian distributions over $n$ variables,
 with realizations as the vector $\mathbf{x}:=[x_1,\ldots,x_n]^\top$:
 \begin{align}\label{eq:mvgauss}
-    p(x_1,\ldots,x_n) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}} \Exp\left(\frac{1}{2}(\mathbf{x} - \mathbf{\mu})^\top \Sigma^{-1} (\mathbf{x} - \mathbf{\mu})\right)
+    p(x_1,\ldots,x_n) = \frac{1}{\sqrt{(2\pi)^n|\Sigma|}} \exp\left(\frac{1}{2}(\mathbf{x} - \mathbf{\mu})^\top \Sigma^{-1} (\mathbf{x} - \mathbf{\mu})\right)
 \end{align}
 Where $\mathbf{\mu}$ is the vector of means for each individual variable,
 and $\Sigma$ is the $n\times n$ \textit{covariance} matrix
@@ -152,13 +147,19 @@ and estimating all partial coefficients separately can be computationally heavy.
 With some assumptions, \textit{sparse} recoveries are possible while estimating ALL conditional independencies. Following the results from multivariate Gaussians above,
 a \textit{penalized} version of a maximum likelihood estimate can be recovered through the following \textit{graphical lasso} \citep{friedman2008sparse} formulation:
 \begin{align}\label{eq:glasso}
-    \hat{\Omega} = \min_{\Omega \succeq 0} \tr(\hat{Sigma}\Omega) + \log|\Omega| + \lambda||\Omega||_1
+    \hat{\Omega} = \min_{\Omega \succeq 0} \tr(\hat{\Sigma}\Omega) + \log|\Omega| + \lambda||\Omega||_1
 \end{align}
-With $\hat{Sigma}$ being the sample covariance of the data samples, and $\lambda$ a penalization weight. The constraint $\Omega \succeq 0$ restricts the solution to be positive semi-definite: symmetric matrices with nonnegative eigenvalues. This $\ell_1$ penalization has been shown to be easy to compute, and a number of alternative versions have been proposed with varying theoretical properties and recovery guarantees~\citep{cai2011constrained,yuan2010high}.
+With $\hat{\Sigma}$ being the sample covariance of the data samples, and $\lambda$ a penalization weight. The constraint $\Omega \succeq 0$ restricts the solution to be positive semi-definite: symmetric matrices with nonnegative eigenvalues. This $\ell_1$ penalization has been shown to be easy to compute, and a number of alternative versions have been proposed with varying theoretical properties and recovery guarantees~\citep{cai2011constrained,yuan2010high}.
 Particularly interesting are extensions to \textit{nonparanormal} distributions, which allow for a much larger set of graphs to be estimated over other distributions via a rank covariance matrix, generalizing the pairwise rank and distance coefficients above \citep{liu2009nonparanormal,xue2012regularized}.
 
 The distributional assumptions needed for all of these methods, however, are often completely unknown in practice, or the data represent highly complex densities and functions that cannot be represented by simple exponential families or rank-based measures.
 Newer measures of \textit{nonparametric} estimations of dependence have been developed, such as distance correlation and kernel-based coefficients \citep{szekely2014partial,wang2015conditional,doran2014permutation}, but they tend to either only test for independence and not strength of functional relationship, or have complex instantations or asymptotic theories, making them difficult to deploy and rely upon in practice.
+\begin{figure}
+	\includegraphics[width=\textwidth,trim={0 10cm 0 5cm},clip]{2_bknd/graphest.pdf}
+	\caption[Graph Estimation from Data]{From data collected on various measures (left), we can compute a covariance matrix, estimate a sparse inverse, and recover the conditional independence relationships among measures (right).}
+	\label{fig:graphest}
+\end{figure}
+
 
 A recent coefficient, the Chatterjee coefficient, has been demonstrated to have a number of desirable properties, and has been further developed into an elegant method for testing conditional independence~\citep{chatterjee2020new,codec}. 
 Particularly,
@@ -170,6 +171,7 @@ For arbitrary variables random $X,Y,Z$, where $Y$ is univariate and $X,Z$ can be
 \begin{align}\label{eq:contcodec}
     T(Y,X|Z) = \frac{\int\EE\left[\VAR(\PP(Y\geq t)|X,Z)|Z)\right]d\mu(t)}{\int\EE\left[\VAR(\II\{Y\geq t\}|Z\right] d\mu(t)}
 \end{align}
+with $\VAR(\cdot)$ denoting the variance over the random variable.
 In Chapter~\ref{chap:lcodec} we will take advantage of these properties. Critically, without a specific procedure, identifying the conditioning set for a particular independence test is exponential. If we wish to find which variables $X_1,\ldots,X_n$ are sufficient for creating independence between some outcome $Y$ and the rest of the variables, na\"ively we would need to test all possible subsets.
 An advantage of the coefficient of dependence in \cite{codec} is that it admits a linear time algorithm for iteratively building the sufficient set, naturally enabling an algorithm for constructing a Markov graph over the variables of interest.
 
@@ -227,7 +229,7 @@ Then the test statistic
 t = \frac{\hat{\mu}_1 - \hat{\mu}_2}{\sqrt{\frac{s_1^2 + s_2^2}{n}}}
 \end{align}
 follows a $t$-distribution with $n-1$ degrees of freedom,
-\textit{if} there is no difference between the means.
+\textbf{if} there is no difference between the means.
 Comparing the value of the measured statistic over the observed data
 to the corresponding $t$-distribution allows
 us to determine how likely or unlikely it is that 
