@@ -1,4 +1,4 @@
-As described in the previous chapter, a numbr of methods have been extensively studied for 
+As described in the previous chapter, a number of methods have been extensively studied for 
 the sparse recovery of graphical models
 with various assumptions on collected data.
 % {\em Coupled and Temporal Graphical Models.} 
@@ -13,7 +13,7 @@ Often, data come from two (or more) disparate sources or multiple timepoints.
 %such an approach invariably masks the heterogeneity in the data-set sources \cite{friston2011functional}. While we want 
 %to preserve the common structure, ideally, we also wish to allow for differences among the 
 %sources. Consequently, w
-Within the last few years, a few proposals have 
+Proposals in the literature have 
 described strategies for linking the sparsity patterns of multiple graphical models, e.g., using a fused lasso 
 penalty \citep{danaher2014joint,yang2015fused}. Observe that 
 %these ideas assume that the two (or more) models share a similar structure; 
@@ -29,7 +29,7 @@ Recently, the nonparametric procedure in \cite{qiu2015joint} extends these ideas
 to handle multiple sources, each with multiple samples.
 
 The ideas in the literature so far to ``couple'' multiple graphical model estimation modules are mostly nonparametric. 
-While such a formulation offers benefits, in many estimation problems, 
+While such formulations offer benefits, in many estimation problems, 
 parametric models may 
 %require fewer samples (better convergence rates) and possibly, 
 be more convenient for downstream statistical analysis,
@@ -39,11 +39,12 @@ temporal or coupled Gaussian graphical models have not yet been heavily studied.
 %Part of the reason is the difficulty of 
 This will involve parameterizing {\em trends} in the highly structured nature of the `response' variable ($\SPD$ matrices). 
 %In contrast, w
-We find that parametric formulations for manifold-valued data {\em have} been proposed recently \citep{hjkimcvpr2014,cornea2016regression}. %, albeit only in the 
+More recently, we find that parametric formulations for manifold-valued data {\em have} been proposed \citep{hjkimcvpr2014,cornea2016regression}. %, albeit only in the 
 %context of regression models and dictionary learning \cite{xie2013nonlinear}. 
 %This result is relevant --- b
 Because $\SPD$ matrices form a Riemannian manifold, algorithms
-that estimate a parametric model respecting the underlying Riemannian metric are more suitable in many applications as opposed to assuming a Euclidean metric 
+that estimate a parametric model respecting the underlying Riemannian metric are more suitable in many applications,
+as opposed to assuming a Euclidean metric 
 on positively or negatively curved spaces \citep{xie2010statistical, fletcher2007riemannian, jayasumanakernel}. We will make a few simple modifications 
 (for efficiency purposes) to such algorithms and make use of the estimated parameters for follow-up analysis.
 
@@ -52,10 +53,10 @@ on positively or negatively curved spaces \citep{xie2010statistical, fletcher200
 \paragraph{Finding Group-wise Differences.} Assuming that we have a black-box procedure to estimate a parametric model on the $\SPD$ manifold available, 
 in many tasks, such an estimation is merely a segue to other analyses designed to answer scientifically meaningful questions. 
 For example, we are often interested in asking whether the temporally coupled model estimated using the procedure above differs 
-in meaningful ways {\em across} groups induced by a stratification or dichotomous variable (e.g., gender or disease). For instance, is the `slope' in structured response space statistically different 
+in meaningful ways {\em across} groups induced by a stratification or dichotomous variable (e.g., gender or disease). For instance, is the `slope' in a structured response space statistically different 
 across education level or body mass index? 
 %in if this model differs significantly across two groups.
-While the body of work for graphical model estimation is mature, the literature describing hypothesis tests in this
+While existing work in graphical model estimation is mature, the literature describing hypothesis tests in this
 regime \citep{diffnet,belilovsky2015hypothesis}
 is relatively nascent.
 %When considering a single graphical model for each group, \cite{diffnet} propose a framework for two sample testing to discover differences in biological network structures.
@@ -76,7 +77,7 @@ to begin with, e.g., healthy individuals with presence or absence of a genetic m
 effect sizes are likely to be poor.
 Here, while the trends identified on the {\em full} precision matrix may still be different (i.e., there may be a {\em real} signal 
 associated with a grouping variable), 
-they may not be strong enough to survive significance thresholds. Ideally, what we need here are analogs of the widely used ``scan statistics'' 
+they may not be strong enough to survive significance thresholds. Ideally, what we need here are analogs of widely used ``scan statistics'' 
 for our hypothesis testing formulations for temporal graphical models --- to identify which {\em parts of the signal} are promising. 
 Then, even if only a small subset of 
 features were different across groups over all time,
@@ -88,6 +89,7 @@ provides a practical turnkey product for an experimental scientist, and makes up
 %A second key issue we aim to address is that of feature selection. In many medical regimes, the true indicators and dependencies among measured features is unknown. In most analyses feature selection is done manually, generally by the researcher. Structural equation modeling (SEM) in particular is a popular tool which requires the user to choose the features as input for analysis. The first component of SEM requires the \textit{structural model} be specified, that the dependences we wish to determine significant are explicitly stated. Quantitative approaches for feature selection  (cite) have been looked at in machine learning. (elaborate)... In the case of image analysis, scan statistics have been used as a measure to detect regions of high correlation between images (cite what Ming cites). These scan statistics, however, require a selection of a subregion of the image or some strong heuristic to make the problem of searching over all possible window sizes tractable. Recently (ming paper) were able to polynomially bound the number of regions needed to detect highly correlated regions with high probability. Motivated by their work, we attempt to solve a parallel problem. In the case of feature selection among high-dimensional covariance matrices, we aim to identify a subset of features such that the evolution of the correlation matrix is significantly different among two groups.
 
 \input{3_covtraj/grenander.tex}
+
 Concurrent to this work, \cite{su2014statistical,zhang2018rate} have developed similar methods of analyzing the statistical properties of trajectories on the $\SPD(n)$ manifold via the transported square-root vector field. While here we focus on a simple approach to enable localization, these developments can be incorporated into this construction.
 
 Briefly, we provide \textbf{(i)} a simple and efficient parametric procedure for modeling temporally evolving graphical models, \textbf{(ii)} a 

@@ -11,8 +11,6 @@ procedure with 50 features averaged over 100 runs, where both the true number of
 and the number of samples per group, $n$, were varied. 
 As expected, our recovery rate increases nicely 
 as a function of the number of samples $n$ and decreases as the size of region of change $p_t$ is increased when $n$ is held constant.
-
-
 	
 We compare our model to baseline methods that may be used in practice for the foregoing 
 group difference hypothesis test. In standard applications, general linear models (GLMs) are often the first line of attack. 
@@ -29,8 +27,8 @@ and must correct for multiple testing when testing different models, at least pa
 \begin{figure}
 	\begin{center}
 		\includegraphics[width=\textwidth]{3_covtraj/figs/sim_results.pdf}
-		\caption[Synthetic hypothesis testing true positive rates]{\label{fg:sim_graphs}{\footnotesize Correct null hypothesis rejections over 100 runs for three models. For $p = 50$ features, each plot shows the rejection rate
-		for $p_t \in \{4, 8, 20\}$ (from left to right) respectively as a function of the number of sample points.} }
+		\caption[Synthetic hypothesis testing true positive rates]{\label{fg:sim_graphs}Correct null hypothesis rejections over 100 runs for three models. For $p = 50$ features, each plot shows the rejection rate
+		for $p_t \in \{4, 8, 20\}$ (from left to right) respectively as a function of the number of sample points.}
 	\end{center}
 \end{figure}
 %	
@@ -55,6 +53,7 @@ and must correct for multiple testing when testing different models, at least pa
 		\end{center}
 	}
 \end{table}
+\todo{ch3: check table style in more recent chapters}
 Figure \ref{fg:sim_graphs} shows the value of our method over these models. For the interaction GLM case, we randomly select interaction terms to include in the GLM, with size $p_t$ (the ground truth number of variables in the interaction). In this way, we approximate the effect of an oracle specifying to the GLM which terms may describe the underlying interaction. 
 We report the fraction of significance tests where a significance threshold 
 of $p \leq 0.05$ was found for each model, averaged over 100 runs. 

@@ -12,7 +12,7 @@ To this end, we consider the following global hypothesis testing problem
 \begin{equation*}
 H_0: \forall R, \Bbeta_1^R=\Bbeta_2^R \quad vs. \quad H_1: \exists R, \Bbeta_1^R\ne\Bbeta_2^R,
 \end{equation*}       
-where $\beta$ denotes the slope and $R$ is the \textbf{region of the covariance matrix}
+where $\Bbeta$ denotes the slope and $R$ is the \textbf{region of the covariance matrix}
 {\em which only includes the relevant features}, see Fig. \ref{fg:ball}.
 It turns out that by adapting {\em Scan statistics} \citep{fan2012control, arias2011detection}, we will be able to exclude the effect of irrelevant regions of the covariance 
 matrix in the calculated trajectories. 
@@ -29,7 +29,7 @@ a local statistic $L_R$, e.g., an average or a response to a convolution filter.
 %a small window over the data, calculating some local statistic (number of events for a
 %point pattern, perhaps, or average pixel value for an image) for each window. 
 Then, the window can be raster scanned at various locations in the image ($\cR$) and the maximum 
-over the set of local statistics can be called the scan statistic. 
+over the set of local statistics is called the scan statistic. 
 %The  
 %The supremum
 %or maximum of these locality statistics is known as the scan statistic, denoted M(X).
@@ -63,7 +63,7 @@ As we will describe shortly, it is in the context of this statistic where we uti
 %In our setting, we can take advantage 
 %a natural sparse graph structure which is estimated by graphical lasso in the previous section. 
 
-Let $G:=(\cV,E)$ be a graph over the features (represented in the covariance matrix) with vertex set $\cV$ and edge set $E$. 
+Let $G:=(\cV,E)$ be a graph over the features (represented in the covariance matrix) with vertex set $\cV$ (to avoid overlap with tangent vectors) and edge set $E$. 
 We define the structured region $R \subseteq G$ as a connected subgraph of $G$ corresponding to the 
 selection of those vertices as our feature subset (block of the covariance matrix, see Fig. \ref{fg:ball}). 
 A natural question is whether such an enumeration is tractable 
@@ -78,7 +78,7 @@ Based on this observation, we assume that the true localized subgraph is a ``bal
 \begin{equation}
 \cR=\left\{B(v,r):v\in \cV\ {\rm and}\ r\in \NN\right\}
 \end{equation}
-where the ball subgraph $B(v,r):=\{v^\prime \in V:d(v,v^\prime)\le r\}$, and $d(v,v^\prime)$ is the minimum length path connecting $v$ and $v^\prime$.
+where the ball subgraph $B(v,r):=\{v^\prime \in \cV:d(v,v^\prime)\le r\}$, and $d(v,v^\prime)$ is the minimum length path connecting $v$ and $v^\prime$.
 \end{definition}
 %\textbf{Ball subgraph.} The collection of subgraphs of interest can be defined as $\cR=\left\{B(v,r):v\in \mV\ {\rm and}\ r\in \NN\right\}$,
 %where the ball subgraph $B(v,r):=\{v^\prime \in V:d(v,v^\prime)\le r\}$, and $d(v,v^\prime)$ is the minimum length path connecting $v$ and $v^\prime$. 
@@ -160,7 +160,7 @@ our slopes $\Bbeta_g^R$ correspond to the subset of slopes from features in $R$,
 \begin{align}
 (\hat{\Bbeta}_1^R - \hat{\Bbeta}_2^R)\Sigma_R^{-1}(\hat{\Bbeta}_1^R - \hat{\Bbeta}_2^R) \sim \chi_{|E(R)|}^2,
 \end{align}
-where $\Sigma_R^{-1}$ is the covariance matrix of $\hat{\Bbeta_1^R} - \hat{\Bbeta_2^R}$. With a normal noise assumption, this covariance will 
+where $\Sigma_R^{-1}$ is the covariance matrix of $\hat{\Bbeta_1^R} - \hat{\Bbeta_2^R}$, and $E(R)$ denotes the number of edges among vertices in the subgraph $R$. With a normal noise assumption, this covariance will 
 be identity and the statistic would simply be the $\ell_2$-norm difference as in the classical analysis. 
 To make the statistics comparable across {\em different sizes}, we use the standardized version of a $\chi_{|E(R)|}^2$ distribution,
 {\small\begin{align}\label{eq:LRstat}
@@ -332,7 +332,7 @@ With this assumption, we have the following result for the $\epsilon$-covering n
 	    N(A,\epsilon)\le C_{H,S}\frac{|E|}{ A}\left(\frac{1}{ \epsilon}\right)^{S+1}.
 	\end{equation}}
 \end{lemma}
-The proof of this result follows from our ball-subgraph construction and our Avocado assumption and provided in the Appendix.
+The proof of this result follows from our ball-subgraph construction and our Avocado assumption and is provided in the Appendix.
 
 Intuitively, this result upper bounds the number of graphs that are necessary to search over to completely exhaust the search space of subgraphs. With this result, we can now construct a suitable size correction. 
 Following the work of \cite{walther2010optimal} and \cite{wang2016structured}, we can increase the power of our test by using the following statistic:
@@ -403,5 +403,5 @@ and under the alternative hypothesis when \eqref{eq:sigcond} is satisfied, the t
 %{\color{red} maybe refer to the video again?}{\color{blue} I think a flow chart of how the whole algorithm work may be helpful. Otherwise, it's difficult for audiences to get the idea if we only mention the test statistics and Jeng's paper.}
 With these guarantees, our full workflow is as follows. First, we use an oracle procedure to generate a graph over our features 
 that roughly captures the conditional independences. Any procedure that provides a conditional independence graph is sufficient. 
-Next, for each ball subgraph over this graph, we compute the Longitudinal-Covariance GLM over these features for both groups, and compute the statistics outlined in \S\ref{sec:hyp-test}. We then compute the size-corrected statistic, and compare against the single critical value. For all regions that pass this threshold, we apply the procedure from \cite{jeng2010optimal}. This workflow shows how to conduct hypothesis tests on temporal trends of large covariance matrices, with improved 
+Next, for each ball subgraph over this graph, we compute the Longitudinal-Covariance GLM over these features for both groups, and compute the statistics outlined in Section \ref{sec:hyp-test}. We then compute the size-corrected statistic, and compare against the single critical value. For all regions that pass this threshold, we apply the procedure from \cite{jeng2010optimal}. This workflow shows how to conduct hypothesis tests on temporal trends of large covariance matrices, with improved 
 power and bounded Type 1 error. Additional implementation details can be found in the Appendix.

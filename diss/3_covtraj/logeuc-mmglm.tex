@@ -1,4 +1,4 @@
-Several regression models for manifold-valued data have been proposed recently, a majority of 
+Several regression models for manifold-valued data have been proposed, a majority of 
 which are nonparametric \citep{jayasumanakernel,banerjee2015nonlinear}. 
 %             , and make use of various distance metrics.
 Because of the longitudinal nature of our dataset (and recruitment considerations in neuroimaging studies),
@@ -23,7 +23,7 @@ Let $x$ and $y$ be vectors in $\RR^p$ and $\RR^{p'}$ respectively.
 	\end{split}
 	\label{eq:generallinear}
 	\end{equation}}
-where $\beta^0$, $\beta^{i}$ and the error $\epsilon$ are in $\RR^{p'}$ and $x = [x^1 \ldots x^p ]^{T}$ are the 
+where $\beta^0$, $\beta^{i}$ and the error $\epsilon$ are in $\RR^{p}$ and $x = [x^1 \ldots x^p ]^{T}$ are the 
 predictor variables.
 \end{definition}
 Henceforth, we will use the terms \textit{covariate} and \textit{predictor} interchangeably to describe those specific features we wish to control for in our model (e.g., time-points in our experiments).
@@ -36,13 +36,13 @@ For manifold-valued data, we adapt the formulation proposed by \cite{hjkimcvpr20
 	\end{split}
 	\label{eq:multigr}
 	\end{equation}}
-where $\BV x_i \defeq \sum_{j=1}^{n}V^j x_{i}^{j}$ and $d(\cdot, \cdot)$ is the geodesic distance between $\hat{y}_i:=\EXP(b, \textbf{V} x_i)$ and $y_i$. 
+where $\BV x_i \defeq \sum_{j=1}^{n}V^j x_{i}^{j}$, and $d(\cdot, \cdot)$ is the geodesic distance between $\hat{y}_i:=\EXP(b, \textbf{V} x_i)$ and $y_i$. 
 \end{definition}
 This formulation generalizes \eqref{eq:generallinear}, by replacing the intercept $\beta^0$ and each vector $\beta^j$ for a covariate with a 
 base point $b \in \Mc$ and a geodesic basis $V^j \in T_{b}\Mc$ respectively. The geodesic basis $V^j$ at $b$ parameterizes a geodesic curve $\EXP(b,V^jx^j)$.
 %for a manifold-valued \textit{dependent} variable is,
 %It is clear that in MMGLM each covariate parameterizes a geodesic curve $\EXP(p, v^j x_i^j)$ on $\Mc$. 
-Intuitively, this model is a `generalized' linear model with the inverse exponential map $\EXP^{-1}$ (or logarithm map $\LOG$) as a 
+Intuitively, this model is a ``generalized'' linear model with the inverse exponential map $\EXP^{-1}$ (or logarithm map $\LOG$) as a 
 `link' function \citep{hjkimcvpr2014,cornea2016regression}. When the covariate/predictors are univariate, we will obtain a single geodesic curve, modeled via 
 the so-called Geodesic Regression \citep{fletcher2013geodesic}.
 
@@ -55,14 +55,14 @@ Motivated by these considerations, we use a so-called log-Euclidean approximate 
 
 Recall that in classical ordinary least squares (OLS), 
 the regression curve goes through the mean of covariates and response variables, i.e., $y-\bar{y} = \beta(x-\bar{x})$.
-Similarly, we assume that geodesic curves go through the mean of response variables on the manifold. Then, the base point, or intercept, ``$b$'' in \eqref{eq:multigr} can be approximated by the {\em manifold-valued mean of the sample points}, the Karcher mean \citep{karcher1977riemannian}. The propositions derived from \citep{hjkimcvpr2014} lead directly to the following. 
+Similarly, we assume that geodesic curves go through the mean of response variables on the manifold. Then, the base point, or intercept, ``$b$'' in \eqref{eq:multigr} can be approximated by the {\em manifold-valued mean of the sample points}, the Karcher mean \citep{karcher1977riemannian}. The propositions derived from \cite{hjkimcvpr2014} lead directly to the following. 
 \begin{proposition}
 Let $\bar{C}$ be the unique Karcher mean of a sufficiently close set of covariance matrices that lie on a curve $\Omega$. Then $\bar{C} \in \Omega$, and for some tangent vector $V \in T_{\bar{C}}\Mc$ and each $C$, there exists $x \in \mathbb{R}$ such that $C = \EXP(\bar{C},Vx)$. 	
 \end{proposition}
 This allows us to bypass the fairly involved variational procedure to estimate the base point $b$.
 
 With this approximation of $\hat{b}$ via $\bar{y}$, the remaining variables to optimize are the tangent vectors $\BV$. 
-We do so by taking advantage of log-Euclidean schemes. Once the base point is established as the Karcher mean, each data point on the manifold is projected into the tangent space at that point: $\LOG(\bar{y},y)$. These ``centered" points $\tilde{y}$ are now Euclidean, and if the covariates are centered as well ($\tilde{x}$), a closed form solution exists in the standard form of $\BV = \tilde{y}\tilde{x}^\top (\tilde{x}\tilde{x}^\top)^{-1}$. 
+We do so by taking advantage of log-Euclidean schemes. Once the base point is established as the Karcher mean, each data point on the manifold is projected into the tangent space at that point: $\LOG(\bar{y},y)$. These ``centered" points $\tilde{y}$ are now Euclidean, and if the covariates are centered as well ($\tilde{x}$), a closed form solution exists in the standard form of $\BV = \tilde{y}\tilde{x}^\top (\tilde{x}\tilde{x}^\top)^{-1}$ (ordinary least squares). 
 
 In this setting, it is often assumed that two points $y_1,y_2$ have a distance defined as $d(y_1,y_2) := \| \LOG(y_1,y_2) \|_{y_1} \approx \| \LOG(b,y_1)-\LOG(b,y_2) \|_{b}$. However,
 on $\SPD$ manifolds with an affine invariant metric, each tangent space has a different inner product varying as a function of the base point $b$, i.e., $\langle  u,v\rangle_b:= \tr (b^{-1/2}ub^{-1}vb^{-1/2})$. This makes comparison of trajectories difficult without moving to tangent bundle formulations. This issue is discussed in some detail in \cite{muralidharan2012sasaki,hong2015group}. However, note that

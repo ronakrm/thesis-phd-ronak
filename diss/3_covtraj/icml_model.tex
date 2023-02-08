@@ -6,7 +6,7 @@ to check if the parameters of each group are significantly different:
 H_0: \theta_1 = \theta_2 \quad vs. \quad H_A: \theta_1 \neq \theta_2
 \end{align}
 Recall that in a general linear model (GLM), when testing for mean group differences, the test parameters are the regression slopes from a standard GLM fit. 
-In our setting, the parameters of interest are the population covariance trajectories estimated from the manifold regression in \eqref{eq:multigr}, see Fig. \ref{fig:manifold}. 
+In our setting, the parameters of interest are the population covariance trajectories estimated from the manifold regression in \eqref{eq:multigr}, see Figure \ref{fig:manifold}. 
 While the trajectories and the slopes are related, note that our parameters are estimated {\em on the manifold}. 
 Two unique manifold trajectories, when projected as simple multivariate responses in Euclidean space, may not be significantly different under the GLM hypothesis testing framework, as has been observed by \cite{du2014geodesic}. Returning to our longitudinal trajectory formulation, we have the following na\"ive Covariance GLM:
 \begin{definition} Let $vec(C_{g,t})$ be the vectorized covariance matrix at timepoint $t$ for group $g \in \{1,2\}$. Then the 
@@ -27,14 +27,14 @@ L = (\hat{\Bbeta}_1 - \hat{\Bbeta}_2)\Sigma^{-1}(\hat{\Bbeta}_1 - \hat{\Bbeta}_2
 Knowing that the response space is structured, i.e., our covariance matrices lie on the $\SPD$ manifold, we seek a more appropriate test and corresponding test statistic which 
 adequately captures this knowledge. 
 
-Observe that we can directly apply the manifold regression in \S \ref{sec:mglm} to solve for a linear model on the manifold. 
-That is, we construct the manifold GLM as
+Observe that we can directly apply the manifold regression in Section \ref{sec:mglm} to solve for a linear model on the manifold. 
+That is, we construct the \textit{manifold} GLM as
 \begin{definition} Let $C_{g,t}$ be the covariance matrix at timepoint $t$ for group $g \in \{1,2\}$. Then the 
 	Longitudinal-Covariance GLM (LCGLM) is defined as
 	\begin{align}\label{eq:LCGLM}
 		C_{g,t} = \EXP(b_g, \BV_g t)
 	\end{align}
-	with $b_g$ and $\BV_g$ being the base point and tangent vector respectively, as described in \S\ref{sec:mglm}.
+	with $b_g$ and $\BV_g$ being the base point and tangent vector respectively, as described in Section \ref{sec:mglm}.
 \label{eq:lcglm}
 \end{definition}
 %Evaluating this model in general turns out to be significantly more involved than the standard vectorized approach. 

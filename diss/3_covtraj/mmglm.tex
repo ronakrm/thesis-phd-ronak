@@ -1,4 +1,4 @@
-Our main statistical testing framework, to be described shortly, needs an efficient means for calculating a ``trajectory" of the feature-by-feature interaction graphs over time
+Our main statistical testing framework, to be described shortly, needs an efficient means for calculating a ``trajectory'' of the feature-by-feature interaction graphs over time
 for the given longitudinal data. We now describe a scheme which offers this capability. 
 Let $X_t \in \RR^{n_t,p}$ be the design matrix of all $n_t$ samples at time $t$, where $t \in \{1,\ldots,T\}$, and $T$ is the total number of distinct timepoints.
 We wish to capture the trends in the relationships between the features as a function of $t$. 
@@ -16,7 +16,7 @@ It is well known that classical vector space models tend to be suboptimal
 in the manifold setting (covariance matrices live on the $\SPD$ manifold)
 since they use Euclidean metrics which are defined in the ambient space. For manifold-valued data, Riemannian metrics are shown to be superior in many applications 
 \citep{fletcher2007riemannian,banerjee2015nonlinear,jayasumanakernel,tuzel2007human}, 
-and are increasingly being deployed in machine learning/statistics. 
+and are increasingly being deployed in machine learning and statistics. 
 We will utilize an appropriate statistical model informed by the manifold-structure of the data and 
 then derive a hypothesis 
 testing procedure to detect groupwise difference in the changes of interactions between features in longitudinal analysis.
