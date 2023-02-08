@@ -18,7 +18,7 @@ Hidden states are passed through an output convolutional network consisting of m
 saved from the input CNN.
 Strides were fixed at 1 with a kernel size of $3\times 3 \times 3$,
 with successive convolutions decreasing (increasing) the number of channels by 2.
-Max pooling was applied uniformly to all 3 input channels with a stride of 2. Adam optimization \cite{kingma2014adam} was used for all
+Max pooling was applied uniformly to all 3 input channels with a stride of 2. Adam optimization \citep{kingma2014adam} was used for all
 ADNI experiments, with learning rate $1e^{-3}$, and decay rate $0.9$ and $0.999$ for the first and second moments. TT and OTT layers were fixed with a rank of 64. Batch sizes were fixed at 4.
 %\begin{figure}
 %	\centering
@@ -34,14 +34,8 @@ batch size of 4 in a standard LSTM model with a hidden state size of 2048 (4.3 b
 
 \textbf{Results.}
 Fig \ref{fig:adpos} show the results for a held-out subject in the study using OTT-RNN on a single representative 2D slice,
-with their predicted third timepoint image. While higher levels of compression (lower OTT ranks) lead to ``blocky" reconstructions,
+with their predicted third timepoint image. While higher levels of compression (lower OTT ranks) lead to ``blocky'' reconstructions,
 our model is still able to identify boundaries of edges between low and high probabililty voxels.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=\columnwidth]{4_ott/figs/Hollywood2_samples.png}
-	\caption{\label{fig:hollywood} Sample sequences from the Hollywood2 dataset. Labels are (Top) Answer Phone, (Middle) Drive Car, and (Bottom) Get Out Car.}
-\end{figure}
 
 %
 %\begin{figure}[t]
@@ -85,7 +79,7 @@ categorical diagnoses can be seen as a noisy summary measure of decline.
 We predict a real-valued measure collected at each timepoint.
 %The Alzheimer's Disease Assessment Scale-Cognition (ADAS-Cog) has been the most widely used neuropsychological assessment in the research of Alzheimer's Disease, particularly for its design in identifying individuals who may be strong recipients of intervention \cite{skinner2012alzheimer}.
 The Rey Auditory Verbal Learning Test (RAVLT) evaluates a large variety of cognitive
-functions, including short and long term memory, cognitive function, and learning ability \cite{schmidt1996rey}, and
+functions, including short and long term memory, cognitive function, and learning ability \citep{schmidt1996rey}, and
 has been identified as a strong indicator for developing AD pathology. We train both TT and OTT models with dropout for 200 epochs.
 
 \textbf{Results.} Figure \ref{fig:loss} (left) shows the results of this analysis.
@@ -106,7 +100,7 @@ Broad application of deep learning models in neuroimaging remains limited, namel
 %Aleatoric uncertainty, or uncertainty that comes from noisy data or observations, is typically associated with sources external to the learning task. 
 %There have been a number of recent approaches in quantifying \textit{Epistemic uncertainty}, or uncertainty resulting from the model definition or its parameters.
 %However, many of these require explicit modeling of conditional distributions: infeasible for networks deployed in high-dimensional settings.
-MC Dropout \cite{gal2016dropout}, approximates model (epistemic) uncertainty by using dropout \textit{at prediction time}. Simulating an ensemble of networks with different structures can yield direct estimates of uncertainty.
+MC Dropout \citep{gal2016dropout}, approximates model (epistemic) uncertainty by using dropout \textit{at prediction time}. Simulating an ensemble of networks with different structures can yield direct estimates of uncertainty.
 Obtaining good measures of this uncertainty requires sampling all parameters a significant number of times: large networks may require many samples before a reasonable uncertainty estimate.
 %Monte Carlo Dropout \cite{gal2016dropout} has proven to be an effective tool in measuring model uncertainty \textit{at prediction time}. 
 %Simulating an ensemble of networks with different structures can yield direct estimates of uncertainty.
@@ -116,7 +110,7 @@ Using tensor train constructions allows us to feasibly compute an estimate of un
 
 \textbf{Results.} Figure \ref{fig:loss} (right)
 shows
-95\% interval widths computed over 100 MC Dropout instantiations, averaged over individuals in the validation set. The advantage of our compressed orthogonal construction is clear, resulting in smaller confidence intervals compared to the standard TT decomposition. 
+95\% interval widths computed over 100 MC Dropout instantiations, averaged over individuals in the validation set. The advantage of our compressed orthogonal construction is clear, resulting in tighter confidence intervals compared to the standard TT decomposition. 
 
 %results of learning the TT and OTT model for the cognition prediction task described above. For the two models, learned using an OTT hidden layer map and a TT hidden layer map, we construct 95\% confidence intervals using MC Dropout with a dropout rate of $25\%$, and sampling rate of 100.
 

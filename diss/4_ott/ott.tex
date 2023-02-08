@@ -1,37 +1,38 @@
 \section{Orthogonal Tensor Trains}\label{sec:ott}
-As described in Chapter~\ref{chap:bknd}, a number of TT operations with respect to approximation and projection require computing the QR decomposition of matricized cores. In the applications for which tensor trains were originally developed, these operations were necessary \citep{oseledets2011tensor,klus2018tensor}. For modern neural network applications, where the tensor operator may be our target of learning, it may be sufficient to treat each matrix product as its own variable, and through the standard TT decomposition learn the cores along the \textbf{product of Stiefels}.
+Recall from Chapter~\ref{chap:bknd} that a tensor $X$ can be efficiently represented and operated on via the tensor train decomposition.
+As described, a number of tensor train operations with respect to approximation and projection require computing the QR decomposition of matricized cores. In the applications for which tensor trains were originally developed, these operations were necessary \citep{oseledets2011tensor,klus2018tensor}. For modern neural network applications, where the tensor operator may be our target of \textit{learning}, it may be sufficient to treat each matrix product as its own variable, and through the standard TT decomposition learn the cores along the \textbf{product of Stiefels}.
 
-A na\"ive approach may orthogonalize the reshaped cores, and progressively push the upper triangular part of the core decomposition into the next core, resulting in the following exact formulation with appropriate reshaping:
+A na\"ive approach may orthogonalize the reshaped cores (see \eqref{eq:TTcoreMatricize}), and progressively push the upper triangular part of the core decomposition into the next core, resulting in the following exact formulation with appropriate reshaping:
 \begin{align}
 %    X(x_1,\ldots,x_d) &= A_1(x_1)\cdots A_d(x_d) \\
-    \cX &= A_1^L A_2^L\cdots A_d^L \nonumber\\
+    T &= A_1^L A_2^L\cdots A_d^L \nonumber\\
     &= Q_1^L R_1 A_2^L \cdots A_d^L = Q_1^L \left(R_1 A_2^L\right) \cdots A_d^L \nonumber\\ 
     &= Q_1^L Q_2^L R_2 \cdots A_d^L \nonumber\\
     &= Q_1^L \cdots Q_d^L R_d \label{eq:eott}
 \end{align}
 where $ [Q_1^L, R_1] = qr(A_1^L) $, $ [Q_i^L, R_i] = qr(R_{i-1} A_i^L ), \ i \in \left \{2,\ldots,d \right \}$, and $ Q_i^L \in \RR^{r_{i-1} n_i \times r_i}$ with $R_i \in \RR^{r_i \times r_i}$. 
-Each $Q_i^L$ is on a Stiefel given by $\ST(r_i, r_{i-1}n_i)$. Here, the number of components in the product space of Stiefels is $d$, with the `residual' $R_d \in \RR$. This decomposition is exact and only requires a reshaping of the tensor cores.
+Each $Q_i^L$ is a point on the Stiefel manifold given by $\ST(r_i, r_{i-1}n_i)$. Here, the number of components in the product space of Stiefels is $d$, with the eventual `residual' $R_d \in \RR$. This decomposition is exact and only requires a reshaping of the tensor cores.
 If all $r_i = r, n_i = n$,
 then the total number of parameters needed is
  % the number of parameters becomes 
 %is $ d n r^2 - (d-1)\frac{r^2 + r}{2}$,
-%\begin{align*}
-%    &=\sum_{i=1}^d \left[nr^2 - \frac{r(r + 1)}{2}\right] + \frac{r(r+1)}{2} \\
-%    &= d n r^2 - d\frac{r(r + 1)}{2} + \frac{r(r+1)}{2} \\
-$    d n r^2 - (d-1)\frac{r^2 + r}{2},$
-%\end{align*}
+\begin{align*}
+    &\sum_{i=1}^d \left[nr^2 - \frac{r(r + 1)}{2}\right] + \frac{r(r+1)}{2} \\
+    &= d n r^2 - d\frac{r(r + 1)}{2} + \frac{r(r+1)}{2} \\
+    &= d n r^2 - (d-1)\frac{r^2 + r}{2},
+\end{align*}
 %\begin{align}
 %    \sum_{i=1}^d \left[r_{i-1}n_i r_i - \frac{r_i(r_i + 1)}{2}\right] + \frac{r_d(r_d+1)}{2}
 %\end{align}
 compared to the full format with $dnr^2$ total parameters.
-It is important to note that in this formulation, the cores themselves are \textbf{not} orthogonal. Reshaping is required to bring the matricized form back to TT-cores of size $r_{i-1} \times r_i$, and in practice it is not easy to perform simple TT-tensor multiplication in this form. Additionally, we now need to optimize over Stiefel manifolds of a larger size, namely $O(nr^2)$.
+It is important to note that in this formulation, the TT cores themselves are \textbf{not} orthogonal. Reshaping is required to bring the matricized form back to TT-cores of size $r_{i-1} \times r_i$, and in practice it is not easy to perform simple TT-tensor multiplication in this form. Additionally, we now need to optimize over Stiefel manifolds of a larger size, namely $O(nr^2)$.
 
 \subsection{A Nicer Tensor Train Approximation}
 Ideally, we would prefer a construction which keeps the standard TT-core format and involves optimization over ``smaller'' Stiefel manifolds. Consider the following representation, in which each TT-core itself is orthogonal.
 \begin{definition}\label{def:ott}(Orthogonal Tensor Train)
 The Orthogonal Tensor Train is defined as
 \begin{align}
-\cX(x_1,\ldots,x_d) = Q_1(x_1) \cdots Q_d(x_d),
+T(x_1,\ldots,x_d) = Q_1(x_1) \cdots Q_d(x_d),
 \end{align}
 where each $Q_i(x_i)$ lies on the Stiefel $\ST(m_i, M_i)$, and $m_i = \min(r_{i-1},r_i)$, $\ M_i = \max(r_{i-1},r_i)$.
 \end{definition}
@@ -48,37 +49,20 @@ If $r_i=r_{i+1}$, then $\ST(m_i, M_i) = SO(m_i)$, where $SO$ is the special orth
 
 This construction can be seen as an approximation to the full tensor train format, in which the upper triangular part of each core is set to identity:
 \begin{align}
-    &\cX(x_1,\ldots,x_d) = A_1(x_1)\cdots A_d(x_d) \nonumber\\ &= Q_1(x_1)R_1(x_1)\cdots Q_d(x_d)R_d(X_d) \nonumber\\
+    T(x_1,\ldots,x_d) &= A_1(x_1)\cdots A_d(x_d) \nonumber\\ &= Q_1(x_1)R_1(x_1)\cdots Q_d(x_d)R_d(X_d) \nonumber\\
     &\approx Q_1(x_1) \cdots Q_d(x_d)
     %&= \sum_{r_0}\cdots\sum_{r_d} A_1(x_1)[r_0,r_1]\cdots A_d(x_d)[r_{d-1},r_d] \\
 \end{align}
 
 %\begin{remark}
 \paragraph{Is this useful?} It is not obvious that this construction is useful at all. How much is lost through this approximation? What is gained by using this construction? In what follows, we demonstrate that we can approximate any tensor with bounded norm using an OTT, and that with a full rank assumption and a trainable constant, our formulation admits a solution with $\epsilon$ error.
-\begin{algorithm}
-	\caption{Stochastic OTT Optimization}\label{alg:ott_opt}
-	\SetAlgoLined
-	\DontPrintSemicolon
-	\For{t=1,\ldots,T}{
-		$g_t := \frac{df}{d\cW} f(X^{mini-batch})$\\
-		\For{\text{Core} $Q^i_t \in \cW_t$ \text{and Core Gradient} $g^i_t \in g_t$}{
-			$G^i_t = P_{T_{\cW_t}M}(g^i_t)$ \Comment*[r]{Projection Step}
-			$Q^i_{t+1} \leftarrow \Exp(Q^i_t, G^i_t)$ \Comment*[r]{Retraction Step}
-		}
-	}
-\end{algorithm}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.75\columnwidth,trim={0 1.5cm 0 0},clip]{4_ott/figs/stiefel/stiefel_update.pdf}
-	\caption{\label{fig:ott_opt} Gradient descent algorithm using the projection and retraction on the Stiefel manifold. The update is applied to each core individually, allowing for smaller manifold operations that would otherwise scale poorly with dimension.}
-\end{figure}
 
 \subsection{Theoretical Analysis}
-We start by reshaping any tensor $\cX$ to a matrix $X^M$ by grouping the modes into two groups, $X^M \in \RR^{n \times m}$. We may fix this arbitrary matrix as $X^M = A \in \RR^{n \times m}$.
+We start by reshaping any tensor $T$ to a matrix $T^M$ by grouping the modes into two groups, $T^M \in \RR^{n \times m}$. We may fix this arbitrary matrix as $T^M = A \in \RR^{n \times m}$.
 
 \begin{proposition}
 \label{theory:prop1}
-Given a 2D tensor $A\in \RR^{m\times m}$, $A_{ij} \in [-1,1]$, there exists sets of unit vectors, $\left\{\mathbf{x}_i\right\}_{i=1}^m\subset \RR^m$, $\left\{\mathbf{y}_j\right\}_{j=1}^m\subset \RR^m$ such that, $\forall \epsilon > 0$, $\|A - \widetilde{A}\| < \epsilon$, where, $\forall i,j,\: \widetilde{A}_{ij}=\mathbf{x}_i^t\mathbf{y}_j$.
+Given a 2D tensor $A\in \RR^{m\times m}$, $A_{ij} \in [-1,1]$, there exist sets of unit vectors, $\left\{\mathbf{x}_i\right\}_{i=1}^m\subset \RR^m$, $\left\{\mathbf{y}_j\right\}_{j=1}^m\subset \RR^m$ such that, $\forall \epsilon > 0$, $\|A - \widetilde{A}\| < \epsilon$, where, $\forall i,j,\: \widetilde{A}_{ij}=\mathbf{x}_i^t\mathbf{y}_j$.
 \end{proposition}
 \begin{proof}
   Let $A=USV^T$ be the SVD of $A$. Let $\epsilon > 0$, we will perturb $S$ along the diagonal to generate $\widetilde{S}$ such that, $\|S - \widetilde{S}\| < \epsilon$. Let $X=\left[\mathbf{x}_i\right]$ and $Y=\left[\mathbf{y}_i\right]$. We will first give an algorithm to generate $\widetilde{X}$ and $\widetilde{Y}$ with each
@@ -114,7 +98,7 @@ Given a 2D tensor $A\in \RR^{m\times m}$, with $\|A\|_F\leq 1$, there exists a s
 
 \begin{example}Applying the above result to OTT, equivalence is relatively straightforward to show. 
 %\begin{example}
-Consider the problem of approximating a 4 dimensional tensor $\cX$ with $n_{1,2,3,4}=n=r$. Let $Q_1(x_1) \in \RR^{1\times n}, Q_2(x_2), Q_3(x_3) \in \RR^{n \times n}$, and $Q_4(x_4) \in \RR^{n \times 1}$. By Corollary \ref{theory:corr2} we can write two vectors indexed by $x_1,x_2$ and $x_3,x_4$ as $X^A (x_1,x_2) = Q_1(x_1)^\top Q_2(x_2)$ and  $X^B(x_3,x_4) = Q_3(x_3)Q_4(x_4)$ respectively. The multiplication of these vectors $X^A,X^B$ again yields a single element indexed by $x_1,x_2,x_3,x_4$, which can take any value between $[-1,1]$ by Proposition \ref{theory:prop1}. Then clearly the cores $Q$ form an equivalent definition of $\cX$.
+Consider the problem of approximating a 4 dimensional tensor $T$ with $n_{1,2,3,4}=n=r$. Let $Q_1(x_1) \in \RR^{1\times n}, Q_2(x_2), Q_3(x_3) \in \RR^{n \times n}$, and $Q_4(x_4) \in \RR^{n \times 1}$. By Corollary \ref{theory:corr2} we can write two vectors indexed by $x_1,x_2$ and $x_3,x_4$ as $T^A (x_1,x_2) = Q_1(x_1)^\top Q_2(x_2)$ and  $T^B(x_3,x_4) = Q_3(x_3)Q_4(x_4)$ respectively. The multiplication of these vectors $T^A,T^B$ again yields a single element indexed by $x_1,x_2,x_3,x_4$, which can take any value between $[-1,1]$ by Proposition \ref{theory:prop1}. Then clearly the cores $Q$ form an equivalent definition of $\cX$.
 %\end{example}
 \end{example}
 
@@ -125,21 +109,36 @@ Applying this to our OTT format, it immediately follows that with  the addition 
 It remains open to theoretically analyze the degradation of the approximation as $r<n$.
 
 \subsection{Efficient Stiefel Optimization}\label{sec:opt}
-Here, we describe how to compute an OTT approximation of a tensor $\cW$, which can be posed as the following minimization problem.
-\vspace{-5pt}
+Here, we describe how to compute an OTT approximation of a tensor $T$, which can be posed as the following minimization problem.
 \begin{align}
-\min_{\left\{Q_i(x_i)\right\}_{i=1}^d} E &= \sum_{\left\{x_i\right\}} \|\cW(x_1,\ldots,x_d) - Q_1(x_1)\cdots Q_d(x_d)\| \notag \\ \quad & \mbox{s.t.} \quad Q_i(x_i)^\top Q_i(x_i) = I_p \quad \forall i, x_i
+\min_{\left\{Q_i(x_i)\right\}_{i=1}^d} E &= \sum_{\left\{x_i\right\}} \|T(x_1,\ldots,x_d) - Q_1(x_1)\cdots Q_d(x_d)\| \notag \\ \quad & \mbox{s.t.} \quad Q_i(x_i)^\top Q_i(x_i) = I_p \quad \forall i, x_i
 \end{align}
-Notice that this optimization is difficult because of the orthogonality constraint \cite{edelman1998geometry,collins2014spectral}. An efficient way to solve this is by doing the optimization on the product of (compact) Stiefel manifolds: let it be denoted by $\mathcal{P}_S$. We will use the product $\ell_2$ metric on this product space. Given $x_1, \cdots x_d$, we perform
+Notice that this optimization is difficult because of the orthogonality constraint \citep{edelman1998geometry,collins2014spectral}. An efficient way to solve this is by doing the optimization on the product of (compact) Stiefel manifolds: let it be denoted by $\mathcal{P}_S$. We will use the product $\ell_2$ metric on this product space. Given $x_1, \cdots x_d$, we perform
 an optimization on the product of Stiefel manifolds to solve for $\{Q_i(x_i)\}$ for $i\in[1\ldots d]$. We use a Riemannian gradient descent technique on this product of Stiefel manifolds $\mathcal{P}_S$. Given $\{Q^t_i(x_i)\}$ as the solution of the $t^{th}$ step, the $(t+1)^{th}$ solution, $\{Q^{t+1}_i(x_i)\}$, can be computed using 
-\vspace{-5pt}
 \begin{equation}
-\left\{Q^{t+1}_i(x_i)\right\} = \text{Exp}\left(\left\{Q^{t}_i(x_i)\right\}, \frac{\partial E}{\partial \left\{Q^{t}_j(x_j)\right\}}\right),
+\left\{Q^{t+1}_i(x_i)\right\} = \EXP\left(\left\{Q^{t}_i(x_i)\right\}, \frac{\partial E}{\partial \left\{Q^{t}_j(x_j)\right\}}\right),
 \end{equation}
-where $\text{Exp}$ is the Riemannian Exponential map on $\mathcal{P}_S$. On $\mathcal{P}_S$, computation of Riemannian Exponential map is not tractable and needs an optimization, hence we
+where $\EXP$ is the Riemannian Exponential map on $\mathcal{P}_S$. On $\mathcal{P}_S$, computation of Riemannian Exponential map is not tractable and needs an optimization, hence we
 use a Riemannian retraction map as proposed in \cite{6340355}.
+\begin{figure}
+	\centering
+	\includegraphics[width=0.75\columnwidth,trim={0 1.5cm 0 0},clip]{4_ott/figs/stiefel/stiefel_update.pdf}
+	\caption[Gradient descent on Stiefels]{\label{fig:ott_opt} Gradient descent algorithm using the projection and retraction on the Stiefel manifold. The update is applied to each core individually, allowing for smaller manifold operations that would otherwise scale poorly with dimension.}
+\end{figure}
 
-Figure \ref{fig:ott_opt} summarizes this procedure. For each orthogonal core, the gradient is computed with respect to the Euclidean ambient space and projected to the tangent space at the current iterate. The update is constructed by moving back to the Stiefel with the Riemannian exponential map.
+Figure~\ref{fig:ott_opt} and Algorithm~\ref{alg:ott_opt} summarize this procedure. For each orthogonal core, the gradient is computed with respect to the Euclidean ambient space and projected to the tangent space at the current iterate. The update is constructed by moving back to the Stiefel with the Riemannian exponential map.
+\begin{algorithm}
+	\caption{Stochastic OTT Optimization}\label{alg:ott_opt}
+	\SetAlgoLined
+	\DontPrintSemicolon
+	\For{t=1,\ldots,T}{
+		$g_t := \frac{df}{d\cW} f(X^{mini-batch})$\\
+		\For{\text{Core} $Q^i_t \in \cW_t$ \text{and Core Gradient} $g^i_t \in g_t$}{
+			$G^i_t = P_{T_{\cW_t}M}(g^i_t)$ \Comment*[r]{Projection Step}
+			$Q^i_{t+1} \leftarrow \Exp(Q^i_t, G^i_t)$ \Comment*[r]{Retraction Step}
+		}
+	}
+\end{algorithm}
 
 \subsection{Square Stiefels/SO(n)}
 In practice, when learning an OTT operator, we will primarily be setting the rank to be fixed for all cores.
@@ -168,10 +167,6 @@ In contrast, in our formulation we use the Cayley map as a mapping from $\mathbb
 Algorithm \ref{alg:ott-core} describes the procedure for constructing an OTT-core.
 The Euclidean variable vector $w$ is mapped directly to the upper triangular part, defined as $\triu(\cdot)$, of a new matrix $R$, and by subtracting its transpose,
 we arrive at a skew symmetric matrix $A$. The Cayley map, as described above, maps to our Orthogonal OTT Core. 
-
-\paragraph{Remark.} Note that the Cayley map is not a bijective mapping between $\mathfrak{SO}(n)$ and $\text{SO}(n)$ as the range is not the entire $\text{SO}(n)$. This is because the Cayley map cannot generate matrices with negative eigenvalue(s). Empirically, we do not find this to be an issue when learning the OTT representation directly.
-
-With this efficient approximation in hand, we are able to directly apply our OTT formulation to architectures for a variety of applications.
 \begin{algorithm}
 	\caption{ \label{alg:ott-core} Constructing an OTT Variable}
 	\SetAlgoLined
@@ -179,12 +174,12 @@ With this efficient approximation in hand, we are able to directly apply our OTT
 	\SetKwFunction{FVar}{OTT-Variable}
 	\SetKwProg{Fn}{Function}{:}{}
 	\Fn{\FVar{$d, n_{in}, n_{out}, r$}}{
-       $OTT \leftarrow \emptyset$ \\
-       \For{$i \in 1,\ldots,d$}{
-           \For{$j,k \in 1,\ldots,n_{in}[i],1,\ldots,n_{out}[i]$}{
-                $OTT$.append(OTT-Core($r$)) \\
+		$OTT \leftarrow \emptyset$ \\
+		\For{$i \in 1,\ldots,d$}{
+			\For{$j,k \in 1,\ldots,n_{in}[i],1,\ldots,n_{out}[i]$}{
+				$OTT$.append(OTT-Core($r$)) \\
 			}
-       }
+		}
 		\KwRet{$OTT$}
 	}
 	\SetKwFunction{FCore}{OTT-Core}
@@ -197,3 +192,7 @@ With this efficient approximation in hand, we are able to directly apply our OTT
 		\KwRet{$Q$}
 	}
 \end{algorithm}
+
+\paragraph{Remark.} Note that the Cayley map is not a bijective mapping between $\mathfrak{SO}(n)$ and $\text{SO}(n)$ as the range is not the entire $\text{SO}(n)$. This is because the Cayley map cannot generate matrices with negative eigenvalue(s). Empirically, we do not find this to be an issue when learning the OTT representation directly, and hypothesize this may have knock-on positive qualities enabling better performance at training time.
+
+With this efficient approximation in hand, we are able to directly apply our OTT formulation to architectures for a variety of applications.

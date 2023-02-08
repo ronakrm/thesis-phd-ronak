@@ -43,7 +43,11 @@ This format requires $O(dnr^2)$ storage, but has two major advantages over the C
 \end{figure}
 We denote a tensor operator $\tG$ as a grouping of tensor modes into an ``input" and ``output" list, such that $\tG \in \RR^{(n_1^{in},\times\ldots\times,n_d^{in}) \times (n_1^{out},\times\ldots\times,n_d^{out})}$. This operator $\tG$ can be seen as the TT representation of a matrix $W \in \RR^{(n_1^i\cdots n_d^i) \times (n_1^o\cdots n_d^o)}$. In \cite{novikov2015tensorizing}, authors use this formulation to directly compress the weight layers in neural networks. Cores in the operator are indexed by both an input and output index, i.e., $A_i(x_i,y_i) \in \RR^{r_{i-1}\times r_i}$, where $x_i \in [1,\ldots,n_i^{in}], y_i \in [1,\ldots,n_i^{out}]$.
 
-Common operations upon tensor trains require \textit{matricizing} the cores of the TT format. Here, we define the left matricization of core $A_i(x_i)$ as $A_i^L \in \RR^{r_{i-1}n_i \times r_i} $ and the right matricization similarly.
+Common operations upon tensor trains require \textit{matricizing} the cores of the TT format. Here, we define the left matricization of core $A_i(x_i)$ as
+\begin{align}\label{eq:TTcoreMatricize}
+A_i(x_i) = A_i^L \in \RR^{r_{i-1}n_i \times r_i}
+\end{align}
+and the right matricization similarly.
 Other desirable operations are fully supported by the format as well,
 including most linear algebra operations such as summations,
 multiplications, Frobenius norms,
