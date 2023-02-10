@@ -1,6 +1,6 @@
 \section{Orthogonal Tensor Trains}\label{sec:ott}
 Recall from Chapter~\ref{chap:bknd} that a tensor $X$ can be efficiently represented and operated on via the tensor train decomposition.
-As described, a number of tensor train operations with respect to approximation and projection require computing the QR decomposition of matricized cores. In the applications for which tensor trains were originally developed, these operations were necessary \citep{oseledets2011tensor,klus2018tensor}. For modern neural network applications, where the tensor operator may be our target of \textit{learning}, it may be sufficient to treat each matrix product as its own variable, and through the standard TT decomposition learn the cores along the \textbf{product of Stiefels}.
+As described, a number of tensor train operations with respect to approximation and projection require computing the QR decomposition of matricized cores. In the applications for which tensor trains were originally developed, these operations were necessary \citep{oseledets2011tensor,klus2018tensor}. For modern neural network applications, where the tensor operator may be our target of \textit{learning}, it may be sufficient to treat each matrix product as its own variable, and through the standard TT decomposition learn the cores along the \textbf{product of Stiefel manifolds}.
 
 A na\"ive approach may orthogonalize the reshaped cores (see \eqref{eq:TTcoreMatricize}), and progressively push the upper triangular part of the core decomposition into the next core, resulting in the following exact formulation with appropriate reshaping:
 \begin{align}
@@ -60,6 +60,7 @@ This construction can be seen as an approximation to the full tensor train forma
 \subsection{Theoretical Analysis}
 We start by reshaping any tensor $T$ to a matrix $T^M$ by grouping the modes into two groups, $T^M \in \RR^{n \times m}$. We may fix this arbitrary matrix as $T^M = A \in \RR^{n \times m}$.
 
+\todo{ch4: should proof move to appendix}
 \begin{proposition}
 \label{theory:prop1}
 Given a 2D tensor $A\in \RR^{m\times m}$, $A_{ij} \in [-1,1]$, there exist sets of unit vectors, $\left\{\mathbf{x}_i\right\}_{i=1}^m\subset \RR^m$, $\left\{\mathbf{y}_j\right\}_{j=1}^m\subset \RR^m$ such that, $\forall \epsilon > 0$, $\|A - \widetilde{A}\| < \epsilon$, where, $\forall i,j,\: \widetilde{A}_{ij}=\mathbf{x}_i^t\mathbf{y}_j$.
@@ -118,7 +119,10 @@ an optimization on the product of Stiefel manifolds to solve for $\{Q_i(x_i)\}$ 
 \begin{equation}
 \left\{Q^{t+1}_i(x_i)\right\} = \EXP\left(\left\{Q^{t}_i(x_i)\right\}, \frac{\partial E}{\partial \left\{Q^{t}_j(x_j)\right\}}\right),
 \end{equation}
-where $\EXP$ is the Riemannian Exponential map on $\mathcal{P}_S$. On $\mathcal{P}_S$, computation of Riemannian Exponential map is not tractable and needs an optimization, hence we
+where $\EXP$ is the Riemannian Exponential map on $\mathcal{P}_S$. On $\mathcal{P}_S$, the product of Stiefels, computation of Riemannian Exponential map is not tractable and needs an optimization,
+in contrast to the SPD manifold discussed in Chapter~\ref{chap:covtraj}.
+%, where we needn't compute the maps within an outer optimization scheme.
+Hence, we
 use a Riemannian retraction map as proposed in \cite{6340355}.
 \begin{figure}
 	\centering
@@ -144,7 +148,7 @@ Figure~\ref{fig:ott_opt} and Algorithm~\ref{alg:ott_opt} summarize this procedur
 In practice, when learning an OTT operator, we will primarily be setting the rank to be fixed for all cores.
 The Stiefel manifold, $\ST(n,n)$ with $n=p$ is equal to the special orthogonal group $\text{SO}(n)$.
 The Riemannian Exponential map on $\text{SO}(n)$ is the matrix exponential, computationally intensive to both compute and backpropagate through.
-Hence, we use the Cayley map from $\mathfrak{SO}(n)$ to $\text{SO}(n)$, given by $A \mapsto \left(I-A\right)\left(I+A\right)^{-1}$, where $\mathfrak{SO}(n)$ (the space of $n\times n$ skew-symmetric matrices) is the tangent space of $\text{SO}(n)$ at identity.
+Hence, we use the \textit{Cayley map} from $\mathfrak{SO}(n)$ to $\text{SO}(n)$, given by $A \mapsto \left(I-A\right)\left(I+A\right)^{-1}$, where $\mathfrak{SO}(n)$ (the space of $n\times n$ skew-symmetric matrices) is the tangent space of $\text{SO}(n)$ at identity.
 Although the Cayley map requires a matrix inverse, it is much easier to handle using standard tools
 in modern toolboxes (e.g., TensorFlow, PyTorch).
 %\begin{algorithm}
@@ -193,6 +197,6 @@ we arrive at a skew symmetric matrix $A$. The Cayley map, as described above, ma
 	}
 \end{algorithm}
 
-\paragraph{Remark.} Note that the Cayley map is not a bijective mapping between $\mathfrak{SO}(n)$ and $\text{SO}(n)$ as the range is not the entire $\text{SO}(n)$. This is because the Cayley map cannot generate matrices with negative eigenvalue(s). Empirically, we do not find this to be an issue when learning the OTT representation directly, and hypothesize this may have knock-on positive qualities enabling better performance at training time.
+\paragraph{Remark.} Note that the Cayley map is not a bijective mapping between $\mathfrak{SO}(n)$ and $\text{SO}(n)$ as the range is not the entire $\text{SO}(n)$. This is because the Cayley map cannot generate matrices with negative eigenvalue(s). Empirically, we do not find this to be an issue when learning the OTT representation directly, and hypothesize this may have desirable downstream qualities enabling better performance at training time (positive definiteness is often desirable for fast \textit{convex} optimization).
 
 With this efficient approximation in hand, we are able to directly apply our OTT formulation to architectures for a variety of applications.

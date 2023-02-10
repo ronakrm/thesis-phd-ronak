@@ -1,10 +1,10 @@
 \section{Introduction}\label{sec:intro}
 
-Recurrent Neural networks (RNNs) and its variants are the de facto 
+Recurrent Neural networks (RNNs) and its variants were the de facto 
 tool of choice 
 for modeling sequential data in machine learning and vision.
 %For high-dimensional data, a large problem initially faced by these models included exploding/vanishing gradients. 
-But until only recently, these models have been limited in their ability to model high-dimensional data.
+However, these models have been limited in their ability to model high-dimensional data.
 Part of the reason is that recurrent structures often lead to large model sizes dependent on sequence length, and thus also require an equivalent amount of increased computation.
 While RNNs have been successfully applied to video data in some cases, the strategy 
 requires problem specific innovations because of the large mapping necessary 
@@ -32,13 +32,13 @@ For model-size reduction, both for RNN style networks and otherwise,
 PCA or random projections \citep{ye2005two,bingham2001random} style ``compression" ideas have 
 also been used with varying degrees of success.
 
-An interesting perspective on the effective degrees of freedom afforded 
-by a given network, a surrogate for the actual ``size'' of the architecture, 
-is provided by tensor methods.
+Tensor methods provide
+an interesting perspective on the effective degrees of freedom afforded 
+by a given network, acting as a surrogate for the actual ``size'' of the architecture.
 % and traces its roots to early 
 %results in approximation theory and numerical linear algebra. 
 %distinct but related line of work is on t
-Tensor decomposition based methods have recently been shown to enable low dimensional representations of very high dimensional data \citep{hwangCvpr18}, 
+Decomposition-based methods have been shown to enable low dimensional representations of very high dimensional data \citep{hwangCvpr18,novikov2016exponential}, 
 and while these ideas were known to be effective in the ``shallow" regime much earlier, new results also demonstrate their applicability for deep neural 
 networks. 
 In particular, a number of tensor based methods have been successfully adapted for deep neural network design and compression \citep{cohen2016expressive,zhang2017tucker,yu2017compressing,xiong2019antnets}.
@@ -67,8 +67,9 @@ Our development starts from well known results on tensor decomposition. In parti
 make use of the tensor train representation, which has been shown to be effective in several 
 applications in vision and machine learning. We derive a reformulation of the decomposition using 
 orthogonality constraints and show that while this makes the estimation slightly more challenging, 
-it \textbf{reduces the number of parameters by as much as half}. 
-We present a novel parameter estimation scheme based on Stiefel manifold optimization and demonstrate 
+it reduces the number of parameters needed significantly. 
+With this \textbf{parameter subspace} identified,
+ we present a novel estimation scheme based on Stiefel manifold optimization and demonstrate 
 how the end to end construction yields benefits for convergence and uncertainty estimation. 
 Finally, from the empirical side, we discuss how we enable analysis of and prediction using sequential 3D brain imaging datasets, which to our knowledge is the first such result using 
 deep recurrent architectures. 

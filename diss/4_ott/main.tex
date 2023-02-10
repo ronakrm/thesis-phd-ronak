@@ -1,14 +1,14 @@
 \chapter{Enabling Temporal Neural Networks via Geometric Tensor Representations} \label{chap:ott} 
-The above statistical methods work well with
+The statistical methods in the previous chapter work well with
 multivariate types of data and scale reasonably well with many features.
 However,
 even though we have a linear time scanning procedure,
 if the number of features reaches thousands or more,
 computational feasibility can still be an issue.
-Particularly when we are not dealing with
+Particularly when dealing with
 images,
 using the explicit pixel or voxel-level
-data is still intractable.
+data is intractable.
 In these cases,
 deep learning methods have
 proven to be extremely effective
@@ -23,7 +23,7 @@ grows very large, sometimes linearly
 in the length of the temporal sequence of interest.
 In this chapter, we examine
 a novel tensor decomposition
-that reduces this model size,
+that reduces this model size via a \textbf{parameter subspace selection},
 enabling the modeling of high-dimensional
 temporal medical imaging data
 with reasonable computational resources.

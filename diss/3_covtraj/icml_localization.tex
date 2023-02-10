@@ -4,7 +4,7 @@
 The above procedure provides a precise mechanism to derive a statistic from the group-wise covariance matrix trajectories.
 However, when the effect sizes are poor, any scheme operating on 
 the trajectories of the {\em full covariance matrix} may still fail to identify group differences (as is the case in our experiments). To improve statistical power, localizing the process of computing the trajectories {\em 
-  only to the relevant features} is critical. 
+  only to the relevant features} (subset selection) is critical. 
 %Additionally, it serves as a discovery tool for exploratory analysis.
 %
 %
@@ -177,6 +177,7 @@ For a given structured region $R$, the region-based LCGLM is written as
 \end{equation}}
 where $C_g^R$ is the covariance matrix subblock defined by features included in $R$ for group $g$ ($t_g$ is our univariate predictor, i.e., time).
 \end{definition}
+\todo{ch3: fig: pt+stat pipeline}
 To compare the group trajectories, we first parallel transport each tangent vector to the identity as described in \S\ref{sec:mglm} and then compute the statistic in \eqref{eq:traj} given as $\|\Gamma_{b_1^R \rightarrow I} \BV_1^R - \Gamma_{b_2^R \rightarrow I} \BV_2^R \|_{I}^2$.
 In the case of the product space construction, we apply the test in \eqref{prop_prodstat} to the data subset corresponding to the features 
 in region $R$, with the same correction as in \eqref{eq:LRstat}.
@@ -251,7 +252,7 @@ in the outer region of the ball subgraph, i.e., hard on the inside, soft on the 
 \end{align}}
 \end{assumption}
 We see that this assumption holds for many classes of graphs:
-a ring graph satisfies this condition when $H=1$ and $S=1$ and the 2-d lattice satisfies this condition when $H=1/4$ and $S=2$ (see Fig. \ref{fg:avocado}). 
+a ring graph satisfies this condition when $H=1$ and $S=1$ and the 2-D lattice satisfies this condition when $H=1/4$ and $S=2$ (see Fig. \ref{fg:avocado}). 
 \begin{figure}
 	\begin{center}
 		\scalebox{0.8}
@@ -392,7 +393,7 @@ then as $|E|\to \infty$,
 \label{lm:mainthm}
 \end{theorem}
 The full proof of this result follows a generic chaining argument (see, e.g. \cite{talagrand2006generic}) along with application of 
-concentration inequalities and union bounds, and can be found in the Appendix.
+concentration inequalities and union bounds, and can be found in the Appendix. \todo{ch3: FWER proof appendix reference}
 
 \paragraph{Summary.} At a high level, this result directly characterizes the behavior of $T^*$ under the null hypothesis $H_0$ and 
 the alternative hypothesis $H_1$, respectively. 
@@ -400,6 +401,7 @@ We see that \eqref{eq:criticalvl} implies that $T^*$ can roughly be seen as a co
 and under the alternative hypothesis when \eqref{eq:sigcond} is satisfied, the test based on $T^*$ is consistent, see \eqref{eq:power}. 
 
 \subsection{Workflow for conducting hypothesis tests on temporal trends of graphs}
+\todo{ch3: fig: from presentation, full workflow}
 %{\color{red} maybe refer to the video again?}{\color{blue} I think a flow chart of how the whole algorithm work may be helpful. Otherwise, it's difficult for audiences to get the idea if we only mention the test statistics and Jeng's paper.}
 With these guarantees, our full workflow is as follows. First, we use an oracle procedure to generate a graph over our features 
 that roughly captures the conditional independences. Any procedure that provides a conditional independence graph is sufficient. 
