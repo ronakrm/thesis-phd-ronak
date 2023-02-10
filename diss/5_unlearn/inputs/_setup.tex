@@ -1,11 +1,14 @@
 \begin{figure}
     \centering
     % \includegraphics[height=1.5in,trim={1.5cm 5cm 3cm 3.5cm},clip]{figs/layercnn.pdf}
-    \includegraphics[width=0.475\columnwidth,trim={0cm 12cm 5cm 2.5cm},clip]{5_unlearn/figs/layercnn.png}
-    %\includegraphics[height=2in,trim={7cm 8cm 9cm 7.7cm},clip]{figs/new.pdf}
-    \includegraphics[width=0.425\columnwidth,trim={0cm 1cm 0cm 0cm},clip]{5_unlearn/figs/unlearning_fig.pdf}
-    \caption[Conditionally independent network subsets and efficient unlearning]{\label{fig:main}Large deep learning networks typically associate specific subsets of network parameters, blocks (blue), to specific samples in the input space.
-    Traditional forward or backward passes may not reveal these blocks: high correlations among features may not distinguish important ones. Input perturbations can be used to identify them in a probabilistic, distribution-free manner. These blocks can then be unlearned together in an efficient block-coordinate style update (right, blue lines), approximating an update to the full network which requires a costly/infeasible full Hessian inverse (red line).}
+    \includegraphics[width=\columnwidth,trim={0cm 12cm 5cm 2.5cm},clip]{5_unlearn/figs/layercnn.png}
+    \caption[Conditionally independent network subsets]{\label{fig:main1} Large deep learning networks typically associate specific subsets of network parameters, blocks (blue), to specific samples in the input space.
+    Traditional forward or backward passes may not reveal these blocks: high correlations among features may not distinguish important ones. Input perturbations can be used to identify them in a probabilistic, distribution-free manner.}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=\columnwidth,trim={0cm 1cm 0cm 0cm},clip]{5_unlearn/figs/unlearning_fig.pdf}
+	\caption[Efficient unlearning]{\label{fig:main2}Network blocks can be unlearned together in an efficient block-coordinate style update (blue lines), approximating an update to the full network which requires a costly/infeasible full Hessian inverse (red line).}
 \end{figure}
 
 \section{Problem Setup for Unlearning}
@@ -26,7 +29,7 @@ For all sets $\cS$ of size $n$, with a ``delete request'' $z' \in \cS$, an unlea
 \PP(\cU(\cA(S), z') \in \cW) \leq e^\epsilon\PP(\cA(\cS\setminus z') \in \cW) + \delta
 \end{align}
 \end{definition}
-In essence, for an existing model $w$, a good unlearning algorithm for request $z' \in \cS$ will output a model $\hat{w}$ close to the output of $\cA(S \setminus z')$ with high probability.
+In essence, for an existing model $w$, a good unlearning algorithm for request $z' \in \cS$ will output a model $\hat{w}$ close to the output of $\cA(S \setminus z')$ (retraining without that sample) with high probability.
 
 \begin{remark}
 Definition \ref{def:forget} is similar to the standard definitions of differential privacy. The connection to unlearning is: if an algorithm is $(\epsilon, \delta)-$forgetting for unlearning, then it is also differentially private. 
@@ -35,7 +38,7 @@ Definition \ref{def:forget} is similar to the standard definitions of differenti
 %\cite{unlearning} provide a straightforward algorithm for mild assumptions under the structure of the algorithm $\cA$.
 If $\cA$ is an empirical risk minimizer for the loss $f$, let
 \begin{align}
-    \cA : (\cS, f) \rightarrow \hat{w}%, \nabla^2 F(\hat{w}),
+    \cA : (\cS, f) \rightarrow \hat{w},% \nabla^2 F(\hat{w}),
 \end{align}
 $\hat{w} = \arg\min F(w)$ and $F(w) = \frac{1}{n}\sum_{i=1}^n f(w, z_i).$ 
 %$\nabla^2 F(\hat{w})$ is the Hessian of the empirical loss at the minimizer $\hat{w}$.
@@ -60,14 +63,12 @@ Recent unlearning results have identified forms of $f$ and $\cA$ where such a $g
 %    \bar{w} &= \hat{w} + \frac{1}{n-1} (\hat{H})^{-1} \nabla f(\hat{w},z) \\
 %    \tilde{w} &= \hat{w} + N(0,\sigma^2 I)
 \end{align}
-with additive Gaussian noise $w' = w' + N(0,\sigma^2)$ scaling as a function of $n, \epsilon, \delta$, and the Lipschitz and (strong) convexity parameters of the loss $f$. We can interpret the update using \eqref{eq:sekhariunlearn} from the optimization perspective as a trajectory ``reversal": starting at a random initialization, the first order (stochastic gradient) trajectory of  ${w}$ (possibly) {\em with}  $z'$ is reversed using {\em residual} second order curvature information (Hessian) at the optimal $\hat{w}$ in \eqref{eq:sekhariunlearn}, achieving unlearning. This is shown to satisfy Def.~\ref{def:forget}, and only incurs an additive error that scales by $O(\sqrt{d}/n^2)$ in the gap between $F(w')$ and the global minimizer $F(w^*)$ over the ERM $F(\hat{w})$. 
+with additive Gaussian noise $w' = w' + N(0,\sigma^2)$ scaling as a function of $n, \epsilon, \delta$, and the Lipschitz and (strong) convexity parameters of the loss $f$. We can interpret the update using \eqref{eq:sekhariunlearn} from the optimization perspective as a trajectory ``reversal'': starting at a random initialization, the first order (stochastic gradient) trajectory of  ${w}$ {\em with}  $z'$ is reversed using {\em residual} second order curvature (Hessian) information at the optimal $\hat{w}$ in \eqref{eq:sekhariunlearn}, achieving unlearning. This is shown to satisfy Definition~\ref{def:forget}, and only incurs an additive error that scales by $O(\sqrt{d}/n^2)$ in the gap between $F(w')$ and the global minimizer $F(w^*)$ over the ERM $F(\hat{w})$. 
 
-% \ronak{perhaps a note on Laurens CR paper: requiring DP-trained model while Sekhari does not, bounding population risk as opposed to residual empirical results}
-
-%Indeed, such a Newton step for unlearning has been evaluated in practice, in a slightly different form, by \cite{certified}. 
-\paragraph{Rationale for approximate schemes.} From the reversal of $w$ optimization perspective, it is clear that there may be other choices to achieve unlearning.
-%The aforementioned update requires storing, computing, and inverting the $O(d^2)$ Hessian matrix.
-For a practitioner interested in unlearning, the aforementioned algorithm (as in \eqref{eq:sekhariunlearn}) can be directly instantiated if one has extensive computational resources.
+\paragraph{Rationale for approximate schemes.}
+% From the optimization reversal perspective, it is clear that there may be other choices to achieve unlearning.
+The aforementioned update requires storing, computing, and inverting the $O(d^2)$ Hessian matrix.
+For a practitioner interested in unlearning, this can only be directly instantiated if one has extensive computational resources.
 Indeed, in settings where it is not directly possible to compute the Hessian inverse necessary for $H'^{-1} \nabla f(\hat{w},z')$, we must consider alternatives. 
 
 \paragraph{A potential idea.} Our goal is to identify a form of $g(z')$ that \textbf{approximates} the Hessian-scaled gradient $H'^{-1} \nabla f(\hat{w},z')$. 
@@ -75,8 +76,8 @@ Let us consider the Newton-style update suggested by
 \eqref{eq:sekhariunlearn}
 as a smoothing of a traditional first order gradient step. 
 The inverse Hessian is a weighting matrix, appropriately scaling the gradients based on the second order difference between the training set mean point $F(\hat{w})$ and at the sample of interest $f(\hat{w},z')$. 
-This smoothing can also be seen from an information perspective: the Hessian in this case corresponds to a Fisher-style information matrix, and its inverse as a conditional covariance matrix \cite{Golatkar_2021_CVPR,golatkar2020forgetting}.
-It is not hard to imagine that from this perspective, if there are {\em specific set of parameters} that have {\em small gradients} at $f(\hat{w},z')$ or if the information matrix is zero or small, then we need not consider their effect. 
+This smoothing can also be viewed from an information perspective: the Hessian in this case corresponds to a Fisher-style information matrix, and its inverse as a conditional covariance matrix \citep{Golatkar_2021_CVPR,golatkar2020forgetting}.
+It could be possible that, if there are a \textbf{specific set of parameters} that have {\em small gradients} at $f(\hat{w},z')$ or if the information matrix is zero or small, then we need not consider their effect. 
 
 \paragraph{Examples of this intuition in vision.} \cite{bau2017network,fong2018net2vec,Sun_2019_ICCV} and others have shown that models trained on complex tasks tend to \textit{delegate} subnetworks to specific regions of the input space. That is, parameters and functions within networks tend to (or can be encouraged to) act in \textit{blocks.}
 For example, activation maps for different filters in a trained (converged) CNN model show differences for different classes, especially for filters closer to the output layer.

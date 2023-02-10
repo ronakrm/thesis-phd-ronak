@@ -1,15 +1,15 @@
 \section{Introduction}
-As personal data becomes a valuable commodity, legislative efforts have begun to push back on its widespread collection/use particularly for training ML models. Recently, a focus is the ``right to be forgotten" (RTBF), i.e., the right of an individual's data to be deleted from a database (and derived products).
-Despite existing legal frameworks on fair use, industry scraping has led to personal images being used without consent, e.g. \cite{Exposing}.
-Large datasets are not only stored for descriptive statistics, but used in training large models.
+As personal data becomes a valuable commodity, legislative efforts have begun to push back on its widespread collection and use, particularly for training ML models. Recently, a focus has been the ``right to be forgotten" (RTBF), i.e., the right of an individual's data to be deleted from a database, and derived products.
+Despite existing legal frameworks on fair use, industry scraping has led to personal images being used without consent, e.g. \cite{Exposing}, and even explicit personal information being exposed at inference time in language models~\citep{carlini2021extracting}.
+%Large datasets are not only stored for descriptive statistics, but used in training large models.
 While regulation (GDPR, CCPA) has not specified the extent to which data must be forgotten, it poses a clear question: is  deletion of the data enough, or does a model trained on that data also needs to be updated?
 
-Recent work by \cite{carlini2019secret,carlini2020attack} has identified scenarios where trained models are vulnerable to attacks that can reconstruct input training data. More directly, recent rulings by the Federal Trade Commission \cite{ftc,ftc2} have ordered companies to fully delete and destroy not only data, but also any model trained using those data.
+Work originally presented in \cite{carlini2019secret} and \cite{carlini2020attack} has identified scenarios where trained models are vulnerable to attacks that can reconstruct input training data. More directly, recent rulings by the Federal Trade Commission \cite{ftc,ftc2} have ordered companies to fully delete and destroy not only data, but also any model trained using those data.
 While deletion and (subsequent) full model retraining without the deleted samples is possible, most in-production models require weeks of 
 training and review, with extensive computational/human resource cost. With additional deletions, it is infeasible to retrain each time a new delete request comes in. 
 % So, are there updates to the model that ensure the data has been deleted (or at least approximately deleted), and full retraining can be postponed?
 % Existing works have answered this question in the affirmative, but the computational burden has limited their broad use.
-So, how to update a model ensuring the data is deleted without retraining?
+So, how can we update a model ensuring the data is deleted without retraining?
 
 \paragraph{Task.} Given a set of input data $\cS: \{z_i\}_{i=1}^n \sim \cD$ of size $n$, training simply identifies a hypothesis $\hat{w} \in \cW$  via an iterative scheme $w_{t+1} = w_t - g(\hat{w},z')$ until convergence, where $g(\cdot,z')$ is  a stochastic gradient of a fixed loss function. Once a model at convergence is found, \textit{machine unlearning} aims to identify an update to $\hat{w}$ through an analogous {\em one-shot unlearning update}:
 \begin{align}\label{eq:unlearn}
@@ -18,12 +18,12 @@ So, how to update a model ensuring the data is deleted without retraining?
 for a \textit{given} sample $z' \in \cS$ that is to be \textbf{unlearned}.
 %While forms of $g(z')$ have {\color{red}been recently been identified \cite{abc}}, practically they remain infeasible because a complete Hessian computation and inversion is needed. 
 
-\noindent\textbf{Contributions.} We address several computational issues with existing approximate formulations for unlearning by taking advantage of a new statistical scheme for sufficient parameter selection. 
-First, in order to ensure that a sample's impact on the model predictions is minimized, we propose a measure for computing conditional independence called L-CODEC which  identifies the Markov Blanket of parameters to be  updated. 
+\paragraph{Contributions.} We address several computational issues with existing approximate formulations for unlearning by taking advantage of a new statistical scheme for sufficient parameter selection. 
+First, in order to ensure that a sample's impact on the model predictions is minimized, we propose a measure for computing conditional independence, L-CODEC, which  identifies the Markov Blanket of parameters to be updated. 
 % Extending hypercolumn activations, we identify neural network parameter subsets that are sufficient for model scrubbing.
 Second, we show that the L-CODEC identified Markov Blanket enables unlearning in previously infeasible deep models, scaling to networks with hundreds of millions of parameters. 
 %{\color{red} with graceful performance degradation}.
-Finally, we demonstrate the ability of L-CODEC to unlearn samples and entire classes on networks, from CNNs/ResNets to transformers, including face recognition and person re-identification models.
+Finally, we demonstrate the ability of L-CODEC to unlearn samples and entire classes on networks, from CNNs and ResNets to transformers, including models for face recognition and person re-identification.
 
 %%%%% Old Introduction %%%%%%
 % With personal data becoming one of the most valuable commodities, legislative effort has begun to push back on widespread and unilateral collection.
