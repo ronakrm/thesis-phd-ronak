@@ -2,12 +2,12 @@
 \begin{figure}
     \centering
     \includegraphics[width=0.98\columnwidth,trim={0, 0, 0, 0},clip]{5_unlearn/figs/Speed_Hist.png}
-    \caption{\label{fig:speed_hist} L-CODEC vs CODEC run time comparison for identifying sufficient subsets for each CelebA attribute separately (pairs of columns, details in supplement).}
+    \caption[Speedups from L-CODEC randomization]{\label{fig:speed_hist} L-CODEC vs CODEC run time comparison for identifying sufficient subsets for each CelebA attribute separately (pairs of columns, details in supplement).}
 \end{figure}
 We begin with understanding the value of L-CODEC and L-FOCI for Markov Blanket Identification and progress to applications
 % Once their use has been properly justified in simpler, more direct applications, we demonstrate the value directly 
 in typical unlearning tasks involving large neural networks previously infeasible with existing scrubbing tools.
-See appendix for additional details. 
+\todo{See appendix for additional details.} 
 %Our code is at \url{https://github.com/xxx-xxxx/}.
 
 % \subsection{L-FOCI in Generic ML Settings}
@@ -24,10 +24,10 @@ See appendix for additional details.
 \paragraph{L-CODEC Evaluation.}
 To assess speedup gained in the discrete setting when running L-CODEC,
 % We first demonstrate the additional speedup gained in the discrete setting when running L-CODEC.
-we construct the Markov Blanket for specific attributes provided as side information with the CelebA dataset. Fig.~\ref{fig:speed_hist} shows the wall-clock times for Markov Blanket Selection via FOCI and L-FOCI for each attribute.
+we construct the Markov Blanket for specific attributes provided as side information with the CelebA dataset. Figure~\ref{fig:speed_hist} shows the wall-clock times for Markov Blanket Selection via FOCI and L-FOCI for each attribute.
 %{\color{red}In experiments, we use L-CODEC where discrete values or tiebreaks are common, and traditional CODEC when values are continuous or unique.}
 
-\paragraph{Markov Blanket Identification.} We replicate the experimental setup in Sec 5.3 of \cite{bullseye}, where a high dimensional distribution over a ground truth graph is generated, and feature mappings are used to reduce the dimension and map to a latent space. Table~\ref{tab:bullseye} summarizes subset identification efficacy and runtime. Replacing conditional mutual information (CMI) with L-CODEC, we see a clear improvement in both runtime and Markov Blanket identification over the raw data, and comparable results in the latent feature space. Using L-FOCI directly in the feature space, we identify an additional spurious feature not part of the Markov Blanket, but runtime is significantly faster.
+\paragraph{Markov Blanket Identification.} We replicate the experimental setup in Section 5.3 of \cite{bullseye}, where a high dimensional distribution over a ground truth graph is generated, and feature mappings are used to reduce the dimension and map to a latent space. Table~\ref{tab:bullseye} summarizes subset identification efficacy and runtime. Replacing conditional mutual information (CMI) with L-CODEC, we see a clear improvement in both runtime and Markov Blanket identification over the raw data, and comparable results in the latent feature space. Using L-FOCI directly in the feature space, we identify an additional spurious feature not part of the Markov Blanket, but runtime is significantly faster.
 \begin{table}
     \centering
     \begin{tabular}[b]{l|ccr|ccr}
@@ -47,7 +47,7 @@ we construct the Markov Blanket for specific attributes provided as side informa
         % L-CODEC + L-FOCI & 0.833 & 0.50 & \textbf{0.464} \\
         % \hline\hline
     \end{tabular}
-    \caption{\label{tab:bullseye} 3D-Bullseye Markov Blanket identification. CIT represents the model in \cite{bullseye}. Both L-CODEC and L-FOCI run much faster than recent Markov Blanket identification schemes. L-FOCI is not applicable to the multi-dimensional raw data setting.}
+    \caption[Markov blanket identification]{\label{tab:bullseye} 3D-Bullseye Markov Blanket identification. CIT represents the model in \cite{bullseye}. Both L-CODEC and L-FOCI run much faster than recent Markov Blanket identification schemes. L-FOCI is not applicable to the multi-dimensional raw data setting.}
 \end{table}
 % \begin{table}
 % \centering
@@ -125,7 +125,7 @@ we construct the Markov Blanket for specific attributes provided as side informa
     \includegraphics[width=0.25\columnwidth,trim={6.5in 0 0 0},clip]{5_unlearn/figs/No_Beard_All.png}
     \includegraphics[width=0.25\columnwidth,trim={6.5in 0 0 0},clip]{5_unlearn/figs/No_Beard_Random.png}
     \includegraphics[width=0.25\columnwidth,trim={6.5in 0 0 0},clip]{5_unlearn/figs/No_Beard_FOCI.png}
-    \caption{\label{fig:spur} Validation accuracies after training to predict ``No Beard" in the CelebA dataset. (L to R) regularization for all features, for a random subset, and via FOCI. Green indicates accuracy on the data with that feature, red, without.}
+    \caption[Spurious feature regularization with L-FOCI]{\label{fig:spur} Validation accuracies after training to predict ``No Beard" in the CelebA dataset. (L to R) regularization for all features, for a random subset, and via FOCI. Green indicates accuracy on the data with that feature, red, without.}
 \end{figure}
 
 \paragraph{Spurious Feature Regularization.}
@@ -148,12 +148,12 @@ We instead use L-FOCI to identify the set of minimal factors that, when conditio
 
 We evaluate a simple attribute image classification setting using the CelebA dataset. We run L-FOCI over the attributes as in our L-CODEC evaluation, and regularize using a Gradient Reversal Layer for a simple accuracy term over those attributes.
 % We compare models with varying regularization over all attributes, randomly chosen attributes, and FOCI-selected attributes.
-Results in Fig. \ref{fig:spur} clearly show that selection with FOCI provides the best result, maintaining high overall accuracy but also preserving high accuracy on sets of samples with/without correlated attributes.
+Results in Figure \ref{fig:spur} clearly show that selection with FOCI provides the best result, maintaining high overall accuracy but also preserving high accuracy on sets of samples with/without correlated attributes.
 
 \section{L-FOCI for Machine Unlearning}
 
-\subsection{Compare to Full Hessian Computation}
-For simple regressors, we can compute the full Hessian and compare results generated by a traditional unlearning update, our L-FOCI update, and a random selection update. To reduce variance and show the best possible random selection, we run our L-FOCI and randomly choose a set of the same size for each random selection. Fig.~\ref{fig:mnistcifar} (left) shows validation and residual accuracies for 1000 random removals from MNIST (average over 10 runs). 
+\subsection{Comparing to Full Hessian Computation}
+For simple regressors, we can compute the full Hessian and compare results generated by a traditional unlearning update, our L-FOCI update, and a random selection update. To reduce variance and show the best possible random selection, we run our L-FOCI and randomly choose a set of the same size for each random selection. Figure~\ref{fig:mnistcifar} (left) shows validation and residual accuracies for 1000 random removals from MNIST (averaged over 10 runs). 
 
 \begin{figure}
     \centering
@@ -164,12 +164,12 @@ For simple regressors, we can compute the full Hessian and compare results gener
     % \includegraphics[width=0.33\textwidth]{5_unlearn/figs/scrub/cifar_val.png}
     \includegraphics[width=0.24\textwidth]{5_unlearn/figs/scrub/cifar_resid.png}
     \includegraphics[width=0.24\textwidth]{5_unlearn/figs/scrub/CIFAR_gradnom.png}
-    \caption{(Left) Residual Accuracies \& Sample Gradient Norm of removal for an MNIST Logistic Regressor. Averaged over 10 runs. (Right) Residual accuracies and sample gradient norms for various CIFAR-10 models.}
+    \caption[Residual accuracies and gradient norms]{(Left) Residual Accuracies \& Sample Gradient Norm of removal for an MNIST Logistic Regressor. Averaged over 10 runs. (Right) Residual accuracies and sample gradient norms for various CIFAR-10 models.}
     \label{fig:mnistcifar}
 \end{figure}
 
 
-\paragraph{Are we selecting reasonable subsets?} A natural question is whether the subset selection via L-FOCI is any better than random, given that we are effectively taking a smaller global step. We answer this in the affirmative with a simple comparison with a random selection of size equal to the set selected by L-FOCI. Fig.~\ref{fig:mnistcifar} (left) shows that the sample gradient norm for selections made by L-FOCI are larger than those of a random selection: the subset of the model scrubbed of this specific sample has a larger impact on its final loss, and thus the gradient norm post-removal is large.
+\paragraph{Are we selecting reasonable subsets?} A natural question is whether the subset selection via L-FOCI is any better than random, given that we are effectively taking a smaller global step. We answer this in the affirmative with a simple comparison with a random selection of size equal to the set selected by L-FOCI. Figure~\ref{fig:mnistcifar} (left) shows that the sample gradient norm for selections made by L-FOCI are larger than those of a random selection: the subset of the model scrubbed of this specific sample has a larger impact on its final loss, and thus the gradient norm post-removal is large.
 
 
 % \subsubsection{$\epsilon$-Certified Removal} 
@@ -178,7 +178,7 @@ For simple regressors, we can compute the full Hessian and compare results gener
 % Large drops in validation and residual accuracy indicate that a set of parameters integral to the model's predictions overall have been updated significantly. This suggests that the sample scrubbed may be a ``support vector" for the model. When these samples are considered for scrubbing, the model may have to be retrained. 
 
 \paragraph{Does the formulation scale?} We scrub random samples from various CIFAR-10 models, and evaluate  performance for the same set of hyperparameters. When the models are larger than logistic regression, it is infeasible to estimate the full Hessians, so 
-we {\em must} use our L-FOCI selection update. Fig.~\ref{fig:mnistcifar} (right) shows removal performance over many typical models with varying sizes. Models that have higher base accuracies tend to support more removals before performance drops. This matches results for differentially private models: models that generalize well may not have overfit and thus may already be private, allowing ``fast'' forgetting.
+we {\em must} use our L-FOCI selection update. Figure~\ref{fig:mnistcifar} (right) shows removal performance over many typical models with varying sizes. Models that have higher base accuracies tend to support more removals before performance drops. This matches results for differentially private models: models that generalize well may not have overfit and thus may already be private, allowing ``fast'' forgetting.
 
 % \begin{figure}
 %     \centering
@@ -193,19 +193,19 @@ we {\em must} use our L-FOCI selection update. Fig.~\ref{fig:mnistcifar} (right)
 \paragraph{Tradeoff vs Retraining.}
 While our focus is the setting in which retraining is not feasible, where we can retrain we compare validation accuracies as a function of number of removals. Using a subset of MNIST, we train to convergence and iteratively remove samples using our construction, retraining fully at each step for comparison. With 1000 training samples from each class 
 and reasonable settings of privacy parameters ($\epsilon=0.1,\delta=0.01$),
-we support a large percentage of removals until validation accuracy drops more than a few percent, see Fig.~\ref{fig:retrain}.
+we support a large percentage of removals until validation accuracy drops more than a few percent, see Figure~\ref{fig:retrain}.
 \begin{figure}
     \centering
 %\includegraphics[width=0.31\columnwidth]{5_unlearn/figs/retrain/Retrain_Residual_Accs.png}
 \includegraphics[width=0.49\columnwidth]{5_unlearn/figs/retrain/Retrain_Validation_Accs.png}
 \includegraphics[width=0.49\columnwidth]{5_unlearn/figs/retrain/Retrain_Gradient_Norms.png}
-    \caption{MNIST Retraining comparison averaged over 8 runs. Validation accuracies and residual gradient norms.}
+    \caption[MNIST retraining comparison]{MNIST Retraining comparison averaged over 8 runs. Validation accuracies and residual gradient norms.}
     \label{fig:retrain}
 \end{figure}
 
 \subsection{Removal in NLP models}
-We now scrub samples from transformer based models using  LEDGAR \cite{tuggener2020ledgar}, a multilabel corpus of legal provisions in contracts. We use the prototypical subset which contains $110156$ provisions pertaining to $13$ most commonly used labels based on frequency. Our model is a fine-tuned DistilBERT \cite{sanh2019distilbert} and uses the $[CLS]$ token as an input to the classification head. 
-Table. \ref{tab:nlp} shows results of scrubbing the provisions from two different classes; \textit{Governing Laws} and \textit{Terminations} which have the highest/lowest support in the test set. As expected with increasing $\epsilon$, i.e., lower privacy guarantees, we can support more number of removals based on the Micro F1 score of the overall model. 
+We now scrub samples from transformer based models using  LEDGAR \citep{tuggener2020ledgar}, a multilabel corpus of legal provisions in contracts. We use the prototypical subset which contains $110156$ provisions pertaining to $13$ most commonly used labels based on frequency. Our model is a fine-tuned DistilBERT \citep{sanh2019distilbert} and uses the $[CLS]$ token as an input to the classification head. 
+Table \ref{tab:nlp} shows results of scrubbing the provisions from two different classes; \textit{Governing Laws} and \textit{Terminations} which have the highest/lowest support in the test set. As expected with increasing $\epsilon$, i.e., lower privacy guarantees, we can support more number of removals based on the Micro F1 score of the overall model. 
 % {\color{red}The Micro F1 scores for the overall model, start to fall off after that of the class being removed and the change in overall scores is more gradual than that of the removal class. }
 The Micro F1 scores, for the removed class fall off rapidly, while the change in overall scores is more gradual. 
 
@@ -236,7 +236,7 @@ The above settings show settings where a sample from one specific source may be 
 is completely removing samples from a specific class; a compelling use case is face recognition.
 
 We utilize the VGGFace dataset and model, pretrained from the original work in \cite{huang2008labeled,Parkhi15}. The model uses a total of approximately 1 million images to predict the identity of 2622 celebrities in the dataset. Using a reconstructed subset of 100 images from each person, we first fine-tune the model on this subset for 5 epochs, and use the resultant models as estimates of the Hessian. 
-In this setting, the VGGFace model is very large, including a linear layer of size $25088 \times 4096$. Selecting even a few slices from this layer results in a Hessian matrix unable to fit in typical memory. For this reason, we run a ``cheap" version of L-FOCI: we select only one slice that results in the largest conditional dependence on the output loss.
+In this setting, the VGGFace model is very large, including a linear layer of size $25088 \times 4096$. Selecting even a few slices from this layer results in a Hessian matrix unable to fit in typical memory. For this reason, we run a ``cheap'' version of L-FOCI: we select only one slice that results in the largest conditional dependence on the output loss.
 %
 % \begin{figure}
 %     \centering
@@ -245,7 +245,6 @@ In this setting, the VGGFace model is very large, including a linear layer of si
 %     \caption{Accuracies on scrubbed class and Residual Sample Sets (every 10 removals) for $\epsilon = 1e^{-5}$. The accuracy drop for the residual set is gradual up to a certain number of removals.}
 %     \label{fig:vgg}
 % \end{figure}
-
 
 \stepcounter{table}
 \begin{figure}
@@ -273,21 +272,21 @@ In this setting, the VGGFace model is very large, including a linear layer of si
 \end{subfigure}
 %\captionsetup{labelformat=andtable}
 
-\caption[important image]{(Left) Scrubbed and Residual Accuracies (every 10 removals) for $\epsilon = 1e^{-5}$. The accuracy drop for the residual set is gradual up to a certain number of removals. (Right) Scrubbing transformer model for provision classification.}
+\caption[Removal performance in pretrained models]{(Left) Scrubbed and Residual Accuracies (every 10 removals) for $\epsilon = 1e^{-5}$. The accuracy drop for the residual set is gradual up to a certain number of removals. (Right) Scrubbing transformer model for provision classification.}
 \label{fig:combine}
 \end{figure}
 
-Fig.~\ref{fig:vgg} show results for scrubbing consecutive images from one individual in the dataset for a strong privacy guarantee of $\epsilon=10^{-5}$. As the number of samples scrubbed increases, the performance on that class drops faster than on the residual set, exactly as desired.
+Figure~\ref{fig:vgg} show results for scrubbing consecutive images from one individual in the dataset for a strong privacy guarantee of $\epsilon=10^{-5}$. As the number of samples scrubbed increases, the performance on that class drops faster than on the residual set, exactly as desired.
 
-\subsection{Removal from Person re-identification model}
-As a natural extension to our experiments on face recognition, we evaluate unlearning of deep neural networks trained for person re-identification. Here, the task is to associate the images pertaining to a particular individual but collected in diverse camera settings, both belonging to the same camera or from multiple cameras. In our experiments, we use the Market-1501 dataset \cite{zheng2015scalable} and a Resnet50 architecture which was trained for the task. We unlearn samples belonging to a particular person, one at a time, and check the performance of the model. Experimental results are in agreement with results reported for the transformer model as well as the VGGFace model. With very small values of $\epsilon$ i.e. $0.0005$ the number of supported removals is limited to less than $10$ depending on the person id being removed. However, with a larger value of $\epsilon$, e.g., $0.1$, all potential samples can be removed without a noticeable degradation in model performance in terms of mAP scores. In Fig.~\ref{fig:reid}, we clearly see that after scrubbing a model for a particular person, its predictions for that particular individual become meaningless whereas the predictions on other classes are still possible with confidence, as desired. Additional experiments with different datasets, model architectures and other ablations for deep unlearning for person re-identification models are presented in the appendix.
+\subsection{Removal from a Person re-identification model}
+As a natural extension to our experiments on face recognition, we evaluate unlearning of deep neural networks trained for person re-identification. Here, the task is to associate the images pertaining to a particular individual but collected in diverse camera settings, both belonging to the same camera or from multiple cameras. In our experiments, we use the Market-1501 dataset \citep{zheng2015scalable} and a Resnet50 architecture which was trained for the task. We unlearn samples belonging to a particular person, one at a time, and check the performance of the model. Experimental results are in agreement with results reported for the transformer model as well as the VGGFace model. With very small values of $\epsilon$ i.e. $0.0005$ the number of supported removals is limited to less than $10$ depending on the person id being removed. However, with a larger value of $\epsilon$, e.g., $0.1$, all potential samples can be removed without a noticeable degradation in model performance in terms of mAP scores. In Figure~\ref{fig:reid}, we clearly see that after scrubbing a model for a particular person, its predictions for that particular individual become meaningless whereas the predictions on other classes are still possible with confidence, as desired. Additional experiments with different datasets, model architectures and other ablations for deep unlearning for person re-identification models are presented in the \todo{appendix}.
 
-\begin{figure}[!tb]
+\begin{figure}[]
     \centering
     %\includegraphics[width=0.3\textwidth]{5_unlearn/figs/scrub/MNIST_Valid_Acc.png}
     \includegraphics[width=0.49\columnwidth]{5_unlearn/figs/scrub/0006_c3s3_075694_00.jpg}
      \includegraphics[width=0.49\columnwidth]{5_unlearn/figs/scrub/0101_c5s1_021926_00.jpg}
-    \caption{\label{fig:reid}Activation maps from a model scrubbed for the person on the left (right set is not scrubbed). For each triplet, from (L to R) are the original image, the activation map and its image overlay. Note the effect of scrubbing: activations change significantly for the scrubbed sample (compare column 2 to 3) whereas remain stable for the non-scrubbed sample (compare column 5 to 6).}
+    \caption[Visualizing unlearning results in person REID models]{\label{fig:reid}Activation maps from a model scrubbed for the person on the left (right set is not scrubbed). For each triplet, from (L to R) are the original image, the activation map and its image overlay. Note the effect of scrubbing: activations change significantly for the scrubbed sample (compare column 2 to 3) whereas remain stable for the non-scrubbed sample (compare column 5 to 6).}
 \end{figure}
 
 % \subsubsection{Scrubbing Reveals Sample Influence.}

@@ -1,6 +1,6 @@
 \subsection{Theoretical Analysis}
 By definition, any neural network as described above is actually a Markov Chain: we know that the output of a layer is conditionally independent of the penultimate one given the previous one, and clearly a change in one layer will propagate forward through the rest of the network.
-However, when trained for a task with a large number of samples, the influence or ``memory" of the network with respect to a specific sample may not be clear.
+However, when trained for a task with a large number of samples, the influence or ``memory'' of the network with respect to a specific sample may not be clear.
 %, and when unlearning we would prefer to be liberal in how layers are selected to be scrubbed.
 While the output of the layers may follow a Markov Chain, the parameters in the layers themselves do not, and their influence on a sample through the forward pass may be highly dependent or correlated.
 Practically, we would hope that unlearning samples at convergence does not cause too much damage to the model's performance on the rest of the input samples.
@@ -11,25 +11,25 @@ The gap between the gradient residual norm of the FOCI Unlearning update in Algo
 \begin{align}
 ||\nabla F(w^-_{Foci},D')||_2 - ||\nabla F(w^-_{Full},D')||_2
 \end{align}
-shrinks as $O(1/n^2)$.
+shrinks as $O(1/n^2)$, with $n$ the number of training samples.
 \end{lemma}
 \begin{proof}
-The full proof is in the appendix. Main idea: Because we only update a subset of parameters, the gradients for the remainder should not change too much. Any change to a selected layer only propagates to other layers by $1/n$, and a Taylor expansion about the new activation for that layer gives the result.
+The full proof is in the appendix\todo{appendix}. Main idea: Because we only update a subset of parameters, the gradients for the remainder should not change too much. Any change to a selected layer only propagates to other layers by $1/n$, and a Taylor expansion about the new activation for that layer gives the result.
 \end{proof}
 
 
-\paragraph{How L-CODEC achieves acceleration for Unlearning?}
-Sampling with weights proportional to the Lipschitz constant of individual filters/layers is an established approach in optimization, see \cite{gorbunov2020unified}. We argue that L-CODEC computes an approximation to optimal sampling probabilities.
+\paragraph{How does L-CODEC achieve acceleration for Unlearning?}
+Sampling with weights proportional to the Lipschitz constant of individual filters and layers is an established approach in optimization, see \cite{gorbunov2020unified}. We argue that L-CODEC computes an approximation to optimal sampling probabilities.
 %for updating purposes. 
-Under a mild assumption that the sampling probabilities have \emph{full} support, it turns out that correctness of our approximate (layer/filter selection) procedure can be guaranteed for unlearning purposes using recently developed optimization tools, see \cite{gower2019sgd}. By adapting results from \cite{gorbunov2020unified}, we can show the following, summarizing the main result of our slice-based unlearning procedure.
+Under a mild assumption that the sampling probabilities have full support, it turns out that correctness of our approximate selection procedure can be guaranteed for unlearning purposes by using recently developed optimization tools~\citep{gower2019sgd}. By adapting results from \cite{gorbunov2020unified}, we can show the following, summarizing the main result of our slice-based unlearning procedure.
 \begin{theorem}\label{thm:fociconv}
-Assume that layer-wise sampling probabilities are nonzero. Given unlearning parameters $\epsilon,\delta$, the unlearning procedure in Alg~ \ref{alg:blockunlearn} is $(\epsilon',\delta')-$forgetting where $\epsilon'>\epsilon,\delta'>\delta$ represent an arbitrary  precision (hyperparameter) required for unlearning. Moreover, iteratively applying our algorithm converges exponentially fast (in expectation) w.r.t. the precision gap, that is, takes (at most) $O(\log\frac{1}{\mathbf{g_{\epsilon}}}\log\frac{1}{\mathbf{g_{\delta}}})$ iterations to output such a solution where  $\mathbf{g_{\epsilon}} = \epsilon'-\epsilon>0,\mathbf{g_{\delta}}=\delta'-\delta>0$ are gap parameters.
+Assume that layer-wise sampling probabilities are nonzero. Given unlearning parameters $\epsilon,\delta$, the unlearning procedure in Alg~ \ref{alg:blockunlearn} is $(\epsilon',\delta')-$forgetting where $\epsilon'>\epsilon,\delta'>\delta$ represent an arbitrary  precision (hyperparameter) required for unlearning. Moreover, iteratively applying our algorithm converges exponentially fast (in expectation) w.r.t. the precision gap, that is, takes (at most) $O(\log\frac{1}{\mathbf{g_{\epsilon}}}\log\frac{1}{\mathbf{g_{\delta}}})$ iterations to output such a solution where  $\mathbf{g_{\epsilon}} = \epsilon'-\epsilon>0$ and $\mathbf{g_{\delta}}=\delta'-\delta>0$ are gap parameters.
 \end{theorem}
 Our result differs from Nesterov's acceleration: we do not use previous iterates in a momentum or ODE-like fashion; rather, here we are closer to primal-dual algorithms where knowing nonzero coordinates at the dual optimal solution  
 %(better duality gap) 
 can be used to accelerate primal convergence, see \cite{diakonikolas2019approximate}. Moreover, since our approach is \textit{randomized}, the dynamics can be better modeled using the SDE framework for unlearning purposes, as in \cite{simsekli2020fractional}. 
 % In our implementation,
-Here, we do not  compute anything extra, although it is feasible for future extensions.
+Here, we do not compute anything extra, although it is feasible for future extensions.
 % And relate to additive error on $(\epsilon,\delta)$ forgetting in the beginning...
 \begin{remark}
 Our approach to estimate the Lipschitz constant is different from \cite{fazlyab2019efficient} where an SDP must be solved -- quite infeasible for unlearning applications. Our approach can be interpreted as solving a simplified form of the SDP proposed there, when appropriate regularity conditions on the feasible set of the SDP are satisfied. %constraint qualification assumptions.
@@ -38,10 +38,10 @@ Our approach to estimate the Lipschitz constant is different from \cite{fazlyab2
 \paragraph{A note on convexity.}
 Existing methods for guaranteeing removal and performance depend on models being convex. Practical deep learning applications however involve highly nonconvex functions.
 The intuitions of unlearning for convex problems \textbf{directly apply to nonconvex unlearning} with one more technical assumption: minimizers of the learning problem satisfy Second Order Sufficiency (SOS) conditions. 
-SOS guarantees that $ \nabla^2\hat{F}(\hat{w})$, $\hat{H}$ in eq (7) of [28] are PSD, and that the update (8) is an \textit{ascent} direction w.r.t. the loss function on $U$, making unlearning possible. Guarantees for nonconvex unlearning involve explicitly characterizing a subset of SOS points (so-called  ``basin of attraction" of population loss), i.e., which points gradient descent can converge to, see \S1.3 in \cite{Traonmilin_2020}. 
+SOS guarantees that $ \nabla^2\hat{F}(\hat{w})$ and $\hat{H}$ are positive semi-definite, and that the parameter update in \eqref{eq:sekhariunlearn} is an \textit{ascent} direction w.r.t. the loss function on $U$, making unlearning possible. Guarantees for nonconvex unlearning involve explicitly characterizing a subset of SOS points (so-called  ``basins of attraction'' of population loss), i.e., which points gradient descent can converge to, see Section 1.3 in \cite{Traonmilin_2020}. 
 %
 %In fact, in some nonconvex signal  processing applications, it is possible to explicitly specify global minima (satisfies SOS) of the population loss by characterizing  ``basin-of-attraction" of the empirical minimizer, see Section 1.3 in \cite{traonmilin2020basins}  i.e., points that gradient descent can converge to. 
-So, will minimizers from first order methods satisfy SOS conditions? Generally, this is not true, e.g., when the Hessian is indefinite, $\hat{H}\not\succeq 0$, the update itself may not be an ascent direction w.r.t. negative of the loss. Here, standard Hessian modification schemes are applicable \cite{wright1999numerical}, subsequently using the Newton's step in \cite{sekhari2021remember} with a diagonally modified Hessian.
+So, will minimizers from first order methods satisfy SOS conditions? Generally, this is not true, e.g., when the Hessian is indefinite, $\hat{H}\not\succeq 0$, the update itself may not be an ascent direction w.r.t. negative of the loss. Here, standard Hessian modification schemes are applicable \cite{wright1999numerical}, leading to subsequent application of Newton's step in \cite{sekhari2021remember} with a diagonally modified Hessian.
 
 
 % While better nonconvex guarantees and algorithms are still open problems for general unlearning, here, 

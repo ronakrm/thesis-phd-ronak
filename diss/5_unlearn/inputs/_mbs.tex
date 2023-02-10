@@ -65,12 +65,12 @@ We interpret a deep network $\cW$ as a functional on the input space $\cD$. This
 We will formalize this intuition using recent results for conditional independence (CI) testing.
 Finding $w_P$ above should also satisfy
 \begin{align}\label{eq:paramCI}
-    z' \bot w_{\Theta\setminus P} | w_P
+    z'\ \bot\ w_{\Theta\setminus P}\ |\ w_P
 \end{align}
 This CI formulation is well studied within graphical models. Many measures and hypothesis tests have been proposed to evaluate it.
 %and more recently by more mains For an overview of existing methods for testing this and searching for the set $P$, see the supplement. 
-The {\em coefficient of conditional dependence} (CODEC)  in \cite{codec}, along with their algorithm for ``feature ordering", FOCI, at first seems to offer a solution to  \eqref{eq:paramCI}, and in fact, can be implemented ``as is'' for shallow networks. (Review of other CI tests are in the appendix.)
-
+The {\em coefficient of conditional dependence} (CODEC)  in \cite{codec}, along with their algorithm for ``feature ordering'', FOCI, at first seems to offer a solution to  \eqref{eq:paramCI}, and in fact, can be implemented ``as is'' for shallow networks. (Review of other CI tests are in the appendix.)
+\todo{ch6: appendix ref}
 
 %  Estimating this measure from data is efficient, requiring only estimation of single nearest neighbors and rankings. 
 % Let $R_i$ be the rank of $z^\prime_i$, and $N(i)$ be the nearest neighbor of $i$ over $w_P$ and $M(i)$ be the nearest neighbor over $w$. Then the test statistic is
@@ -81,7 +81,7 @@ The {\em coefficient of conditional dependence} (CODEC)  in \cite{codec}, along 
 
 % \sathya{Preliminaries end.}
 
-\paragraph{Using CODEC directly for Deep Unlearning is inefficient.} There are two issues: First, when applying CODEC to problems with a very large $n$ with discrete values, the cost of tie-breaking for computing nearest neighbors can become prohibitive. Second, $z'$ is not a random variable for which we have a number of instances. We defer discussion of the second issue  to Section~\ref{sec:deepunlearn}, and address the first issue here.
+\paragraph{Using CODEC directly for Deep Unlearning is inefficient.} There are two issues: First, when applying CODEC to problems with a very large $n$ with discrete values, the cost of tie-breaking for computing nearest neighbors can become prohibitive (see \todo{appendix} for algorithmic details). Second, $z'$ is not a random variable for which we have a number of instances. We defer discussion of the second issue  to Section~\ref{sec:deepunlearn}, and address the first issue here.
 
 Consider the case where a large number of elements have an equal value. With an efficient implementation using $kd-$trees, identifying the nearest-neighbor as required by CODEC would still require expanding the nodes of all elements with equal value. As an example, if we are looking for the nearest neighbor to a point at the origin and there are a large number of elements on the surface of a sphere centered at the origin, we still require checking all entries and expanding their nodes in the tree, even when we know that they are all equal for this purpose.
 
@@ -94,7 +94,7 @@ T_L := T\left(\tilde{B}, \tilde{C} | \tilde{A} \right),
 where $\tilde{B} = B + N(0,\sigma^2)$, and similarly for $\tilde{C}, \tilde{A}$.
 This additive noise can simply be scaled to the inverse of the largest distance between any points in the set.
 By requiring this noise to be smaller than any distance between items in the set, the ranking will remain the same between unique discrete values, and will be perturbed slightly for equal ones.
-In expectation, this will still lead to the true dependence measure. The noise addition is consistent with the Randomization criterion for conditional independence -- for random variables $A, B, C$ in Borel spaces, $A\bot B | C$ \textit{iff} $A \myas h(B, U)$ for some measurable function $h$ and uniform random variable $U \sim \text{Uniform}(0,1)$ which is independent of $(B,C)$ as in \cite{ptheory}. 
+In expectation, this will still lead to the true dependence measure. The noise addition is consistent with the Randomization criterion for conditional independence -- for random variables $A, B, C$ in Borel spaces, $A\ \bot\ B\ |\ C$ \textit{iff} $A = h(B, U)$ almost surely, for some measurable function $h$ and uniform random variable $U \sim \text{Uniform}(0,1)$ independent of $(B,C)$ as in \cite{ptheory}. 
 
 \begin{remark}\label{rem:sens}
 An altered version of this setup also gives us a form of explainability, where we can apply sensitivity analysis to each input feature or pixel and estimate its effect on the output via a similarly randomized version of the  Chatterjee rank coefficient $T(A,B)$, proposed by \cite{chatterjee2020new}.
@@ -131,8 +131,8 @@ While it is efficient (polynomial in size), we must know the maximal degree. A p
     \label{fig:lfoci}
 \end{figure}
 
-When using L-CODEC, we can use a more straightforward Markov Blanket identification procedure adapted from \cite{codec}. FOCI more directly selects which variables are valuable for explaining $z'$, and in fact, is proven to identify the sufficient set (Markov Blanket) with a reasonable number of samples. Briefly, in our L-FOCI, the sufficient set is built incrementally with successive calls to L-CODEC, moving the most ``dependent" feature from the independent set to the sufficient set.
-See appendix for details.
+When using L-CODEC, we can use a more straightforward Markov Blanket identification procedure adapted from \cite{codec}. FOCI more directly selects which variables are valuable for explaining $z'$, and in fact, is proven to identify the sufficient set (Markov Blanket) with a reasonable number of samples. Briefly, in our L-FOCI, the sufficient set is built incrementally with successive calls to L-CODEC, moving the most ``dependent'' feature from the independent set to the sufficient set.
+\todo{See appendix for details.}
 % Additionally,they provide a simple procedure for sufficient subset selection, reproduced in Algorithm~\ref{alg:foci}.
 
 \paragraph{Summary.} This procedure alleviates the first issue in terms of sufficient subset or Markov Blanket selection; compared to existing methods using information-theoretic measures that require permutation testing, L-FOCI directly estimates the change in variance when considering a proposal to add to the set.
