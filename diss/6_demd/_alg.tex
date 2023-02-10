@@ -34,7 +34,7 @@ Here, the d-MMOT is the LP,
     \sum_{i_1,\ldots,i_{d-1}} x(i_1,\ldots,i_d) &= p_{d}(i_{d}), (\forall i_d\in[n]).
     \end{aligned}
 \end{align}
-This linear program (LP) is central to the regularization schemes that are discussed below.
+This linear program is central to the regularization schemes that are discussed below.
 \section{Efficient d-MMOT Computation}
 The linear d-MMOT problem (\ref{eq:gemd}) suffers from the curse of dimensionality: the LP has $n^d$ variables, and even modest choices of $n$ and $d$ can result in a LP with billions of variables, making standard LP solvers inapplicable.
 %Traditional linear programming solvers such as interior point methods have been studied in the two-dimensional context, but the MMOT setting does not allow a direct extension given the exponential dependence on $d$. 
@@ -82,13 +82,13 @@ Additionally, when $c$ is the generalized EMD cost, \cite{kline2019properties} d
 %\begin{remark}
 It is also shown that the optimal objective value is a continuous nonnegative function of each probability distribution $p_j$ (i.e., small changes in one distribution cause small changes in the objective value). Continuity is critical for numerical stability.  Next, when $c$ is the generalized Earth Mover's array, the optimal objective value vanishes if and only if $p_i=p_j$ for all $i,j\in[n]$. 
 %\end{remark}
-This {\em separability} property is useful in applications where we wish to iteratively ``step towards'' the barycenter of a set of distributions, {\color{blue}see Fig. \ref{fig:min_demd}}.
+\end{remark}
+This {\em separability} property is useful in applications where we wish to iteratively ``step towards'' the barycenter of a set of distributions, see Figure \ref{fig:min_demd}.
 %{\color{blue} This typically would happen in an {\em outer} loop when training a deep neural network. }
-In order to step towards {\color{blue}(red arrows)} a barycenter, we  require a descent direction.  %This is the next result.
+In order to step towards {red arrows)} a barycenter, we  require a descent direction.  %This is the next result.
 %While we can directly push them all towards an arbitrary point in the simplex (e.g., uniform, barycenter), it would be better if we could naturally move towards a point that is close, in some sense, to the initial distributions.
 % is relevant since our goal is to regularize the model in a way that favors equi-distribution of mass across multiple probability densities.
 We observe that the following  result gives us  this functionality.
-\end{remark}
 
 % We can also write the dual linear program.
 % \begin{alignat}{2}\label{eq:dualgeneralemd}\begin{split}
@@ -137,28 +137,27 @@ The second claim is somewhat technical, and reconciles particular affine shifts 
 % The second claim, which is rather technical, requires some motivation/explanation for why it was included. 
 % We observed empirically that solutions yielded by either autograd or by numerical approximations differed from the solutions yielded by the greedy algorithm that we employ. 
 % But the difference was, in all cases, inconsquential: the dual objective functional, evaluated on both vectors agreed, and in all examples tested, the difference equaled a constant factor times the vector $\eta$ that is stated in the theorem.
-{\color{blue} 
 \subsection{Optimization of d-MMOT}\label{sec:dual}
 
-{\bf Setup.} 
+\paragraph{Setup.} 
 We can now instantiate d-MMOT as an add-on term in a standard machine learning formulation. Concretely, it can be positioned alongside typical learning losses $L(f(x),y;\theta)$ to encourage minimizing distances among $d$ different distributions $g_i\in G, i \in [d]$, $\text{d-MMOT}(f(x),g;\theta)$, i.e., 
-$\min_{\theta} L(f(x),y;\theta) + \text{d-MMOT}(f(x),g;\theta)$. 
+\begin{align}
+\min_{\theta} L(f(x),y;\theta) + \text{d-MMOT}(f(x),g;\theta).
+\end{align}
 Within a deep neural network (DNN) architecture, as in some of our experiments,  
 several properties of the d-MMOT module are useful:
 our results above naturally provide clean operations for computing both the required objective in the ``forward'' pass and gradients in the ``backward'' pass.
-}
 
 
-\begin{figure*}
+\begin{figure}
     \centering
     %\includegraphics[trim={0 14.5cm 2cm 5cm},clip,width=\textwidth]{6_demd/figs/demd_abstract.png}
     % \includegraphics[width=0.95\textwidth]{6_demd/figs/bary-gem-step.pdf}
     %\includegraphics[width=0.9\textwidth]{6_demd/figs/demd_hull_new.png}
     \includegraphics[trim={2cm, 0, 0, 18cm},clip,width=0.9\textwidth]{6_demd/figs/demd_hull_v3.png}
-    \caption{\footnotesize ({\em Left}) Barycenter methods identify a center (red circle) and transport \textit{all} distributions (blue circles) toward that center along the coupling path (yellow). ({\em Right}) Our DEMD approach identifies ``support" distributions that lie on the convex hull (outlined circles),  and only those distributions are moved in a direction that decreases the Generalized EMD objective.}
+    \caption[Visualizing steps withing the d-MMOT minimization]{({\em Left}) Barycenter methods identify a center (red circle) and transport \textit{all} distributions (blue circles) toward that center along the coupling path (yellow). ({\em Right}) Our DEMD approach identifies ``support" distributions that lie on the convex hull (outlined circles),  and only those distributions are moved in a direction that decreases the Generalized EMD objective.}
     \label{fig:min_demd}
-    \vspace{-5pt}
-\end{figure*}
+\end{figure}
 
 % \subsection{Solving the dMMOT program and its dual}\label{sec:dual}
 % JK: this paragraph interrupts the flow
@@ -209,35 +208,18 @@ our results above naturally provide clean operations for computing both the requ
 % Particularly,
 % \ronak{key results from kline19, complexity, short description of results}
 
-{\bf Using the primal and dual variables.}  If the optimal objective value of (\ref{eq:gemd}) serves in regularizing a deep neural network, then we can train the network as follows. %this means can compute the objective value during a the forward pass
+\paragraph{Using the primal and dual variables.}  If the optimal objective value of (\ref{eq:gemd}) serves in regularizing a deep neural network, then we can train the network as follows. %this means can compute the objective value during a the forward pass
 %The first issue is trivial to implement within standard neural network frameworks. 
 % During the forward pass, one can compute the EMD term using the primal/dual greedy algorithm of \cite{kline2019properties}, with one simple modification:  prior to returning, the dual solution variables are stored for use during the backward pass. 
 During the forward pass, i.e., computing the d-MMOT objective, we can employ a version of the aforementioned primal/dual algorithm that solely computes the function $\phi$ and stores the dual variables $z$.
-As backpropagation proceeds, when the EMD module encounters an incoming gradient, it is simply multiplied by the stored dual variables (see Theorem~\ref{thm:dualgrad} and Algorithm~\ref{alg:demdFunc}). We call our procedure the $d-$dimensional Earth Mover's Distance, or in short,\textit{ the DEMD algorithm}. 
-
-\iffalse
+As backpropagation proceeds, when the EMD module encounters an incoming gradient, it is simply multiplied by the stored dual variables (see Theorem~\ref{thm:dualgrad} and Algorithm~\ref{alg:demdFunc}). We call our procedure the $d$-dimensional Earth Mover's Distance, or in short,\textit{ the DEMD algorithm}. 
 \begin{algorithm}
-\caption{Our proposed method: $d-$Dimensional Earch Mover's Distance (DEMD)}\label{alg:demdFunc}
-\begin{algorithmic}
- \Function {Forward}{$p_1, \ldots, p_j$}
-    \State Compute $\sum s_k t_k$ and $(z_1,\ldots,z_d)$ via the primal/dual algorithm in \cite{kline2019properties}.% \ref{alg:primaldual}.
-    \State save $(z_1,\ldots, z_d)$.
-    \State \Return $\sum_k s_k t_k$
- \EndFunction
- \Function {Backward}{$\text{gradOutput}$}
- 	\State load $(z_1,\ldots, z_d)$
- 	\State \Return $(z_1,\ldots, z_d)\cdot \text{gradOutput}$
- \EndFunction
-\end{algorithmic}
-\end{algorithm}
-\fi
-\begin{algorithm}
-	\caption{ \label{alg:demdFunc} $d-$Dimensional Earch Mover's Distance (DEMD)}
+	\caption{ \label{alg:demdFunc} $d$-Dimensional Earth Mover's Distance (DEMD)}
 	\SetAlgoLined
 	\DontPrintSemicolon
 	\SetKwFunction{FVar}{Forward}
 	\SetKwProg{Fn}{Function}{:}{}
-	\Fn{\FVar{$p_1, \ldots, p_j$}}{
+	\Fn{\FVar{$p_1, \ldots, p_d$}}{
 		Compute $\sum s_k t_k$ and $(z_1,\ldots,z_d)$ via \cite{kline2019properties}. \\
 		Save $(z_1,\ldots, z_d)$. \\
 		\KwRet{$\sum_k s_k t_k$}
@@ -251,9 +233,9 @@ As backpropagation proceeds, when the EMD module encounters an incoming gradient
 \end{algorithm}
 
 
-{\bf Complexity.} Computing the DEMD distance in the forward pass is exactly $O(nd)$: linear in the number of distributions and number of bins. This property follows directly from the algorithm, needing only a single pass through all of the data. \cite{BEIN199597} provides this result for greedy algorithms that solve OT programs as in Def.~\ref{def:dmmot}. {\color{blue}  In contrast to methods that derive gradients via entropic regularization schemes, i.e., relaxations of the optimal transport problem \citep{diffpropsinkwass,difftopkOT,quantnorm}, this approach solves the distance computation exactly in linear time.}
-This linear time analysis is not only provided by the theory in prior work, but is also explicit in the number of iterations defining our algorithm (see Appendix~\ref{sec:suppdemd} for more details).
-For minimizing the DEMD {\color{blue}(computing the updates, i.e., red arrows in Fig.~\ref{fig:min_demd})}, a convergence analysis would follow from the properties of the optimization scheme chosen. Our tool can be dropped in exactly as any other module in modern learning applications (using the observation that gradients are easily computed, i.e., $O(1)$ time to read stored dual variables). %Convergence analysis would follow from the optimization method chosen (SGD, ADAM, etc.).
+\paragraph{Complexity.} Computing the DEMD distance in the forward pass is exactly $O(nd)$: linear in the number of distributions and number of bins. This property follows directly from the algorithm, needing only a single pass through all of the data. \cite{BEIN199597} provides this result for greedy algorithms that solve OT programs as in Definition~\ref{def:dmmot}. In contrast to methods that derive gradients via entropic regularization schemes, i.e., relaxations of the optimal transport problem \citep{diffpropsinkwass,difftopkOT,quantnorm}, this approach solves the distance computation exactly in linear time.
+This analysis is not only provided by the theory in prior work, but is also explicit in the number of iterations defining our algorithm (see Appendix~\ref{sec:suppdemd} for more details).
+For minimizing the DEMD (computing the updates, i.e., red arrows in Figure~\ref{fig:min_demd}), a convergence analysis would follow from the properties of the optimization scheme chosen. Our tool can be dropped in exactly as any other module in modern learning applications (using the observation that gradients are easily computed, i.e., $O(1)$ time to read stored dual variables). %Convergence analysis would follow from the optimization method chosen (SGD, ADAM, etc.).
 %}
 
 % It is this construction that we take advantage of and expand upon. 
@@ -350,13 +332,13 @@ For minimizing the DEMD {\color{blue}(computing the updates, i.e., red arrows in
 
 % The second claim, which is rather technical, requires some motivation/explanation for why it was included. We observed empirically that solutions yielded by either autograd or by numerical approximations differed from the solutions yielded by the greedy algorithm that we employ. But the difference was, in all cases, inconsquential: the dual objective functional, evaluated on both vectors agreed, and in all examples tested, the difference equaled a constant factor times the vector $\eta$ that is stated in the theorem.
 
-{\bf A few practical adjustments.}
+\paragraph{A few practical adjustments.}
 % In~\cite{kline2019properties}, several properties of the objective functional~$\phi$ are shown. 
 % We utilize several of these properties.
 % We already observed that $\phi$ is a continuous functional (also stated in Theorem 2.1 of that work). 
 % It is also shown there that $\phi$ is homogeneous of degree 1, in the sense that $\alpha\phi(p_1,\ldots,p_d)=\phi(\alpha p_1,\ldots,\alpha p_d)$ for all $\alpha>0$.
 It often happens during training that the optimal solutions may, through updates by stepping in the direction of the gradient, acquire entries that are negative. 
-This violates an assumption that entries must be nonnegative. However, Thm.~2.2 in~\cite{kline2019properties} shows that the optimal objective value, $\phi$, possesses a type of translation invariance.  We can leverage this result to ensure that, in the event that a point escapes the nonnegative orthant of $\RR^{n}$,
+This violates an assumption that entries must be nonnegative. However, Theorem 2.2 in~\cite{kline2019properties} shows that the optimal objective value, $\phi$, possesses a type of translation invariance.  We leverage this result, alongside the second part of our Theorem \ref{thm:dualgrad} to ensure that, in the event that a point escapes the nonnegative orthant of $\RR^{n}$,
 an appropriately constructed constant vector may be added to the current iterate so that it again lies in the nonnegative orthant, \textit{without changing the objective value}. 
 Further, with a
 % Further, since we wish to compare probability distributions normalized so that $e'p_j=1$ for all $j$, if at some point during training a step modifies $p_j$ so that $e'p_j\not=1$, we can normalize by the positive scalar, $e'p_j>0$. In practice, since each step is a function of a
@@ -367,7 +349,7 @@ Another useful property is that if the convex hull of $(p_1,\ldots,p_d)$ is cont
 A direct consequence of this property is that points within the interior of the convex hull of the data fed to the optimization model have vanishing gradients.
 Practically, this leads to \textbf{sparse} gradients w.r.t. the distributions, and nonzero gradients correspond to points on the hull, i.e., distributions which are maximally different from the rest.
 Minimization proceeds by iteratively moving mass such that these maximally different distributions are pushed toward each other.
-Fig.~\ref{fig:min_demd} shows the convex hull during minimization of the generalized EMD objective via our DEMD algorithm.
+Figure~\ref{fig:min_demd} shows the convex hull during minimization of the generalized EMD objective via our DEMD algorithm.
 \end{remark}
 
 \iffalse % begin removal of histogram wrapfig
@@ -522,7 +504,7 @@ Fig.~\ref{fig:min_demd} shows the convex hull during minimization of the general
 % \phantom{.} % DO NOT DELETE -- it is required to solve wrapfigure 2-column bug
 
 {\bf Need for Histogramming.} 
-{\color{blue} Note that outputs $f(x)$ and intermediate activations are \textit{continuous} values (layer shape by batch size).}
+Note that outputs $f(x)$ and intermediate activations are \textit{continuous} values (layer shape by batch size).
 So, we must transform activations into normalized histograms (i.e., discrete distributions).
 While libraries such as PyTorch and Tensorflow typically provide histogram functions, they are not differentiable. The discontinuous operation of bin assignment does not allow for an end-to-end pipeline where we can push upstream parameters in the direction of minimizing the EMD objective over histograms.
 To address this, we 

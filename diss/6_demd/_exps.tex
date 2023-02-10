@@ -6,8 +6,7 @@
     }% 
     \;
     \includegraphics[width=0.35\columnwidth]{6_demd/figs/Distance_Comparisons.pdf}
-    \vspace{-10pt}
-    \caption{\footnotesize \label{fig:dists} (Left) DEMD is positioned after the final layer, prior to the activation. Activations are sorted into distributions utilizing group labels provided alongside the input data. Computed distributions are then brought together using our algorithm. (Right) Computation times for direct distance evaluation of EMD-like distances. Existing methods take much more time {\color{blue}(check $y$-axis)} as the number of distributions grow.}
+    \caption[DEMD regularization and computation speedups]{\label{fig:dists} (Left) DEMD is positioned after the final layer, prior to the activation. Activations are sorted into distributions utilizing group labels provided alongside the input data. Computed distributions are then brought together using our algorithm. (Right) Computation times for direct distance evaluation of EMD-like distances. Existing methods take much more time {\color{blue}(check $y$-axis)} as the number of distributions grow.}
     \vspace{-5pt}
 \end{figure}
 
@@ -24,13 +23,13 @@ We evaluate our construction in a number of settings.
 First, we demonstrate the computational speedup associated with evaluating d-MMOT using our algorithm, along with speedups associated with directly computing the gradient.
 Next, we compute the construction in a series of neural network tasks associated with ensuring distributional similarity: fairness, invariant representations, and multi-domain matching.
 We provide a complete PyTorch Network Module that packages the above differentiable DEMD objective and histogram functions,
-and serves as a plug-and-play regularization module. Code is available in the supplement. %\vishnu{One major criticism in the experiments is we don't evaluate in a setting where there are too many distributions to match. }
+and serves as a plug-and-play regularization module. %\vishnu{One major criticism in the experiments is we don't evaluate in a setting where there are too many distributions to match. }
 
 
 \subsection{Performance Benchmarks}
 
-Figure \ref{fig:speeds} presents NumPy and Torch instantiations of both forward and backward passes using automatic differentiation and the gradients computed using the dual as in \S\ref{sec:dual}. As expected, the forward (distance computation) times are comparable, but the backwards computation scales poorly with the number of distributions to be updated using automatic differentiation. Our dual setting allows the gradients to simply be read off (based on the forward pass), leading to \textbf{no} additional computation overhead during backpropagation.
-\begin{figure}[ht]
+Figure \ref{fig:speeds} presents NumPy and Torch instantiations of both forward and backward passes using automatic differentiation and the gradients computed using the dual as in Section \ref{sec:dual}. As expected, the forward (distance computation) times are comparable, but the backwards computation scales poorly with the number of distributions to be updated using automatic differentiation. Our dual setting allows the gradients to simply be read off (based on the forward pass), leading to \textbf{no} additional computation overhead during backpropagation.
+\begin{figure}
     \centering
     \fbox{
     \includegraphics[width=0.22\textwidth]{6_demd/figs/fwbk_new/Numpy_Forwards_10Bins.pdf}
@@ -41,9 +40,8 @@ Figure \ref{fig:speeds} presents NumPy and Torch instantiations of both forward 
     \includegraphics[width=0.22\textwidth]{6_demd/figs/fwbk_new/Torch_Forwards_10Bins.pdf}
     \includegraphics[width=0.22\textwidth]{6_demd/figs/fwbk_new/Torch_Backward_10Bins.pdf}
     }%
-    \caption{\footnotesize Forward/Backward Pass Times for 10 Bins with varying number of distributions, averaged over 10 runs. Forward wall-clock times are comparable, regardless of backend ({\em left pair}: NumPy+SciPy; {\em right pair}: PyTorch+AutoGrad). Direct reading of the gradient via the dual leads to significant gains in backward pass times, where automatic differentiation scales poorly with the number of distributions.}
+    \caption[DEMD forward and backward time copmarisons]{Forward/Backward Pass Times for 10 Bins with varying number of distributions, averaged over 10 runs. Forward wall-clock times are comparable, regardless of backend ({\em left pair}: NumPy+SciPy; {\em right pair}: PyTorch+AutoGrad). Direct reading of the gradient via the dual leads to significant gains in backward pass times, where automatic differentiation scales poorly with the number of distributions.}
     \label{fig:speeds}
-    \vspace{-5pt}
 \end{figure}
 
 
@@ -99,16 +97,16 @@ prior to classification,
 and push the distributions of this activation to be similar
 among sensitive attributes.
 
-{\bf Data.}
+\paragraph{Data.}
 We identify 4 common fairness datasets often used to benchmark
 fair machine learning algorithms: (1) the German Credit Dataset \citep{german}, (2) the Adult Income Dataset \citep{uci}, (3) the Communities and Crime Dataset \citep{crime}, and (4) The ACS Income dataset, recently made available as a large, population-level demographic dataset \citep{ding2021retiring} containing as many as nine sensitive attributes. We set up a simple three-layer neural network for classification tasks with the addition of a fairness-type regularizer. We compare our construction with 4 off-the-shelf plug-in regularizers: (1) No regularization, (2) Demographic Parity (DP), (3) Equalized Odds (EO), and (4) a histogrammed barycenter construction. DP and EO regularizers were computed using a PyTorch version of FairLearn \citep{bird2020fairlearn}, and the barycenter version was implemented using POT library (with GPU backend). Because the scale of the regularization term is not directly comparable, we sweep regularization weights and select the best over all measures for a each dataset/regularizer pair. 
 We use 10 bins and replicate all experiments over three random seeds.
 
 % The American Census Survey (ACS) has recently made available a large set of demographic data. The original UCI Adult dataset \cite{uci} was curated from this data, however recent work by \cite{ding2021retiring} has identified temporal shifts in demographic data, and recommends using a more recent collection as a baseline when evaluating biases and adjusting for fairness. Part of their contribution includes APIs to directly interface with the data provided by the ACS, and the ability to identify and construct similar problems associated with the original UCI-provided dataset, albeit with updated data. Data for the income prediction task was downloaded from 2018, localized to California. After preprocessing, 195665 samples were split: 75\% training and 25\% validation. Race is the provided group label, which we wish to be agnostic toward over some measure of our output.
-{\bf Models.} We set up two model settings with a standard logistic regressor and a 2-layer neural network. We compare three types of plug-in regularizers: (1) Demographic Parity (DP), (2) Equalized Odds (EO), and (3) the Generalized EMD. DP and EO regularizers were computed using a PyTorch implementation of FairLearn \citep{bird2020fairlearn}. 
+\paragraph{Models.} We set up two model settings with a standard logistic regressor and a 2-layer neural network. We compare three types of plug-in regularizers: (1) Demographic Parity (DP), (2) Equalized Odds (EO), and (3) the Generalized EMD. DP and EO regularizers were computed using a PyTorch implementation of FairLearn \citep{bird2020fairlearn}. 
 %Since the scale of the regularization term in our measure is not directly comparable, we sweep over the regularization weights. 
 
-{\bf Results.} In the summary in Table~\ref{tab:fair_results}, models were selected with the largest regularization weight before accuracy dropped significantly. When accuracies are comparable, we see good performance (when minimizing DEMD regularizer) against baseline methods. Notably, when accuracies are similar across methods, minimizing DEMD tends to give better (lower) fairness measures across all datasets.
+\paragraph{Results.} In the summary in Table~\ref{tab:fair_results}, models were selected with the largest regularization weight before accuracy dropped significantly. When accuracies are comparable, we see good performance (when minimizing DEMD regularizer) against baseline methods. Notably, when accuracies are similar across methods, minimizing DEMD tends to give better (lower) fairness measures across all datasets.
 {\bf Summary:} DEMD on the final network layer helps control multiple fairness measures.
 
 
@@ -122,8 +120,7 @@ We use 10 bins and replicate all experiments over three random seeds.
 \begin{table*}[!t] 
 	\scriptsize
 	\setlength\tabcolsep{3.5pt} % make LaTeX figure out width of inter-column spaces
-	\caption{\footnotesize \textbf{Fairness Experiments.} Measures evaluated using standard metrics: maximum Demographic Parity Gap \textbf{(DP)},  maximum Equalized Odds Gap \textbf{(EO)}, and \textbf{(DEMD)}. For all measures, lower values are preferred.  With comparable accuracy, DEMD regularization leads to fairer representations as measured by common metrics. DP and EO measures are scaled by 100 for ease of presentation. Best results shown in bold.}
-	\vspace{-10pt}
+	\caption[Fairness application comparisons using DEMD regularization]{\textbf{Fairness Experiments.} Measures evaluated using standard metrics: maximum Demographic Parity Gap \textbf{(DP)},  maximum Equalized Odds Gap \textbf{(EO)}, and \textbf{(DEMD)}. For all measures, lower values are preferred.  With comparable accuracy, DEMD regularization leads to fairer representations as measured by common metrics. DP and EO measures are scaled by 100 for ease of presentation. Best results shown in bold.}
 	\begin{tabular*}{\linewidth}{l *{3}{c}|*{3}{c}|*{3}{c}|*{3}{c}}
 		\midrule%\midrule
 		& \multicolumn{3}{c}{German} & \multicolumn{3}{c}{Adult} & \multicolumn{3}{c}{Crime}& \multicolumn{3}{c}{ACS-Income} \\
@@ -143,7 +140,6 @@ DEMD (ours) & $\textbf{14}\scriptscriptstyle(7)$ & $\textbf{9}\scriptscriptstyle
 		\midrule%\midrule
 	\end{tabular*}
 	\label{tab:fair_results}
-	%\vspace{-20pt}
 \end{table*} 
 
 \subsection{Harmonization for Invariant Representations}
@@ -154,8 +150,7 @@ Having evaluated the use of the DEMD layer to constrain the neural network for  
 \begin{table*}[!t] 
 	\scriptsize
 	\setlength\tabcolsep{2.25pt} % make LaTeX figure out width of inter-column spaces
-	\caption{\footnotesize \textbf{Harmonization Experiments.} Evaluations conducted along three metrics, Accuracy \textbf{(ACC)}, Adversarial measure \textbf{(ADV)} and Maximum Mean Discrepancy \textbf{(MMD)}. A lower value $\downarrow$ of ADV and MMD indicate successful harmonization across the different groups. A higher ACC with a small drop from baseline is preferred. }
-	\vspace{-10pt}
+	\caption[Harmonization application comparisons using DEMD regularization]{\textbf{Harmonization Experiments.} Evaluations conducted along three metrics, Accuracy \textbf{(ACC)}, Adversarial measure \textbf{(ADV)} and Maximum Mean Discrepancy \textbf{(MMD)}. A lower value $\downarrow$ of ADV and MMD indicate successful harmonization across the different groups. A higher ACC with a small drop from baseline is preferred. }
 	\begin{tabular*}{\linewidth}{l *{3}{c}|*{3}{c}|*{3}{c}|*{3}{c}}
 		\midrule%\midrule
 		& \multicolumn{3}{c}{German} & \multicolumn{3}{c}{Adult} & \multicolumn{3}{c}{Crime}& \multicolumn{3}{c}{ACS-Income} \\
@@ -163,9 +158,9 @@ Having evaluated the use of the DEMD layer to constrain the neural network for  
 		& ACC $\uparrow$ & ADV $\downarrow$ & MMD $\downarrow$ & ACC $\uparrow$ & ADV $\downarrow$ & MMD $\downarrow$ & ACC $\uparrow$ & ADV $\downarrow$ & MMD $\downarrow$ & ACC $\uparrow$ & ADV $\downarrow$  & MMD $\downarrow$ \\ 
 		\midrule
 		None & $74\scriptscriptstyle(0.9)$ & $93\scriptscriptstyle(1.3)$ & $7.7\scriptscriptstyle(0.8)$ & $84\scriptscriptstyle(0.1)$ & $83\scriptscriptstyle(0.1)$ & $9.8\scriptscriptstyle(0.3)$ & $85\scriptscriptstyle(0.2)$ & $77\scriptscriptstyle(0.5)$ & $14\scriptscriptstyle(0.1)$ & $78\scriptscriptstyle(0.1)$ & $98\scriptscriptstyle(0.7)$ & $160\scriptscriptstyle(2)$ \\
-		\cite{zemel} & $73\scriptscriptstyle(1.5)$ & $92\scriptscriptstyle(1.3)$ & $1.5\scriptscriptstyle(0.3)$ & $84\scriptscriptstyle(0.1)$ & $83\scriptscriptstyle(0.1)$ & $3.1\scriptscriptstyle(0.3)$ & $85\scriptscriptstyle(0.5)$ & $76\scriptscriptstyle(1.6)$ & $12\scriptscriptstyle(1.0)$ & $78\scriptscriptstyle(0.1)$ & $97\scriptscriptstyle(0.5)$ & $17\scriptscriptstyle(1.2)$ \\
-		\cite{cai} & $76\scriptscriptstyle(1.3)$ & $93\scriptscriptstyle(0.6)$ & $1.2\scriptscriptstyle(0.2)$ & $84\scriptscriptstyle(0.04)$ & $81\scriptscriptstyle(0.7)$ & $4.2\scriptscriptstyle(2.4)$ & $85\scriptscriptstyle(0.2)$ & $76\scriptscriptstyle(0.7)$ & $15\scriptscriptstyle(0.6)$ & $78\scriptscriptstyle(0.1)$ & $94\scriptscriptstyle(5.6)$ & $99\scriptscriptstyle(2.9)$ \\
-		DEMD (ours) & $74\scriptscriptstyle(1.1)$ & $93\scriptscriptstyle(0.4)$ & $2.1\scriptscriptstyle(0.4)$ & $84\scriptscriptstyle(0.03)$ & $82\scriptscriptstyle(0.2)$ & $5.3\scriptscriptstyle(1.4)$ & $83\scriptscriptstyle(0.3)$ & $72\scriptscriptstyle(1.0)$ & $7.1\scriptscriptstyle(1.0)$ & $77\scriptscriptstyle(0.4)$ & $96\scriptscriptstyle(0.5)$ & $26\scriptscriptstyle(3.9)$ \\
+		Li et al. & $73\scriptscriptstyle(1.5)$ & $92\scriptscriptstyle(1.3)$ & $1.5\scriptscriptstyle(0.3)$ & $84\scriptscriptstyle(0.1)$ & $83\scriptscriptstyle(0.1)$ & $3.1\scriptscriptstyle(0.3)$ & $85\scriptscriptstyle(0.5)$ & $76\scriptscriptstyle(1.6)$ & $12\scriptscriptstyle(1.0)$ & $78\scriptscriptstyle(0.1)$ & $97\scriptscriptstyle(0.5)$ & $17\scriptscriptstyle(1.2)$ \\
+		Xie et al. & $76\scriptscriptstyle(1.3)$ & $93\scriptscriptstyle(0.6)$ & $1.2\scriptscriptstyle(0.2)$ & $84\scriptscriptstyle(0.04)$ & $81\scriptscriptstyle(0.7)$ & $4.2\scriptscriptstyle(2.4)$ & $85\scriptscriptstyle(0.2)$ & $76\scriptscriptstyle(0.7)$ & $15\scriptscriptstyle(0.6)$ & $78\scriptscriptstyle(0.1)$ & $94\scriptscriptstyle(5.6)$ & $99\scriptscriptstyle(2.9)$ \\
+		DEMD & $74\scriptscriptstyle(1.1)$ & $93\scriptscriptstyle(0.4)$ & $2.1\scriptscriptstyle(0.4)$ & $84\scriptscriptstyle(0.03)$ & $82\scriptscriptstyle(0.2)$ & $5.3\scriptscriptstyle(1.4)$ & $83\scriptscriptstyle(0.3)$ & $72\scriptscriptstyle(1.0)$ & $7.1\scriptscriptstyle(1.0)$ & $77\scriptscriptstyle(0.4)$ & $96\scriptscriptstyle(0.5)$ & $26\scriptscriptstyle(3.9)$ \\
 		\midrule
 	\end{tabular*}
 	\label{tab:harm_results}
@@ -233,7 +228,7 @@ Here, we aim to translate original dataset images to ones with specific target a
     \scriptsize
     	Original \quad\; Blond Hair \quad\; Glasses \quad\; Moustache \quad\; Pale Skin \quad\quad Original \quad\; Blond Hair \quad\; Glasses \quad\; Moustache \quad\; Pale Skin \\
     	\includegraphics[width=0.49\linewidth,trim={0 58.7cm 0 0},clip]{6_demd/figs/mwgan/069500-images.jpg} \includegraphics[width=0.49\linewidth,trim={0 0 0 58.7cm},clip]{6_demd/figs/mwgan/069500-images.jpg}
-    \caption{Six MWGAN+DEMD CelebA image translation results. Each row corresponds to a random sample in the validation set. The leftmost image is the original source image, and sequential columns represent translations to (1) Blonde Hair, (2) Glasses, (3) Moustache, and (4) Pale Skin. Using DEMD as a relaxation to the Multiple Marginal Matching problem facilitates high quality images translation. For more results see Appendix~\ref{sec:app-mwgan}. }
+    \caption[Image translation on CelebA via d-MMOT]{Six MWGAN+DEMD CelebA image translation results. Each row corresponds to a random sample in the validation set. The leftmost image is the original source image, and sequential columns represent translations to (1) Blonde Hair, (2) Glasses, (3) Moustache, and (4) Pale Skin. Using DEMD as a relaxation to the Multiple Marginal Matching problem facilitates high quality images translation. For more results see Appendix~\ref{sec:app-mwgan}. }
     \label{fig:mwgan}
 \end{figure*}
 

@@ -1,5 +1,5 @@
 \section{Introduction}
-The use of Optimal transport (OT) is now prevalent in many problem settings including information retrieval \citep{balikas2018cross,yurochkin2019hierarchical}, image processing \citep{otip}, statistical machine learning, as well as more recently, for ethics and fairness research \citep{kwegyiraggrey2021relative}. 
+The use of Optimal transport (OT) is now prevalent in many problem settings including information retrieval \citep{balikas2018cross,yurochkin2019hierarchical}, image processing \citep{otip}, statistical machine learning, and more recently, for ethics and fairness research \citep{kwegyiraggrey2021relative}. 
 OT is well-suited for tasks where dissimilarity between two or more probability distributions must be quantified; 
 its success was made possible through dramatic improvements in algorithms \citep{cuturi2013sinkhorn,solomon2015convolutional} that allow one to efficiently optimize commonly used functionals.
 In practice, OT is often used to estimate and minimize the 
@@ -7,7 +7,7 @@ distance between certain (data-derived) distributions,
 using an appropriately defined loss functional. %Recent advances provide us the capability to drop-in and seamlessly integrate many types of losses into existing methods, for novel applications.
 When one seeks to operate on more than two distributions, however, newer constructions are necessary to effectively estimate distances and transports.
 To this end, a well studied idea in the literature is the ``barycenter,''
-identified by minimizing the pairwise distance between itself and all other distributions given. 
+identified by minimizing the pairwise distance between itself and all other distributions given (analagous to the Karcher mean on Riemannian manifolds). 
 The $d$-dimensional proxy distance is then defined as the sum of the distances to the barycenter.
 
 %\begin{comment}
@@ -24,9 +24,9 @@ The $d$-dimensional proxy distance is then defined as the sum of the distances t
 % set of distributions and has found use in 
 % a spectrum of applications, which we will list shortly.
 
-\textbf{Computing barycenters.}
+\paragraph{Computing barycenters.}
 Assuming that a suitably regularized form of the optimal transport loss is utilized, the pairwise distance 
-calculation, by itself, can be efficient -- in fact, 
+calculation itself can be efficient -- in fact, 
 in some cases, Sinkhorn iterations can be used \citep{cuturi2013sinkhorn}. 
 On the other hand, to minimize distances to the mean, 
 most algorithms typically operate 
@@ -37,8 +37,8 @@ distances.
 % \glenn{I wonder if our method could be also more robust when the pairwise distances are very non-uniform, especially at early iterations...see  \href{https://www.stat.cmu.edu/~larry/=sml/Opt.pdf}  {https://www.stat.cmu.edu/~larry/=sml/Opt.pdf}at the end of page 10}\ronak{I like this idea, maybe we can allude to it briefly?}
 %The idea is sensible but a
 As the number of distributions 
-grows, robustness issues can exacerbate \citep{alvarez2008trimmed} and the procedure is 
-expensive (e.g., for 50 distributions, 50 bins).
+grows, robustness issues can exacerbate \citep{alvarez2008trimmed} and the procedure becomes
+expensive (e.g., for 50 distributions, with 50 ``bins'').
 %{\color{red}For example, even on a high end workstation, 
 %simply computing the barycenter over
 %50 distributions with 50 bins}
@@ -47,7 +47,7 @@ expensive (e.g., for 50 distributions, 50 bins).
 %is a time-intensive process.
 
 % {\bf An efficient alternative.}
-\textbf{A potential alternative.}
+\paragraph{A potential alternative.}
 Multi-marginal optimal transport (MMOT) is a related problem to the aforementioned task but to some extent, the literature has developed in parallel.
 In particular, MMOT focuses on identifying a joint distribution such that the marginals are defined by the input distributions over which we wish to measure the dissimilarity.
 The definition naturally extends the two-dimensional formulation, and recent work has explored a number of applications \citep{pass2015multi}.
@@ -72,7 +72,7 @@ dissimilarity (push distributions closer to each other) is practically hard if s
 % may potentially be avoided. This hypothesis drives much of our development.
 
 % \vikas{We need some work to justify the role/need of the following paragraph. What is the information is is designed to convey?} \glenn{I think we need to enforce this paragraph by contrasting it with our proposed approach, which I think its the intention of providing this information}
-\noindent\textbf{Why and where is dissimilarity important?}
+\paragraph{Why and where is dissimilarity important?}
 % {\color{red} START} Putting aside the cost to compute the barycenter for the moment, 
 % instantiations of such applications often desire to enforce distribution similarity
 % only on model outputs.
@@ -96,7 +96,7 @@ to only the final outputs of neural network models, where the distribution is ty
 MMOT solutions might be employed here, but suffer similar computational limitations.
 % Additionally, full retraining would be necessary if thresholds must be adjusted due to changing business or regulatory requirements.
 
-\noindent\textbf{Contributions.}  \textbf{(1)} We identify a particular form of the discrete multi-marginal optimal transport problem
+\paragraph{Contributions.}  \textbf{(1)} We identify a particular form of the discrete multi-marginal optimal transport problem
 which admits an extremely fast and numerically robust solution.
 Exploiting a recent extension of 
 the classical Earth Movers Distance (EMD) to a higher-dimensional Earth Mover's objective,
@@ -131,9 +131,8 @@ We compare with barycenter-like approaches in several settings, including common
     \includegraphics[width=0.19\textwidth]{6_demd/figs/hists/hists_iter_200.pdf}
     \includegraphics[width=0.19\textwidth]{6_demd/figs/hists/hists_iter_500.pdf}
     \includegraphics[width=0.19\textwidth]{6_demd/figs/hists/hists_iter_1000.pdf}
-    \caption{\footnotesize Starting and ending state of minimizing a multi-marginal OT distance. Each iteration minimizes the generalized Earth Mover's objective, and then updates each histogram in the direction provided by the gradient.}
+    \caption[Minimizing the generalized Earth Mover's Distance]{Starting and ending state of minimizing a multi-marginal OT distance. Each iteration minimizes the generalized Earth Mover's objective, and then updates each histogram in the direction provided by the gradient.}
     \label{fig:hists}
-    \vspace{-10pt}
 \end{figure}
 
 %%%% OLD

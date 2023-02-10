@@ -62,7 +62,7 @@ our model is still able to identify boundaries of edges between low and high pro
 	%    \includegraphics[width=0.75\columnwidth,trim={0 5.5cm 0 4.5cm},clip]{figs/brains/pos_1.png}
 	%    \includegraphics[width=0.75\columnwidth,trim={0 5.5cm 0 4.5cm},clip]{figs/brains/pos_2.png}
 	%    \includegraphics[width=0.75\columnwidth,trim={0 5.5cm 0 4.5cm},clip]{figs/brains/pos_p.png}
-	\caption{\label{fig:adpos} Ground truth progression and prediction of gray matter probabilities in an individual from our validation set. From the left, the first three images are the ground truth images at visits 1, 2, and 3, followed by our prediction at visit 3.}
+	\caption[Predicting gray matter probabilities over time]{\label{fig:adpos} Ground truth progression and prediction of gray matter probabilities in an individual from our validation set. From the left, the first three images are the ground truth images at visits 1, 2, and 3, followed by our prediction at visit 3.}
 \end{figure}
 \subsection{Cognition from gray matter sequence}
 Based on the results from the above experiment, one may ask if, in fact, a good model of progression is being learned, or
@@ -89,8 +89,7 @@ with half as many parameters.
 	\centering
 	\includegraphics[width=0.49\columnwidth]{4_ott/figs/adni/adni_convergence.eps}
 	\includegraphics[width=0.49\columnwidth]{4_ott/figs/adni/adni_widths.eps}
-	\vspace{-10pt}
-	\caption{\label{fig:loss} \footnotesize Validation losses for reconstruction (left) and confidence interval widths (right) for uncertainty estimation of RAVLT prediction (lower is better). }
+	\caption[Reconstruction validation loss and uncertainty estimation]{\label{fig:loss} Validation losses for reconstruction (left) and confidence interval widths (right) for uncertainty estimation of RAVLT prediction (lower is better). }
 \end{figure}
 
 \textbf{(B) Quantifying Model Uncertainty.}

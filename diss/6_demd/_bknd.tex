@@ -9,9 +9,9 @@ We denote by $e\coloneqq (1,\ldots,1)\in\RR^{n}$ the constant vector.
 For $q\geq 1$, we define the $q$-norm  as $\norm{x}_q\coloneqq \left(\sum_{i\in[n]}\left|{x(i)}\right|^{q}\right)^{1/q}$, and if $q$ is suppressed, then $\left\|x\right\|\coloneqq \left\|x\right\|_2$. 
 A discrete probability distribution is a point $p\in\RR^{n}_+$ with $e'p=\norm{p}_1=1$.
 
-Given a pair of discrete probability distributions $p_1,p_2\in\RR^{n}_+$, we may want to quantify similarity. 
+Given a pair of discrete probability distributions $p_1,p_2\in\RR^{n}_+$, we may want to quantify similarity or dissimilarity. 
 %$p_1$ and $p_2$ are. 
-Often, it is more convenient to quantify dissimilarity between $p_1$ and $p_2$, and one may do this by selecting from many options including the $q$-norm, KL-divergence or the Earth Mover's Distance (EMD).
+Often we do this by selecting from many measures, including the $q$-norm, KL-divergence or the Earth Mover's Distance (EMD).
 %
 % \vikas{describe that we want to find how similar $p_1$ and $p_2$ are}
 %This problem is most well known as discrete optimal transport, or the Earth Mover's problem, and can be described as a linear program.
@@ -44,7 +44,7 @@ By strong duality, the optimal value of the primal program~(\ref{eq:2demd}) equa
 Many practical relaxations have been proposed for (\ref{eq:2demd}), including entropic regularization \citep{cuturi2013sinkhorn}.
 %, which is notable for being both practical and scalable.
 %as it has led to practical approximations over large histograms.
-The EMD is available in Python Optimal Transport (POT) \citep{flamary2021pot}.
+Computation of the EMD is readily available as in the Python Optimal Transport (POT) library \citep{flamary2021pot}.
 
 %Minimization of the EMD is feasible via backend-supported implementations such as POT \citep{flamary2021pot}.
 

@@ -3,11 +3,11 @@ For all our experiments related to harmonization, we use an encoder-decoder fram
 
 Recall that the harmonization experiments aimed at minimizing the distributional differences of the latent features across the groups. Below, we will provide details on the evaluation metrics, ADV and MMD measures, that aptly assess distributional differences of the latent features. 
 
-{\bf Evaluation Metric: Adversarial Measure (ADV)}
+\paragraph{Evaluation Metric: Adversarial Measure (ADV)}
 The ADV measure corresponds to the accuracy obtained by training a separate neural network to predict groups from the latent features. This step is conducted post harmonization. A lower value of the ADV accuracy denotes that the latent features are free of any group related information. This implies successful harmonization and suggests minimal distributional differences of the latent features across groups. We follow \citep{cai} for training the adversary used for reporting ADV measure. We use a three-layered fully-connected network with batch normalization and train it with Adam optimizer for $200$ epochs. The learning rate for the adversary is decreased multiplicatively by a factor of $0.65$ every $10$ epochs for convergence. 
 
 
-{\bf Evaluation Metric: Maximum Mean Discrepancy (MMD)}
+\paragraph{Evaluation Metric: Maximum Mean Discrepancy (MMD)}
 We simply use the following MMD criterion as described in \citep{gretton2006kernel} and evaluate the metric on the latent features obtained from the test set. Each group is considered as a different distribution and a lower value of this metric suggests minimal distributional differences across the groups. For latent feature vector $\ell$ and groups $i/j$, we have 
 \begin{align}
 \label{mmd_eq}

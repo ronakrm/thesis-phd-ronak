@@ -1,7 +1,7 @@
 \section{Experimental Details}
  Results reported in tables in the main part of the thesis are of the form $M\scriptscriptstyle{(SD)}$, where $M$ is the mean and $SD$ is the standard deviation calculated over replications.
 
-{\bf Setup details.} Experiments were conducted using NumPy and PyTorch on a Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz with an Nvidia Titan Xp GPU. Particular parameter settings and experimental runs can be found below or in the scripts included with the code provided in the supplement.
+\paragraph{Setup details.} Experiments were conducted using NumPy and PyTorch on a Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz with an Nvidia Titan Xp GPU. Particular parameter settings and experimental runs can be found below or in the scripts included with the code provided in the supplement.
 
 % {\bf Practical considerations.}
 % In our case, it often happens during training that the optimal solutions may, through updates by stepping in the direction of the gradient, acquire entries that are negative. This violates an assumption that entries of the program input must be nonnegative. However, Theorem 2.2 item 1 in~\cite{kline2019properties} shows that $\phi$ possesses a kind of translation invariance. We can leverage this property to ensure that, in the event that a point escapes the nonnegative orthant of $\RR^{n}$, we can add a constant vector to the current iterate so that it again lies in the nonnegative orthant, and we can do this without changing the objective value. 

@@ -5,7 +5,7 @@
     \includegraphics[width=0.45\textwidth]{6_demd/figs/mwgan_gen_convergence.png}
     \includegraphics[width=0.45\textwidth]{6_demd/figs/demd_disc_convergence.png}
     \includegraphics[width=0.45\textwidth]{6_demd/figs/demd_gen_convergence.png}
-    \caption{Convergence Plots for MWGAN and DEMD on CelebA Multi-Domain Image Translation.}
+    \caption[CelebA image translation convergence]{Convergence Plots for MWGAN and DEMD on CelebA Multi-Domain Image Translation.}
     \label{fig:convergence}
 \end{figure}
 
@@ -38,7 +38,7 @@ Using the Frechet Inception Distance we quantitatively measure the resulting gen
         DEMD & 47.29 & 34.43 & 50.69 & 39.60 \\
         \bottomrule
     \end{tabular}
-    \caption[Caption for LOF]{Train FID Scores for CelebA Multi-Domain Image Translation.\protect\footnotemark}
+    \caption[FID Scores for CelebA image translation]{Train FID Scores for CelebA Multi-Domain Image Translation.\protect\footnotemark}
     \label{tab:fidtrain}
 \end{table}
 \footnotetext{Results presented here computed using the pytorch-fid package with code from the MWGAN repository here: \url{https://github.com/mseitzer/pytorch-fid}. We were unable to replicate the FID scores provided in the original paper, but expect trends to be relatively similar when compared across different scoring methods.}
@@ -61,7 +61,7 @@ Using the Frechet Inception Distance we quantitatively measure the resulting gen
     \centering
     \includegraphics[height=0.85\textheight]{6_demd/figs/mwgan_res/mwgan-00001-images.jpg}
     \includegraphics[height=0.85\textheight]{6_demd/figs/mwgan_res/demd-00001-images.jpg}
-    \caption{More qualitative results from the multi-domain image translation problem with (Left) \cite{cao2019multi}, (Right) DEMD (ours). On attributes such as ``Blond Hair'' and ``Eyeglasses'', the generated images through our DEMD procedure appear more realistic. On other attributes, the generated images are comparable. }
+    \caption[Additional qualitative translation results 1]{More qualitative results from the multi-domain image translation problem with (Left) \cite{cao2019multi}, (Right) DEMD (ours). On attributes such as ``Blond Hair'' and ``Eyeglasses'', the generated images through our DEMD procedure appear more realistic. On other attributes, the generated images are comparable. }
     \label{fig:moreganres1}
 \end{figure}
 
@@ -69,6 +69,6 @@ Using the Frechet Inception Distance we quantitatively measure the resulting gen
     \centering
     \includegraphics[height=0.85\textheight]{6_demd/figs/mwgan_res/mwgan-00003-images.jpg}
     \includegraphics[height=0.85\textheight]{6_demd/figs/mwgan_res/demd-00003-images.jpg}
-    \caption{More qualitative results from the multi-domain image translaton problem with (Left) \cite{cao2019multi}, (Right) DEMD (ours). On attributes such as ``Blond Hair'' and ``Eyeglasses'', the generated images through our DEMD procedure appear more realistic. On other attributes the generated images are comparable. }
+    \caption[Additional qualitative translation results 2]{More qualitative results from the multi-domain image translaton problem with (Left) \cite{cao2019multi}, (Right) DEMD (ours). On attributes such as ``Blond Hair'' and ``Eyeglasses'', the generated images through our DEMD procedure appear more realistic. On other attributes the generated images are comparable. }
     \label{fig:moreganres2}
 \end{figure}
