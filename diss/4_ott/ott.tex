@@ -59,8 +59,6 @@ This construction can be seen as an approximation to the full tensor train forma
 
 \subsection{Theoretical Analysis}
 We start by reshaping any tensor $T$ to a matrix $T^M$ by grouping the modes into two groups, $T^M \in \RR^{n \times m}$. We may fix this arbitrary matrix as $T^M = A \in \RR^{n \times m}$.
-
-\todo{ch4: should proof move to appendix}
 \begin{proposition}
 \label{theory:prop1}
 Given a 2D tensor $A\in \RR^{m\times m}$, $A_{ij} \in [-1,1]$, there exist sets of unit vectors, $\left\{\mathbf{x}_i\right\}_{i=1}^m\subset \RR^m$, $\left\{\mathbf{y}_j\right\}_{j=1}^m\subset \RR^m$ such that, $\forall \epsilon > 0$, $\|A - \widetilde{A}\| < \epsilon$, where, $\forall i,j,\: \widetilde{A}_{ij}=\mathbf{x}_i^t\mathbf{y}_j$.

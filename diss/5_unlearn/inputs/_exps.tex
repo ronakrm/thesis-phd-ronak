@@ -2,12 +2,12 @@
 \begin{figure}
     \centering
     \includegraphics[width=0.98\columnwidth,trim={0, 0, 0, 0},clip]{5_unlearn/figs/Speed_Hist.png}
-    \caption[Speedups from L-CODEC randomization]{\label{fig:speed_hist} L-CODEC vs CODEC run time comparison for identifying sufficient subsets for each CelebA attribute separately (pairs of columns, details in supplement).}
+    \caption[Speedups from L-CODEC randomization]{\label{fig:speed_hist} L-CODEC vs CODEC run time comparison for identifying sufficient subsets for each CelebA attribute separately (pairs of columns, more details in appendix~\ref{app:5:exps}).}
 \end{figure}
 We begin with understanding the value of L-CODEC and L-FOCI for Markov Blanket Identification and progress to applications
 % Once their use has been properly justified in simpler, more direct applications, we demonstrate the value directly 
 in typical unlearning tasks involving large neural networks previously infeasible with existing scrubbing tools.
-\todo{See appendix for additional details.} 
+See Appendix~\ref{app:5} for additional details.
 %Our code is at \url{https://github.com/xxx-xxxx/}.
 
 % \subsection{L-FOCI in Generic ML Settings}
@@ -279,7 +279,7 @@ In this setting, the VGGFace model is very large, including a linear layer of si
 Figure~\ref{fig:vgg} show results for scrubbing consecutive images from one individual in the dataset for a strong privacy guarantee of $\epsilon=10^{-5}$. As the number of samples scrubbed increases, the performance on that class drops faster than on the residual set, exactly as desired.
 
 \subsection{Removal from a Person re-identification model}
-As a natural extension to our experiments on face recognition, we evaluate unlearning of deep neural networks trained for person re-identification. Here, the task is to associate the images pertaining to a particular individual but collected in diverse camera settings, both belonging to the same camera or from multiple cameras. In our experiments, we use the Market-1501 dataset \citep{zheng2015scalable} and a Resnet50 architecture which was trained for the task. We unlearn samples belonging to a particular person, one at a time, and check the performance of the model. Experimental results are in agreement with results reported for the transformer model as well as the VGGFace model. With very small values of $\epsilon$ i.e. $0.0005$ the number of supported removals is limited to less than $10$ depending on the person id being removed. However, with a larger value of $\epsilon$, e.g., $0.1$, all potential samples can be removed without a noticeable degradation in model performance in terms of mAP scores. In Figure~\ref{fig:reid}, we clearly see that after scrubbing a model for a particular person, its predictions for that particular individual become meaningless whereas the predictions on other classes are still possible with confidence, as desired. Additional experiments with different datasets, model architectures and other ablations for deep unlearning for person re-identification models are presented in the \todo{appendix}.
+As a natural extension to our experiments on face recognition, we evaluate unlearning of deep neural networks trained for person re-identification. Here, the task is to associate the images pertaining to a particular individual but collected in diverse camera settings, both belonging to the same camera or from multiple cameras. In our experiments, we use the Market-1501 dataset \citep{zheng2015scalable} and a Resnet50 architecture which was trained for the task. We unlearn samples belonging to a particular person, one at a time, and check the performance of the model. Experimental results are in agreement with results reported for the transformer model as well as the VGGFace model. With very small values of $\epsilon$ i.e. $0.0005$ the number of supported removals is limited to less than $10$ depending on the person id being removed. However, with a larger value of $\epsilon$, e.g., $0.1$, all potential samples can be removed without a noticeable degradation in model performance in terms of mAP scores. In Figure~\ref{fig:reid}, we clearly see that after scrubbing a model for a particular person, its predictions for that particular individual become meaningless whereas the predictions on other classes are still possible with confidence, as desired. Additional experiments with different datasets, model architectures and other ablations for deep unlearning for person re-identification models are presented in Appendix~\ref{app:5:exps}.
 
 \begin{figure}[]
     \centering

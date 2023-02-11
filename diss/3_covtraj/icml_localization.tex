@@ -333,7 +333,7 @@ With this assumption, we have the following result for the $\epsilon$-covering n
 	    N(A,\epsilon)\le C_{H,S}\frac{|E|}{ A}\left(\frac{1}{ \epsilon}\right)^{S+1}.
 	\end{equation}}
 \end{lemma}
-The proof of this result follows from our ball-subgraph construction and our Avocado assumption and is provided in the Appendix.
+The proof of this result follows from our ball-subgraph construction and our Avocado assumption and is provided in Appendix~\ref{app:3:proofs}.
 
 Intuitively, this result upper bounds the number of graphs that are necessary to search over to completely exhaust the search space of subgraphs. With this result, we can now construct a suitable size correction. 
 Following the work of \cite{walther2010optimal} and \cite{wang2016structured}, we can increase the power of our test by using the following statistic:
@@ -393,7 +393,7 @@ then as $|E|\to \infty$,
 \label{lm:mainthm}
 \end{theorem}
 The full proof of this result follows a generic chaining argument (see, e.g. \cite{talagrand2006generic}) along with application of 
-concentration inequalities and union bounds, and can be found in the Appendix. \todo{ch3: FWER proof appendix reference}
+concentration inequalities and union bounds, and can be found in Appendix~\ref{app:3:proofs}.
 
 \paragraph{Summary.} At a high level, this result directly characterizes the behavior of $T^*$ under the null hypothesis $H_0$ and 
 the alternative hypothesis $H_1$, respectively. 
@@ -406,4 +406,4 @@ and under the alternative hypothesis when \eqref{eq:sigcond} is satisfied, the t
 With these guarantees, our full workflow is as follows. First, we use an oracle procedure to generate a graph over our features 
 that roughly captures the conditional independences. Any procedure that provides a conditional independence graph is sufficient. 
 Next, for each ball subgraph over this graph, we compute the Longitudinal-Covariance GLM over these features for both groups, and compute the statistics outlined in Section \ref{sec:hyp-test}. We then compute the size-corrected statistic, and compare against the single critical value. For all regions that pass this threshold, we apply the procedure from \cite{jeng2010optimal}. This workflow shows how to conduct hypothesis tests on temporal trends of large covariance matrices, with improved 
-power and bounded Type 1 error. Additional implementation details can be found in the Appendix.
+power and bounded Type 1 error. Additional implementation details can be found in the Appendix~\ref{app:3:impl}.

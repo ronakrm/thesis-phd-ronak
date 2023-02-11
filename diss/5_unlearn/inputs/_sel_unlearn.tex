@@ -14,7 +14,7 @@ The gap between the gradient residual norm of the FOCI Unlearning update in Algo
 shrinks as $O(1/n^2)$, with $n$ the number of training samples.
 \end{lemma}
 \begin{proof}
-The full proof is in the appendix\todo{appendix}. Main idea: Because we only update a subset of parameters, the gradients for the remainder should not change too much. Any change to a selected layer only propagates to other layers by $1/n$, and a Taylor expansion about the new activation for that layer gives the result.
+The full proof is in Appendix~\ref{app:5:proofs}. Main idea: Because we only update a subset of parameters, the gradients for the remainder should not change too much. Any change to a selected layer only propagates to other layers by $1/n$, and a Taylor expansion about the new activation for that layer gives the result.
 \end{proof}
 
 
