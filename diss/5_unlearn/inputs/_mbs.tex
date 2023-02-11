@@ -131,7 +131,7 @@ While it is efficient (polynomial in size), we must know the maximal degree. A p
 \end{figure}
 
 When using L-CODEC, we can use a more straightforward Markov Blanket identification procedure adapted from \cite{codec}. FOCI more directly selects which variables are valuable for explaining $z'$, and in fact, is proven to identify the sufficient set (Markov Blanket) with a reasonable number of samples. Briefly, in our L-FOCI, the sufficient set is built incrementally with successive calls to L-CODEC, moving the most ``dependent'' feature from the independent set to the sufficient set.
-See Appendix~\ref{app:5:ci} for details.}
+See Appendix~\ref{app:5:ci} for details.
 % Additionally,they provide a simple procedure for sufficient subset selection, reproduced in Algorithm~\ref{alg:foci}.
 
 \paragraph{Summary.} This procedure alleviates the first issue in terms of sufficient subset or Markov Blanket selection; compared to existing methods using information-theoretic measures that require permutation testing, L-FOCI directly estimates the change in variance when considering a proposal to add to the set.
