@@ -8,7 +8,7 @@ samples are not explicitly identified,
 we may still want a model to behave as if
 it is agnostic to individual samples,
 or perform equally across different individuals
-or groups of people. Building a model
+or groups (subsets) of people. Building a model
 beforehand that has been trained in a manner
 that automatically provides a similar guarantee
 can alleviate some of the post-hoc
@@ -16,7 +16,7 @@ computational stressors described in the last chapter.
 Here, we will describe a fast method
 for both \textbf{identifying samples during training}
 that are outliers in a particular sense,
-and directly pushing model parameters
+and directly selecting and pushing model parameters
 towards reducing disparate model performance
 on those samples.
 Work in this chapter appeared at the International

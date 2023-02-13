@@ -5,8 +5,10 @@ Despite existing legal frameworks on fair use, industry scraping has led to pers
 While regulation (GDPR, CCPA) has not specified the extent to which data must be forgotten, it poses a clear question: is  deletion of the data enough, or does a model trained on that data also needs to be updated?
 
 Work originally presented in \cite{carlini2019secret} and \cite{carlini2020attack} has identified scenarios where trained models are vulnerable to attacks that can reconstruct input training data. More directly, recent rulings by the Federal Trade Commission \cite{ftc,ftc2} have ordered companies to fully delete and destroy not only data, but also any model trained using those data.
+Public outcry of automatic data collection and use in model training has increased significantly with 
+new results demonstrating the memorization of language models, insofar as providing the full physical address given the proper prompt~\cite{carlini2021extracting}.
 While deletion and (subsequent) full model retraining without the deleted samples is possible, most in-production models require weeks of 
-training and review, with extensive computational/human resource cost. With additional deletions, it is infeasible to retrain each time a new delete request comes in. 
+training and review, with extensive computational/human resource cost. With additional deletions, it is infeasible to retrain each time a new delete request comes in.\footnote{Recent large models require upwards of hundreds of thousands to millions of dollars. Preliminary training of Stable Diffusion cost approximately \$600,000 (\url{https://twitter.com/emostaque/status/1563870674111832066}), and estimates for training GPT-3 range within the millions (\url{https://lambdalabs.com/blog/demystifying-gpt-3}).)} 
 % So, are there updates to the model that ensure the data has been deleted (or at least approximately deleted), and full retraining can be postponed?
 % Existing works have answered this question in the affirmative, but the computational burden has limited their broad use.
 So, how can we update a model ensuring the data is deleted without retraining?

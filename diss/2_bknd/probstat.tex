@@ -2,6 +2,10 @@
 A density function (distribution) is a mapping from each element in an outcome space $x \in X$ to a number between 0 and 1.
 This mapping is generally written as $p(x):=\PP(X=x), x \in X$ to denote the distribution over possible realizations $x$ of $X$.
 $X$ may also denote a \textit{set} of random variables $X:=\{X_i\}_{i=1}^n$, where a draw from the distribution over $X$ results in a vector $x$. When $X$ follows the law defined by a specific $p(x)$, we say $X$ is a random variable with distribution $p(x)$.
+
+For $q\geq 1$, we define the $q$-norm  as $\norm{x}_q\coloneqq \left(\sum_{i\in[n]}\left|{x(i)}\right|^{q}\right)^{1/q}$, and if $q$ is suppressed, then $\left\|x\right\|\coloneqq \left\|x\right\|_2$. 
+A discrete probability distribution is a point $p\in\RR^{n}_+$ with $e'p=\norm{p}_1=1$.
+
 The \textit{expectation} of a random variable $\EE[X]$ is the ``weighted average'' over all outcomes. For discrete variables (which will be our main focus with expectations), 
 \begin{align}
 \EE[X] = \sum_{x\in X} x\cdot p(x)

@@ -3,7 +3,9 @@ We presented an efficient solution for solving common practical multi-marginal o
 Our construction is significantly cheaper to compute compared to similar methods,
 and allows for large numbers of distributions to be matched in common DNN pipelines. 
 Our implementation allows imposing fairness constraints for a variety of applications, including those with many groups, without the need for pairwise measures.
-As such, subgroup fairness \citep{kearns2018preventing} is an interesting problem setting that we believe can benefit.
+As such, subgroup fairness \citep{kearns2018preventing} is an interesting problem setting that we believe can benefit:
+intersections of protected attributes exponentially increase the number of ``subgroups'',
+and as such an efficient method may be valuable.
 % generalized Earth Mover's objective in the context of a setting where we are interested in bringing a set of distributions closer together. 
 % Our construction provides significant computational gains over barycentric approaches for estimating higher dimensional distances. Taking advantage of a direct linear programming formulation, we identify readily available gradients that allow for simple incorporation of the generalized EM measure in existing optimization pipelines. We present empirical evidence that our formulation is faster and valuable in some applications.
 %Future work may include exploring the practical application and value of the key theoretical result from \cite{kline2019properties} regarding 

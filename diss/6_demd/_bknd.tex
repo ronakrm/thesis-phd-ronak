@@ -2,12 +2,12 @@
 % Before stating the generalized Earth Mover's problem, it is helpful to have a complete description of the classical program.  No new concepts are required to understand the general program once the classical program has been grasped. 
 % \noindent\textbf{Notations.}
 
-Denote by $[n]\coloneqq\left\{1,\ldots,n\right\}$, the set of positive integers no larger than $n$. For elements $x\in\RR^{n}$, we denote the $i$th entry of $x$ as $x(i)$, e.g.,  
-for any $x\in\RR^{n}$, $x=(x(i):i\in[n])$.    
-The positive orthant of $\RR^n$ is denoted $\RR_{+}^{n} \coloneqq \left\{x\in\RR^{n}:x(i)\geq 0, i\in [n]\right\}$. 
-We denote by $e\coloneqq (1,\ldots,1)\in\RR^{n}$ the constant vector. 
-For $q\geq 1$, we define the $q$-norm  as $\norm{x}_q\coloneqq \left(\sum_{i\in[n]}\left|{x(i)}\right|^{q}\right)^{1/q}$, and if $q$ is suppressed, then $\left\|x\right\|\coloneqq \left\|x\right\|_2$. 
-A discrete probability distribution is a point $p\in\RR^{n}_+$ with $e'p=\norm{p}_1=1$.
+%Denote by $[n]\coloneqq\left\{1,\ldots,n\right\}$, the set of positive integers no larger than $n$. For elements $x\in\RR^{n}$, we denote the $i$th entry of $x$ as $x(i)$, e.g.,  
+%for any $x\in\RR^{n}$, $x=(x(i):i\in[n])$.    
+%The positive orthant of $\RR^n$ is denoted $\RR_{+}^{n} \coloneqq \left\{x\in\RR^{n}:x(i)\geq 0, i\in [n]\right\}$. 
+%We denote by $e\coloneqq (1,\ldots,1)\in\RR^{n}$ the constant vector. 
+%For $q\geq 1$, we define the $q$-norm  as $\norm{x}_q\coloneqq \left(\sum_{i\in[n]}\left|{x(i)}\right|^{q}\right)^{1/q}$, and if $q$ is suppressed, then $\left\|x\right\|\coloneqq \left\|x\right\|_2$. 
+%A discrete probability distribution is a point $p\in\RR^{n}_+$ with $e'p=\norm{p}_1=1$.
 
 Given a pair of discrete probability distributions $p_1,p_2\in\RR^{n}_+$, we may want to quantify similarity or dissimilarity. 
 %$p_1$ and $p_2$ are. 
@@ -35,7 +35,7 @@ and useful to quantify dissimilarity between pairs of distributions. In particul
 The LP in (\ref{eq:2demd}) has an equivalent dual LP, 
 %which has the form
 \begin{align}\label{eq:2dualemd}\begin{aligned}
-    &\underset{z_1,z_2\in\RR^{n}}{\textrm{max}} z_1'p_1 + z_2'p_2 \quad 
+    &\underset{z_1,z_2\in\RR^{n}}{\textrm{max}} z_1^\top p_1 + z_2^\top p_2 \quad 
     \textrm{s.t.}\quad  z_1(i) + z_2(j)\leq c(i,j),\  (\forall i,j\in [n]).
     \end{aligned}
 \end{align}

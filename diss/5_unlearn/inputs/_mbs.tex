@@ -88,12 +88,12 @@ Interestingly, this problem has a relatively elegant solution.
 % To alleviate this issue, w
 We introduce a randomized version of CODEC, L-CODEC. For variables $A,B,C$:
 \begin{align}\label{eq:lcodec}
-T_L := T\left(\tilde{B}, \tilde{C} | \tilde{A} \right),
+T_L := T\left(\tilde{A}, \tilde{B} | \tilde{C} \right),
 \end{align}
-where $\tilde{B} = B + N(0,\sigma^2)$, and similarly for $\tilde{C}, \tilde{A}$.
+where $\tilde{A} = A + N(0,\sigma^2)$, and similarly for $\tilde{B}, \tilde{C}$.
 This additive noise can simply be scaled to the inverse of the largest distance between any points in the set.
 By requiring this noise to be smaller than any distance between items in the set, the ranking will remain the same between unique discrete values, and will be perturbed slightly for equal ones.
-In expectation, this will still lead to the true dependence measure. The noise addition is consistent with the Randomization criterion for conditional independence -- for random variables $A, B, C$ in Borel spaces, $A\ \bot\ B\ |\ C$ \textit{iff} $A = h(B, U)$ almost surely, for some measurable function $h$ and uniform random variable $U \sim \text{Uniform}(0,1)$ independent of $(B,C)$ as in \cite{ptheory}. 
+In expectation, this will still lead to the true dependence measure. The noise addition is consistent with the Randomization criterion for conditional independence -- for $A, B, C$ in Borel spaces, $A\ \bot\ B\ |\ C$ \textit{iff} $A = h(B, U)$ almost surely, for some measurable function $h$ and uniform random variable $U \sim \text{Uniform}(0,1)$ independent of $(B,C)$ as in \cite{ptheory}. 
 
 \begin{remark}\label{rem:sens}
 An altered version of this setup also gives us a form of explainability, where we can apply sensitivity analysis to each input feature or pixel and estimate its effect on the output via a similarly randomized version of the  Chatterjee rank coefficient $T(A,B)$, proposed by \cite{chatterjee2020new}.

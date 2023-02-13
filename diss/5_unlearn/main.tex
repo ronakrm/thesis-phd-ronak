@@ -3,14 +3,19 @@
 While selecting a more efficient model \textit{a priori}
 can be helpful when we can plan ahead of training,
 it may sometimes be the case
-that a task may require \textbf{selection
-after a model has been trained.}
+that a task may require selection
+after a model has been trained.
 In this chapter we will 
-address this \textit{post-hoc} selection task
-from a parameter-focused point of view,
-motivated by the need for an efficient way of 
-``scrubbing'' existing models of samples
-they have been trained on.
+address this post-hoc selection task
+from a model \textit{parameter} point of view,
+contrasting our 
+approach from Chapter~\ref{chap:ott}
+where we inform a reduced-parameter
+\textit{model architecture}
+before training.
+Here we are motivated by the need for an efficient way of 
+``scrubbing'' \textit{existing }models,
+to address requests for sample deletion.
 Unlearning in this context has
 only been analyzed under the assumption
 that model updates can be made over the \textit{entire} model,
