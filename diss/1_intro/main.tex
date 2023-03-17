@@ -75,7 +75,7 @@ Our questions above are formally asking to identify \textit{subsets of these obj
 \end{figure}
 
 % \textit{Explainability} can be seen as identifying important features of the input, as well as parts of the model (parameters) that ``light up`` for that input. \textit{Fairness} can be evaluated via measures over subsets of the data that correspond to specific groups. 
-
+\newpage
 \begin{mdframed}[style=MyFrame]
 \em 
 \textbf{This thesis} focuses its main efforts on identifying these important subsets of model, feature, and sample space, to enable answering questions necessary for mainstream adoption of machine learning methods.
@@ -147,8 +147,10 @@ Generalizing the least squares ``error measure'' from~\eqref{eq:lq} to an arbitr
 \begin{align}\label{eq:learning}
     \hat{f}:=\hat{\theta} = \mathop{\arg\min}_{\theta\in\Theta} \sum_{x \in X} \ell(f_\theta(x_i))
 \end{align}
+\todo{intro: indexing for sample}
 From an analysis perspective, 
 we might be interested in any one of 
+\todo{maybe switch C to F}
 \textbf{(a)} subsets of input features $\cC \subseteq \cX$ that are important for the downstream task,
 \textbf{(b)} associating model subsets $\cP \subseteq \Theta$ with specific inputs or groups of inputs, or 
 \textbf{(c)} subsets or subgroups of samples $S \subseteq \{X\}$ that are sufficient or representative of the entire dataset.
