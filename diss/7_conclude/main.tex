@@ -3,14 +3,15 @@
 The work presented here has been and continues 
 to be extended in a number of different theoretical 
 and empirical directions.
+Earlier work has already been leveraged in published work,
+and more recent chapters
+have led to interesting
+continuing avenues of research.
+
+\section{Analyzing Disease Trends in Functional MRI via Covariance Trajectories}
 
 Work in Chapters~\ref{chap:covtraj} and \ref{chap:ott} has been further developed for a number of other applications.
-Particularly, the covariance trajectory analysis
-methods have been extended 
-to the analysis of other Alzheimer's Disease populations~\citep{isbi},
-and work on understanding and localizing temporal lobe epilepsy
-measured over resting-state functional MRI acquisitions is upcoming.
-Ideas from both chapters have contributed
+Ideas have contributed
 to the understanding and modeling of uncertainty
 in recurrent models~\citep{spgru},
 and more generally towards efficient
@@ -19,6 +20,69 @@ Applications based on modeling disease progression
 as a function of both static and time-varying 
 variables was extended to ``deepify-ing" mixed effects models~\citep{deepmem}.
 
+More directly, the covariance trajectory analysis
+methods have been extended 
+to the analysis of other Alzheimer's Disease populations~\citep{isbi},
+and work on understanding and localizing temporal lobe epilepsy
+measured over resting-state functional MRI acquisitions is under review.
+
+\subsection{Brain Network Abnormalities in Alzheimer's Disease}
+Rs-fMRI has been shown to be a valuable neuroimaging modality to study the pathophysiological mechanisms and effects of Alzheimer's Disease. 
+However, most existing brain network modeling frameworks for rs-fMRI often do not account for the combined statistical and temporal dependencies underlying dynamic functional connectivity (dFC) in a statistically robust manner, 
+which may be limiting our understanding of altered brain organization in disease.
+To address these issues, in this work we demonstrate that
+the covariance trajectory methods above can characterize dFC as covariance trajectories on the Riemannian manifold.
+
+In this follow-up work,
+we leverage a different setup of the trajectory analysis in Chapter~\ref{chap:covtraj}. Here,
+we have a much larger number of timepoints:
+compared to patient site visits,
+we have functional MRI measurements
+occurring at a rate of approximately once per second for scans ranging from 5 to 10 minutes.
+While the methods above can be applied,
+the computational cost, while not exponential,
+still grows at a rate infeasible 
+for this application.
+
+To address this, we construct a ``windowed" approach, where we set specific window sizes and stride lengths such that our trajectory spans the length of the scan,
+and smoothly estimates the continuous trajectory through overlapping samples.
+We fit the trajectories for each subject and take corresponding means for the likelihood statistics and follow the hypothesis testing as above.
+Experimental results demonstrated that the approach is capable of identifying differential effects in large-scale functional networks altered in Alzheimer's Disease in a way that overcomes statistical challenges common with many neuroimaging studies.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.3\columnwidth, trim={11cm 5cm 9cm 5cm}, clip]{7_conclude/figs/Results_Network1.jpg}
+	\includegraphics[width=0.3\columnwidth, trim={11cm 5cm 9cm 5cm}, clip]{7_conclude/figs/Results_Network2.jpg}
+	\includegraphics[width=0.3\columnwidth, trim={11cm 5cm 9cm 5cm}, clip]{7_conclude/figs/Results_Network3.jpg}
+	
+	\includegraphics[width=0.3\columnwidth, trim={4cm 1cm 2cm 5cm}, clip]{7_conclude/figs/X1.png}
+	\includegraphics[width=0.3\columnwidth, trim={4cm 1cm 2cm 5cm}, clip]{7_conclude/figs/X2.png}
+	\includegraphics[width=0.3\columnwidth, trim={4cm 1cm 3cm 5cm}, clip]{7_conclude/figs/X3.png}
+	
+	\caption[Functional network differences in Alzheimer's patients vs. controls]{Functional networks exhibiting significant first- and second-order group differences with the corresponding estimated null distribution and alternative statistic (red) using our pipeline  (brain visualization from right).}
+\end{figure}
+
+\subsection{Characterizing the Epilepsy Connectome}
+Building on the developments adapting these methods to functional MRI,
+we deploy and extend the windowed-approaches
+to the study of temporal-lobe epilepsy (TLE),
+where disease signals are known to
+cause widespread disruptions in connectivity dynamics within the well-studied epileptogenic network, 
+but it is not yet clear if and to what extent other networks are perturbed in TLE.
+
+Experimentally, we demonstrate that the approach identifies distinct subsets of temporally evolving connectivity features that stratify TLE patients and healthy controls, which map to altered connectivity at the network-scale. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.45\textwidth, trim={2.5cm 0cm 3cm 0cm}]{7_conclude/figs/ProposedMethod_Results1.jpg}
+	\includegraphics[width=0.45\textwidth, trim={2.5cm 0cm 4cm 0cm},clip]{7_conclude/figs/ProposedMethod_Results2.jpg}
+	\caption[Differences in network connectivities in TLE populations]{Networks exhibiting significant first- and second-order group differences using the proposed method with the corresponding estimated null distribution and alternative statistic: (from left to right) Subcortical, Insular and Frontal Opercular Cortex, Inferior Frontal Cortex, Orbital and Polar Frontal Cortex. S - saggital view, R - visualization from the right, F - visualization from the front. \label{fig:CovTrajResults}}
+\end{figure}
+
+\section{Building Plug-and-Play Tools for Discrete Optimal Transport}
+
+\section{Interpretability and Conditional Independence In Deep Latent Spaces}\label{sec:latents}
+\todo{ongoing/future work on latent spaces and condindep}
 Work in unlearning in Chapter~\ref{chap:lcodec} is relatively nascent,
 but excitement in the field is growing
 and a number of works have been motivated
@@ -31,6 +95,14 @@ we briefly describe a particular
 direction of interest, motivated
 by the recent large successes of large language models.
 
-\section{Interpretability and Conditional Independence In Deep Latent Spaces}\label{sec:latents}
-\todo{ongoing/future work on latent spaces and condindep}
 
+
+conditional independence
+interpretability
+tmi
+mobiledets
+disentangling latent reps
+
+
+\section{A Final Note}
+state of ML/AI, language models
