@@ -81,6 +81,48 @@ Experimentally, we demonstrate that the approach identifies distinct subsets of 
 
 \section{Building Plug-and-Play Tools for Discrete Optimal Transport}
 
+The rate of development and research in machine learning and associated applications
+continues at its current pace
+largely due to 
+easily deployable tools that
+operate seemlessly with existing workflows.
+PyTorch, Tensorflow, and all associated software
+packages have enabled this growth.
+While there have been significant 
+developments in Optimal Transport
+and its associated 
+uses in deep learning,
+turnkey tools remain somewhat lacking
+for a number of reasons,
+as described in Chapter~\ref{chap:demd}.
+
+Building upon the theoretical
+efficiencies of the $d$-EMD solver
+and minimizer,
+we have developed
+a plug-in for the Python Optimal Transport library,
+with the goal of enabling
+optimal transport researchers to 
+more easily develop methods
+for both pure transportation problems,
+as well as methods that incorporate
+with automatic differentiation pipelines.
+With the ability to solve larger-scale 
+problems efficiently,
+users can more easily solve 
+problems with high-dimensional data
+that would otherwise be infeasible
+with existing off-the-shelf solvers.
+
+As noted,
+the efficient multi-marginal solution
+opens the door to a large number 
+of domains unstudied due to computational cost.
+With approachable open-source code
+we hope to expand the tools described
+beyond one-dimensional distributions
+to problems
+
 - interest in OT
 	- cite new papers
 	- interest in computational methods
