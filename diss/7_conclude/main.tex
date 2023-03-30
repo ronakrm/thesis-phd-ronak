@@ -19,6 +19,11 @@ Bayesian methods for deep Monte Carlo methods~\citep{mcreparam}.
 Applications based on modeling disease progression
 as a function of both static and time-varying 
 variables was extended to ``deepify-ing" mixed effects models~\citep{deepmem}.
+Interesting developments on the tensor decomposition side
+have led to work combining ideas
+in earlier work inarchitecture search~\citep{submodarch}
+with such compression methods,
+influencing high visibility publications by peers~\citep{xiong2021mobiledets}.
 
 More directly, the covariance trajectory analysis
 methods have been extended 
@@ -150,7 +155,7 @@ and computational tools may be enabled
 under assumptions typical in subgroup settings.
 
 
-\section{Interpretability and Conditional Independence In Deep Latent Spaces}\label{sec:latents}
+\section{Interpretability in Deep Models}\label{sec:latents}
 \todo{ongoing/future work on latent spaces and condindep}
 Work in unlearning in Chapter~\ref{chap:lcodec} is relatively nascent,
 but excitement in the field is growing
@@ -159,18 +164,82 @@ by recent successes.
 Methods for directly measuring, and perhaps
 even promoting or reducing conditional
 independence are beginning to be explored.
-Building upon these ideas,
-we briefly describe a particular 
-direction of interest, motivated
-by the recent large successes of large language models.
-
-
-
-conditional independence
-interpretability
-mobiledets
-disentangling latent reps
-
+Motivated by the discretization ideas
+in Chapter~\ref{chap:demd} alongside
+conditional independence,
+a particular direction of interest
+is that of general interpretability 
+within continuous and typically
+black-box models.
+When a system is a large,
+complex function with high dimension
+and nonlinearity,
+expecting sparse solutions
+that \textit{also} correspond
+to clear demarcations within the task or 
+data is extremely optimistic.
+Using methods described in the introduction
+such as activation maps
+or Shapley values typically 
+leads to some form of ``blame"
+in a continuous sense;
+this feature or parameter
+has the \textit{largest} influence,
+but it is not, or we cannot say,
+that it is the \textit{only} influence.
+Conditional independence is exactly
+the measure we are interested in,
+and equipped with a reasonable measure,
+it seems promising to explore its
+application within the broader space of
+interpretability.
 
 \subsection{A Final Note}
-state of ML/AI, language models
+As noted, current state-of-the-art
+machine learning research
+is moving at an accelerating pace.
+During the time of putting
+together this text,
+previously promising directions
+of research interest in the community
+have come and gone.
+The exceptional performance
+of transformer models
+has spurred exponential developments
+in language models,
+bleeding into vision domains
+where previous work primarily
+focused on convolutional methods.
+
+The field is now at a point
+where almost all high-visibility
+work can only be done
+with large language models.
+The development and deployment
+of GPT-2, ChatGPT, and its contemporaries
+has all but enveloped interest
+in artificial intelligence and machine learning.
+While the ideas above could be independently
+researched,
+it is almost a requirement that now they 
+all be developed with application to large
+language models in mind.
+
+Importantly, this accelerating pace
+of innovation does not appear to be slowing,
+and it is difficult to predict
+what will be the most important
+new development, given timelines
+for real-world performance beating
+state=of-the-art is now on the order of months.
+
+THe excitement of these developments notwithstanding,
+concerns surrounding ideas motivating this thesis
+are becoming more and more important as well
+as evident, with respect to fairness,
+accountability, and safety.
+Aligning models to the goals of stakeholders
+is of increasing importance as the models'
+ability to affect the world grows,
+and I hope that we as machine learning
+researchers, and as humans, rise to the task.
