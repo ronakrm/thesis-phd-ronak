@@ -88,6 +88,12 @@ easily deployable tools that
 operate seemlessly with existing workflows.
 PyTorch, Tensorflow, and all associated software
 packages have enabled this growth.
+In fact,
+concurrent to this work,
+a separate group had identified 
+similar insights to ours,
+and was similarly reviewed and published
+with great interest at the same conference~\citep{just2023lava}.
 While there have been significant 
 developments in Optimal Transport
 and its associated 
@@ -99,7 +105,7 @@ as described in Chapter~\ref{chap:demd}.
 Building upon the theoretical
 efficiencies of the $d$-EMD solver
 and minimizer,
-we have developed
+we are developing
 a plug-in for the Python Optimal Transport library,
 with the goal of enabling
 optimal transport researchers to 
@@ -121,18 +127,27 @@ of domains unstudied due to computational cost.
 With approachable open-source code
 we hope to expand the tools described
 beyond one-dimensional distributions
-to problems
+to problems in computer vision,
+both over two dimensional image spaces
+as well as beyond.
+New computational bottlenecks may arise
+as the distributions become
+higher-order tensors, which 
+may themselves lead to 
+the need for new technical
+insight.
 
-- interest in OT
-	- cite new papers
-	- interest in computational methods
-		- cite POT, other repos
-	
-- extending to fairness
-	- subgroup fairness
-	- measuring accounting is hard
--motivating to expand and develop turnkey tool
-	- expand core algorithm to general fairness problems
+Building upon the applications in fairness
+and the ideas related to subgroup fairness
+mentioned at the end of Chapter~\ref{chap:demd},
+we hope to specifically
+develop and merge existing fairness
+software stacks with our tools.
+Theoretically, subgroup fairness implies
+particular relationships among distributions,
+and as such interesting algorithmic
+and computational tools may be enabled
+under assumptions typical in subgroup settings.
 
 
 \section{Interpretability and Conditional Independence In Deep Latent Spaces}\label{sec:latents}
@@ -153,10 +168,9 @@ by the recent large successes of large language models.
 
 conditional independence
 interpretability
-tmi
 mobiledets
 disentangling latent reps
 
 
-\section{A Final Note}
+\subsection{A Final Note}
 state of ML/AI, language models
