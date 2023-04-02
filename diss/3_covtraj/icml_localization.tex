@@ -177,7 +177,6 @@ For a given structured region $R$, the region-based LCGLM is written as
 \end{equation}}
 where $C_g^R$ is the covariance matrix subblock defined by features included in $R$ for group $g$ ($t_g$ is our univariate predictor, i.e., time).
 \end{definition}
-\todo{ch3: fig: pt+stat pipeline}
 To compare the group trajectories, we first parallel transport each tangent vector to the identity as described in \S\ref{sec:mglm} and then compute the statistic in \eqref{eq:traj} given as $\|\Gamma_{b_1^R \rightarrow I} \BV_1^R - \Gamma_{b_2^R \rightarrow I} \BV_2^R \|_{I}^2$.
 In the case of the product space construction, we apply the test in \eqref{prop_prodstat} to the data subset corresponding to the features 
 in region $R$, with the same correction as in \eqref{eq:LRstat}.
@@ -401,9 +400,13 @@ We see that \eqref{eq:criticalvl} implies that $T^*$ can roughly be seen as a co
 and under the alternative hypothesis when \eqref{eq:sigcond} is satisfied, the test based on $T^*$ is consistent, see \eqref{eq:power}. 
 
 \subsection{Workflow for conducting hypothesis tests on temporal trends of graphs}
-\todo{ch3: fig: from presentation, full workflow}
 %{\color{red} maybe refer to the video again?}{\color{blue} I think a flow chart of how the whole algorithm work may be helpful. Otherwise, it's difficult for audiences to get the idea if we only mention the test statistics and Jeng's paper.}
 With these guarantees, our full workflow is as follows. First, we use an oracle procedure to generate a graph over our features 
 that roughly captures the conditional independences. Any procedure that provides a conditional independence graph is sufficient. 
 Next, for each ball subgraph over this graph, we compute the Longitudinal-Covariance GLM over these features for both groups, and compute the statistics outlined in Section \ref{sec:hyp-test}. We then compute the size-corrected statistic, and compare against the single critical value. For all regions that pass this threshold, we apply the procedure from \cite{jeng2010optimal}. This workflow shows how to conduct hypothesis tests on temporal trends of large covariance matrices, with improved 
 power and bounded Type 1 error. Additional implementation details can be found in the Appendix~\ref{app:3:impl}.
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\textwidth,trim={5cm 0 4cm 0}, clip]{3_covtraj/figs/pipeline_fig/pipeline_fig.001.png}
+	\caption[The covariance trajectory pipeline]{The covariance trajectory pipeline. A group of features is selected using scan statistics, manifold trajectories are fit to both groups, and a statistic is computed and tested.}
+\end{figure}

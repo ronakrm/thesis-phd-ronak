@@ -95,7 +95,7 @@ Learning methods typically  try to identify a function mapping (model) that is a
 %     \caption[Modern machine learning pipelines]{Machine learning training and inference visualization.}
 %     \label{fig:dl}
 % \end{figure}
-Say we have some dataset comprising of sample pairs $(x,y)$, where we wish to predict $y$ from some number of $d$ features of $x$ represented as a $d$-dimensional vector.
+Say we have some dataset comprising of sample pairs $(x,y)$, where we wish to predict $y$ from $x$.
 Our prediction, say $\hat{y}$, might be the output of some unknown function $f$ that we attempt to learn from training data. 
 Let our approximation to this function be $\hat{f}$.
 This can take many forms, 
@@ -103,11 +103,12 @@ based on assumptions and prior information we may have on the relationships amon
 Consider the simple \textit{linear} case,
 where we want to learn some parameter $w$ such that $y = w\cdot x$. 
 Given $n$ sample pairs $(x_i,y_i)$ indexed by $i$, traditional statistics and optimization literature yields the following \textit{least squares} problem formulation, where we want to minimize the ``squared error'' between the observed values $y_i$ and the predicted $\hat{y}_i:= w\cdot x_i$:
-\todo{intro: multidim introduced twice}
 \begin{align}\label{eq:lq}
 \hat{f}:=\hat{w} = \mathop{\arg\min}_{w} \sum_{i=1}^n (y_i - w\cdot x_i)^2
 \end{align}
-This formulation extends without much change to a multi-dimensional form of the input $x$ and respectively, $w$: the canonical case where a number of features, or \textit{covariates} (e.g., symptoms), are used together to predict the outcome (e.g., diagnosis). 
+This formulation extends without much change to a multi-dimensional form of the input $x$ and respectively, $w$: the canonical case where a number of features, say $d$, of $x$, or \textit{covariates} (e.g., symptoms), are used together to predict the outcome (e.g., diagnosis). 
+This is typically represented as a $d$-dimensional vector, with
+each position representing a different feature.
 If we are interested in which features of $x$ are important, we can look at the relative values of the learned ``weights'' $w$. In this simple setting, the importance of a feature (say $x^j$) can be exactly determined by the importance of the parameter ($w^j$).
 A weight value far from zero may indicate that corresponding feature is important for diagnosis.
 % If instead we are interested in which samples are most important, we can use existing methods for sample reweighting or methods that use standard assumptions to efficiently identify important subsets.
@@ -146,13 +147,11 @@ with $\Theta$ the space of possible parameterizations (models) with some intrins
 %While all three of these problems are closely related, they require different approaches. 
 Generalizing the least squares ``error measure'' from~\eqref{eq:lq} to an arbitrary \textit{loss} $\ell$, we have
 \begin{align}\label{eq:learning}
-    \hat{f}:=\hat{\theta} = \mathop{\arg\min}_{\theta\in\Theta} \sum_{x \in X} \ell(f_\theta(x_i))
+    \hat{f}:=\hat{\theta} = \mathop{\arg\min}_{\theta\in\Theta} \sum_{x_i \in X} \ell(f_\theta(x_i))
 \end{align}
-\todo{intro: indexing for sample}
 From an analysis perspective, 
 we might be interested in any one of 
-\todo{maybe switch C to F}
-\textbf{(a)} subsets of input features $\cC \subseteq \cX$ that are important for the downstream task,
+\textbf{(a)} subsets of input features $\cF \subseteq \cX$ that are important for the downstream task,
 \textbf{(b)} associating model subsets $\cP \subseteq \Theta$ with specific inputs or groups of inputs, or 
 \textbf{(c)} subsets or subgroups of samples $S \subseteq \{X\}$ that are sufficient or representative of the entire dataset.
 
@@ -390,7 +389,7 @@ Here we focus our effort on identifying these important subsets of model, featur
 We explore the intersections of classical statistical and geometric constructions with modern machine learning methods. 
 Figure~\ref{fig:scope} shows the overall scope projected along three axes: feature, parameter, and sample spaces.
 Below we briefly introduce the main problems studied in this thesis.
-\begin{figure}[!ht]
+\begin{figure}[ht]
     \centering
     % \includegraphics[width=0.99\linewidth]{scope.pdf}
     \includegraphics[width=0.95\linewidth]{1_intro/thesis_scope_diss/thesis_scope_diss.png}
@@ -398,7 +397,6 @@ Below we briefly introduce the main problems studied in this thesis.
     \caption[Thesis scope]{Thesis scope, projected over three representative axes.}
     \label{fig:scope}
 \end{figure}
-\todo{intro: fig: ch7}
 
 \subsection{Chapter 3: Second-Order Modeling and Group Difference Analysis over Time}
 

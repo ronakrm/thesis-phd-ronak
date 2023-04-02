@@ -4,7 +4,7 @@ The datasets Adult, Communities and Crime, and German datasets are all available
 The CelebA dataset \url{http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html} is available for non-commercial purposes. See the website for more details.
 
 \paragraph{ACS Data.}
-The American Census Survey (ACS) has recently made available a large set of demographic data. The original UCI Adult dataset \cite{uci} was curated from this data, however recent work by \cite{ding2021retiring} has identified temporal shifts in demographic data, and recommends using a more recent collection as a baseline when evaluating biases and adjusting for fairness.
+The American Census Survey (ACS) has recently made available a large set of demographic data. The original UCI Adult dataset \citep{uci} was curated from this data, however recent work by \cite{ding2021retiring} has identified temporal shifts in demographic data, and recommends using a more recent collection as a baseline when evaluating biases and adjusting for fairness.
 Part of their contribution includes APIs to directly interface with the data provided by the ACS, and the ability to identify and construct similar problems associated with the original UCI-provided dataset, albeit with updated data. Data for the income prediction task was downloaded from 2018, localized to Louisiana. 
 % After preprocessing, 195665 samples were split: 75\% training and 25\% validation. 
 Race is the provided group label, which we wish to be agnostic towards, over some measure of our output.
@@ -14,7 +14,7 @@ Data was accessed using the folktables codebase \url{https://github.com/zykls/fo
  The German dataset classifies people as good or bad credit risks. There are about $20$ features ($7$ numerical and $13$ categorical). These features represent the economic status of the person, such as, credit history, savings account, year of present employment, property and others.
  
 \paragraph{Adult Data.}
-The Adult dataset is comprised of demographic characteristics  from the UCI repository \cite{uci}. The protected attribute here is gender. It contains $44,842$ samples. The features that were used in the experiments include ``age", ``workclass", ``fnlwgt", ``education",                           ``education-num", ``marital-status", ``occupation",
+The Adult dataset is comprised of demographic characteristics  from the UCI repository \citep{uci}. The protected attribute here is gender. It contains $44,842$ samples. The features that were used in the experiments include ``age", ``workclass", ``fnlwgt", ``education",                           ``education-num", ``marital-status", ``occupation",
                           ``relationship", ``race", ``sex", ``capital-gain",
                            ``capital-loss", ``hours-per-week", ``native-country",
                            ``income". A positve target label in this dataset is indicated by the attribute ``income-bracket" being above \$50K.

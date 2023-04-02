@@ -37,8 +37,8 @@ distances.
 % \glenn{I wonder if our method could be also more robust when the pairwise distances are very non-uniform, especially at early iterations...see  \href{https://www.stat.cmu.edu/~larry/=sml/Opt.pdf}  {https://www.stat.cmu.edu/~larry/=sml/Opt.pdf}at the end of page 10}\ronak{I like this idea, maybe we can allude to it briefly?}
 %The idea is sensible but a
 As the number of distributions 
-grows, robustness issues can exacerbate \citep{alvarez2008trimmed} and the procedure becomes
-expensive (e.g., for 50 distributions, with 50 ``bins'').\todo{update to recent citation}
+grows, robustness issues can exacerbate \citep{alvarez2008trimmed,le2021robust} and the procedure becomes
+expensive (e.g., for 50 distributions, with 50 ``bins'').
 %{\color{red}For example, even on a high end workstation, 
 %simply computing the barycenter over
 %50 distributions with 50 bins}
@@ -88,7 +88,7 @@ For example, in \cite{jiang2020wasserstein}, the authors define fairness measure
 However, these methods are rarely extended to continuous measures 
 among internal neural network activations,
 %(e.g., Bayesian networks), 
-mainly due to the strong distributional assumptions needed (product of Gaussians) and the added algorithmic complexity of estimating the barycenter.\todo{ch6: barycenters dont work, cite this}
+mainly due to the strong distributional assumptions needed (product of Gaussians) and the added algorithmic complexity of estimating the barycenter.
 These issues limit application of these ideas 
 %assumption-free distribution enforcement 
 to only the final outputs of neural network models, where the distribution is typically binomial or multinomial.
