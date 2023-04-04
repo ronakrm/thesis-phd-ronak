@@ -1,37 +1,43 @@
 \chapter{Follow-up and Future work}\label{chap:discuss}
 
-The work presented here has been and continues 
-to be extended in a number of different theoretical 
-and empirical directions.
-Earlier work has already been leveraged in published work,
-and more recent chapters
-have led to interesting
-continuing avenues of research.
+From features, parameters, and subsets, the above work has tackled the problem of modern subset selection uniquely informed by the particular method and application. 
+Adapting ideas from 
+scan statistics,
+differential geometry,
+tensor decompositions,
+conditional independence,
+and optimal transport,
+we are able
+to identify subsets important
+for disease understanding,
+model compression,
+machine unlearning,
+and fairness in modern machine learning.
+With these methods in place,
+we can now take a look at ongoing offshoots of this work building towards exciting and developing directions of research.
+This work has been
+and continues to be extended in a number of different theoretical and empirical directions,
+and here we briefly describe a few of them prior to a final note concluding the dissertation.
+
+%The work presented here has been and continues 
+%to be extended in a number of different theoretical 
+%and empirical directions.
+%Earlier work has already been leveraged in published work,
+%and more recent chapters
+%have led to interesting
+%continuing avenues of research.
 
 \section{Analyzing Disease in Functional MRI via Covariance Trajectories}
 
 Work in Chapters~\ref{chap:covtraj} and \ref{chap:ott} has been further developed for a number of other applications.
-Ideas have contributed
-to the understanding and modeling of uncertainty
-in recurrent models~\citep{spgru},
-and more generally towards efficient
-Bayesian methods for deep Monte Carlo methods~\citep{mcreparam}.
-Applications based on modeling disease progression
-as a function of both static and time-varying 
-variables was extended to ``deepify-ing" mixed effects models~\citep{deepmem}.
-Interesting developments on the tensor decomposition side
-have led to work combining ideas
-in earlier work inarchitecture search~\citep{submodarch}
-with such compression methods,
-influencing high visibility publications by peers~\citep{xiong2021mobiledets}.
-
-More directly, the covariance trajectory analysis
+The covariance trajectory analysis
 methods have been extended 
 to the analysis of other Alzheimer's Disease populations~\citep{isbi},
 and work on understanding and localizing temporal lobe epilepsy
 measured over resting-state functional MRI acquisitions is under review.
 
 \subsection{Brain Network Abnormalities in Alzheimer's Disease}
+\todo{basic idea extended in two ways...}
 Rs-fMRI has been shown to be a valuable neuroimaging modality to study the pathophysiological mechanisms and effects of Alzheimer's Disease. 
 However, most existing brain network modeling frameworks for rs-fMRI often do not account for the combined statistical and temporal dependencies underlying dynamic functional connectivity (dFC) in a statistically robust manner, 
 which may be limiting our understanding of altered brain organization in disease.
@@ -83,6 +89,20 @@ Experimentally, we demonstrate that the approach identifies distinct subsets of 
 	\includegraphics[width=0.45\textwidth, trim={2.5cm 0cm 4cm 0cm},clip]{7_conclude/figs/ProposedMethod_Results2.jpg}
 	\caption[Differences in network connectivities in TLE populations]{Networks exhibiting significant first- and second-order group differences using the proposed method with the corresponding estimated null distribution and alternative statistic: (from left to right) Subcortical, Insular and Frontal Opercular Cortex, Inferior Frontal Cortex, Orbital and Polar Frontal Cortex. S - saggital view, R - visualization from the right, F - visualization from the front. \label{fig:CovTrajResults}}
 \end{figure}
+
+The ideas in these chapters have also contributed
+to the understanding and modeling of uncertainty
+in recurrent models~\citep{spgru},
+and more generally towards efficient
+Bayesian methods for deep Monte Carlo methods~\citep{mcreparam}.
+Applications based on modeling disease progression
+as a function of both static and time-varying 
+variables was extended to ``deepify-ing" mixed effects models~\citep{deepmem}.
+Interesting developments on the tensor decomposition side
+have led to work combining ideas
+in earlier work inarchitecture search~\citep{submodarch}
+with such compression methods,
+influencing high visibility publications by peers~\citep{xiong2021mobiledets}.
 
 \section{Building Plug-and-Play Tools for Discrete Optimal Transport}
 
@@ -176,23 +196,47 @@ expecting sparse solutions
 that \textit{also} correspond
 to clear demarcations within the task or 
 data is extremely optimistic.
+
 Using methods described in the introduction
 such as activation maps
 or Shapley values typically 
 leads to some form of ``blame"
-in a continuous sense;
-this feature or parameter
-has the \textit{largest} influence,
-but it is not, or we cannot say,
-that it is the \textit{only} influence.
-Conditional independence is exactly
-the measure we are interested in,
+in a continuous sense.
+These approaches are still being actively
+developed,
+and even now efficient approaches
+to ``searching" or ``identifying"
+over large supersets are being
+explored, with kernel
+and deep-learning based approaches
+in place to approximate these set functions.
+
+These methods lead to a feature or parameter
+subset that
+has the largest (perhaps local) \textit{influence},
+but it unclear whether
+this translate directly to \textit{dependence}.
+Conditional independence may be exactly
+the measure we are truly interested in,
 and equipped with a reasonable measure,
 it seems promising to explore its
 application within the broader space of
 interpretability.
+While the CODEC measure used
+here is somewhat simple,
+it does suffer from
+similar practical computational hurdles,
+albeit scaling polynomially
+compared to the direct set functions
+e.g., Shapley values.
+The extensions of CODEC
+as it serves as a drop-in
+comparison to existing measures
+looks to be an exciting direction of development
+as the interest and need for interpretability
+of large models grows.
 
-\subsection{A Final Note}
+\section*{A Final Note}
 As noted, current state-of-the-art
 machine learning research
 is moving at an accelerating pace.
@@ -219,8 +263,8 @@ has all but enveloped interest
 in artificial intelligence and machine learning.
 While the ideas above could be independently
 researched,
-it is almost a requirement that now they 
-all be developed with application to large
+it is almost a requirement that they now 
+be developed with application to large
 language models in mind.
 
 Importantly, this accelerating pace
