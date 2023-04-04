@@ -109,7 +109,7 @@ Given $n$ sample pairs $(x_i,y_i)$ indexed by $i$, traditional statistics and op
 This formulation extends without much change to a multi-dimensional form of the input $x$ and respectively, $w$: the canonical case where a number of features, say $d$, of $x$, or \textit{covariates} (e.g., symptoms), are used together to predict the outcome (e.g., diagnosis). 
 This is typically represented as a $d$-dimensional vector, with
 each position representing a different feature.
-If we are interested in which features of $x$ are important, we can look at the relative values of the learned ``weights'' $w$. In this simple setting, the importance of a feature (say $x^j$) can be exactly determined by the importance of the parameter ($w^j$).
+If we are interested in which features of $x$ are important, we can look at the relative values of the learned ``weights'' $w$. In this simple setting, the importance of a feature (say $x^j$) can be exactly determined by the importance of the corresponding parameter ($w^j$).
 A weight value far from zero may indicate that corresponding feature is important for diagnosis.
 % If instead we are interested in which samples are most important, we can use existing methods for sample reweighting or methods that use standard assumptions to efficiently identify important subsets.
 
@@ -153,7 +153,7 @@ From an analysis perspective,
 we might be interested in any one of 
 \textbf{(a)} subsets of input features $\cF \subseteq \cX$ that are important for the downstream task,
 \textbf{(b)} associating model subsets $\cP \subseteq \Theta$ with specific inputs or groups of inputs, or 
-\textbf{(c)} subsets or subgroups of samples $S \subseteq \{X\}$ that are sufficient or representative of the entire dataset.
+\textbf{(c)} subsets or subgroups of samples $S \subseteq X$ that are sufficient or representative of the entire dataset.
 
 Crucially, an uninformed search for a subset is computationally infeasible. For a superset of size $n=|X|$, the set of all subsets is the power set, with a size of $2^{n}$! If an identification procedure requires looking over all of these and choosing a ``best'' one by some measure, the procedure will be limited to very small supersets.
 Efficient methods have been developed in each of the three contexts above to avoid this exponential search.
@@ -184,7 +184,7 @@ Adaptations of sensitivity analysis, via noise addition and perturbations have f
 These methods typically generate an analagous ``weighting'' over the input space, identifying features most salient for the specific task (Figure~\ref{fig:feat_select}).
 
 These weighting approaches work well with more complex models $f$ compared to the linear case above: newer ``black-box'' methods have been developed for identifying important features.
-Recent popular methods with broad applicability include SHAP (Shapley Additive Explanations) and LIME (Local Interpretable Model-agnostic Explanations)~\cite{shap,lime}.
+Recent popular methods with broad applicability include SHAP (Shapley Additive Explanations) and LIME (Local Interpretable Model-agnostic Explanations)~\citep{shap,lime}.
 Shapley methods estimate the importance, or weight, of a particular feature for a prediction through randomized masking to estimate marginal contributions.
 LIME samples the model space around the input of interest to estimate the decision function locally, penalizing complexity of this estimation to enable interpretability of the explanations.
 Predominantly created and deployed in computer vision and imaging domains, these methods have proven effective in identifying parts of the input that drive the function output.
@@ -315,7 +315,7 @@ These types of biases can directly lead to disparate performance and results on 
 Optimization and regularization methods with this focus come under the umbrellas of model fairness, enforcing invariance, and spurious feature regularization among others.
 However, many existing methods do not scale well to larger models or as the number of subgroups grows,
 as is often the case when intersections of protected classes must be considered.
-Here we identify and construct a particular solution for \textbf{groupwise fairness that enables efficient in the loop fairness regularization}.
+Here we identify and construct a particular solution for \textbf{groupwise fairness that enables efficient in-the-loop fairness regularization}.
 
 % What features are most important for prediction?
 % Which samples were most important for my training?
@@ -526,7 +526,7 @@ Chapters \ref{chap:covtraj} and \ref{chap:ott} above have been extended
 in a number of directions,
 and continues to influence
 future research direction. 
-The more recent work in Chapters \ref{chap:codec} and \ref{chap:demd}
+The more recent work in Chapters \ref{chap:lcodec} and \ref{chap:demd}
 is serving as an ongoing foundation
 for new work.
 Developments include 
@@ -575,18 +575,18 @@ as a measure of influence and its role in interpretability.
 % This work is the most forward looking, and aims to be a stepping stone toward a rigorous 
 
 \section{Outline}
-Chapter 2 covers the essential background necessary for the developments presented in the following chapters, including specifics of graphs and hypothesis testing, as well as relevant modern methods for learning and optimization.
+Chapter \ref{chap:bknd} covers the essential background necessary for the developments presented in the following chapters, including specifics of graphs and hypothesis testing, as well as relevant modern methods for learning and optimization.
 In Chapters 3 through 7, we describe four perspectives to address subset identification.
-Chapter 3 explores and focuses on the identification of feature subsets varying over time.
-In Chapter 4 we describe a method of constraining the parameter space in a particular manner
+Chapter \ref{chap:covtraj} explores and focuses on the identification of feature subsets varying over time.
+In Chapter \ref{chap:ott} we describe a method of constraining the parameter space in a particular manner
 that enables more efficient large scale neural networks.
-Next, Chapter 5 provides a solution to the machine unlearning problem,
+Next, Chapter \ref{chap:lcodec} provides a solution to the machine unlearning problem,
 enabled through a particular conditional independence parameter selection scheme, vastly reducing network update costs.
-Chapter 6 ends with a unique solution to subgroup fairness, 
+Chapter \ref{chap:demd} ends with a unique solution to subgroup fairness, 
 where we take advantage of an efficient solution to
 the $d$-dimensional earth mover's problem
 to regularize large models when the number of subgroups can be large.
-We conclude in Chapter 7 with ongoing and future work, as well as some final thoughts.
+We conclude in Chapter \ref{chap:discuss} with ongoing and future work, as well as some final thoughts.
 %focused on applying a particular solution from Chapter 5
 %to understanding relationships among features
 %in latent spaces learned by large generative models.
