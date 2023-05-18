@@ -52,10 +52,10 @@
 \gdef\@department{(Computer Sciences)} % Default is Electical Engineering
 \gdef\@defensedate{2023-03-10}% Default is a long time from now.
 \gdef\@committee{
-  Yong Jae Lee, Associate Professor, Computer Sciences Department \\  
-  Frederic Sala, Assistant Professor, Computer Sciences Department\\ 
-  Michael Newton, Professor, Statistics Deparment \\
-  Vikas Singh (Advisor), Professor, Biostatistics and Medical Informatics Department
+  \hspace*{0.5in}Yong Jae Lee, Associate Professor, Computer Sciences \\  
+  \hspace*{0.5in}Frederic Sala, Assistant Professor, Computer Sciences\\ 
+  \hspace*{0.5in}Michael Newton, Professor, Statistics \\
+  \hspace*{0.5in}Vikas Singh (Advisor), Professor, Biostatistics and Medical Informatics
   }
 
 \renewcommand{\maketitle}{%
@@ -80,11 +80,12 @@
       UNIVERSITY OF WISCONSIN--MADISON\\[\@thesistitlemedskip]
       \@date
     \end{center}
-   \hspace*{-0.7in}Date of final oral examination: \@defensedate \\[\@thesistitlemedskip]
+   \hspace*{-0.0in}Date of final oral examination: \@defensedate \\[\@thesistitlemedskip]
     % \hspace*{-0.4in}Date of preliminary examination: \@defensedate \\[\@thesistitlemedskip]
-   \hspace*{-0.7in}The dissertation is approved by the following members of the 
+   \hspace*{-0.0in}The dissertation is approved by the following members of the 
     % \hspace*{-0.4in}The examination is approved by the following members of the 
     Oral Committee:\\
+    \\
     \@committee
   \end{titlepage}
   \setcounter{footnote}{0}
@@ -186,14 +187,17 @@
 \def\copyrightpage{
   \newpage
   \thispagestyle{empty}    % No page number
-  \addtocounter{page}{-1}
-  \chapter*{}            % Required for \vfill to work
+%  \addtocounter{page}{-1}
+%  \setcounter{page}{0}
+  \section*{}            % Required for \vfill to work
   \begin{center}
    \vfill
    \copyright\ Copyright by \@author\ \@date\\
    All Rights Reserved
-  \end{center}}
-
+  \end{center}
+  \addtocounter{page}{-1}
+  \setcounter{page}{0}
+}
 
 %=============================================================================
 % GLOSSARY
